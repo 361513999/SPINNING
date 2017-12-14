@@ -1,7 +1,8 @@
 package com.zc.http.okhttp.callback;
 
-import com.hhkj.gas.www.common.FileUtils;
-import com.hhkj.gas.www.common.P;
+
+import com.spinning.www.common.FileUtils;
+import com.spinning.www.common.P;
 
 import org.json.JSONException;
 

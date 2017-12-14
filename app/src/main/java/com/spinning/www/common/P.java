@@ -7,7 +7,7 @@ public class P {
 
 	public static void c(String param){
 		if(DEBUG){
-			Log.v("燃气安检", param);
+			Log.v("动感单车", param);
 		}
 	}
 }

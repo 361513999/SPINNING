@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="login_line">#979797</color>
+    <color name="login_line_txt">#6E6E6E</color>
+    <color name="no_color">#00000000</color>
+
+    <color name="orange_normal">#F08343</color>
+    <color name="orange_light">#FABC56</color>
+    <color name="white">#FFFFFF</color>
 </resources>

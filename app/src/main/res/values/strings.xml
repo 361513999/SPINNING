@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SPINNING</string>
+    <string name="login_tip">登入</string>
 </resources>

@@ -4,21 +4,26 @@ package com.spinning.www.base;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
-
 import com.spinning.www.common.Common;
 import com.spinning.www.common.SharedUtils;
 
 
-public abstract class BaseActivity extends Activity{
+import java.lang.ref.WeakReference;
+
+
+public abstract class BaseActivity extends Activity {
     /**
      * 返回键调用
      */
 
     public SharedUtils sharedUtils;
     public LayoutInflater inflater;
+    private Base_Handler  base_handler;
+
 
     public void backActivity(){
         AppManager.getAppManager().finishActivity(this);
@@ -28,8 +33,11 @@ public abstract class BaseActivity extends Activity{
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         sharedUtils = new SharedUtils(Common.config);
+        base_handler = new Base_Handler(BaseActivity.this);
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         AppManager.getAppManager().addActivity(this);
+
+
     }
     @Override
     protected void onDestroy()
@@ -39,6 +47,40 @@ public abstract class BaseActivity extends Activity{
         AppManager.getAppManager().finishActivity(this);
     }
 
+    /**
+     * 接收handler消息处理方法
+     * @param what
+     */
+    public abstract  void process(int what);
+    private class Base_Handler extends Handler {
+        WeakReference<BaseActivity> mLeakActivityRef;
+        public Base_Handler(BaseActivity leakActivity) {
+            mLeakActivityRef = new WeakReference<BaseActivity>(leakActivity);
+        }
+
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            if(mLeakActivityRef.get()!=null){
+                    process(msg.what);
+            }
+        }
+      }
+
+    /**
+     * 发送message
+     * @param what
+     */
+      public void sendEmptyMessage(int what){
+        base_handler.sendEmptyMessage(what);
+      }
+      public void sendMessage(int what,Object object){
+          Message msg  = new Message();
+          msg.what = what;
+          msg.obj = object;
+          base_handler.sendEmptyMessage(what);
+      }
+
 
     @Override
     protected void onStart() {
@@ -46,5 +88,8 @@ public abstract class BaseActivity extends Activity{
         init();
     }
 
+    /**
+     * 空间数据初始化方法
+     */
     public abstract void  init();
 }
