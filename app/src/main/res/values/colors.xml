@@ -6,8 +6,11 @@
     <color name="login_line">#979797</color>
     <color name="login_line_txt">#6E6E6E</color>
     <color name="no_color">#00000000</color>
-
+    <color name="common_gray">#393939</color>
     <color name="orange_normal">#F08343</color>
     <color name="orange_light">#FABC56</color>
     <color name="white">#FFFFFF</color>
+    <color name="person_line">#E5E5E5</color>
+    <color name="person_font_color">#666666</color>
+    <color name="person_bg">#F2F2F2</color>
 </resources>

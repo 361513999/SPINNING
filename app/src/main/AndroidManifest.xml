@@ -40,12 +40,27 @@
         android:theme="@style/ThemeActivity" >
         <activity android:name="com.spinning.www.ui.WelcomeActivity"   android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name="com.spinning.www.ui.LoginActivity"   android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name="com.spinning.www.ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name="com.spinning.www.ui.ModPassActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name="com.spinning.www.ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.spinning.www.ui.LoginActivity"   android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape"/>
     </application>
 </manifest>
