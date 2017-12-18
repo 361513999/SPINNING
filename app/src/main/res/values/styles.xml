@@ -27,4 +27,8 @@
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
+    <style name="person_font">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/person_font_color</item>
+    </style>
 </resources>

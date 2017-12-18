@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +43,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="120">
-
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="290"
+                    android:layout_height="match_parent"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_weight="110"
+                    android:layout_height="match_parent">
+                    <com.spinning.www.widget.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/logo"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/no_color" />
+                </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="290"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,8 +80,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="昵称"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -83,8 +104,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="选择生日"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -100,7 +120,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/actionsheet_middle_selector"
-
                     android:layout_weight="1"
                     android:layout_height="0dp">
                     <TextView
@@ -108,8 +127,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="选择性别"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -133,8 +151,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="选择身高"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -158,8 +175,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="当前体重"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -183,8 +199,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="目标体重"
-                        android:textColor="@color/person_font_color"
-                        android:textSize="14sp"
+                        style="@style/person_font"
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:layout_width="wrap_content"
