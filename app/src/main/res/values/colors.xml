@@ -13,4 +13,5 @@
     <color name="person_line">#E5E5E5</color>
     <color name="person_font_color">#666666</color>
     <color name="person_bg">#F2F2F2</color>
+    <color name="list_line">#414244</color>
 </resources>

@@ -57,6 +57,10 @@
         </activity>
         <activity android:name="com.spinning.www.ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name="com.spinning.www.ui.PersonCenterActivity" android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
