@@ -6,7 +6,21 @@
             android:layout_width="match_parent"
             android:background="@drawable/shape_title_bg"
             android:layout_height="@dimen/title_heigh">
-
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/title_back"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/title_font_size"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:text="个人中心"/>
         </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +37,7 @@
                         android:background="@color/no_color"
                         android:cacheColorHint="@color/no_color"
                         android:dividerHeight="0.5dp"
+                        android:choiceMode="singleChoice"
                         android:divider="@color/list_line"
                         android:listSelector="@drawable/shape_title_bg"
                         android:layout_height="wrap_content">
@@ -33,7 +48,12 @@
             android:layout_width="0dp"
             android:layout_weight="540"
             android:layout_height="match_parent">
-
+            <FrameLayout
+                android:id="@+id/main_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

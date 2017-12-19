@@ -1,6 +1,6 @@
 package com.zc.http.okhttp.builder;
 
-import com.spinning.www.common.P;
+import com.hhkj.spinning.www.common.P;
 import com.zc.http.okhttp.request.PostStringRequest;
 import com.zc.http.okhttp.request.RequestCall;
 

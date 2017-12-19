@@ -1,5 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hhkj.spinning.www">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
     </uses-permission>
@@ -34,37 +46,84 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.spinning.www.common.BaseApplication"
+        android:name=".common.BaseApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ThemeActivity" >
-        <activity android:name="com.spinning.www.ui.WelcomeActivity"   android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.WelcomeActivity"   android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name="com.spinning.www.ui.LoginActivity"   android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape">
-
-        </activity>
-        <activity android:name="com.spinning.www.ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape">
-
-        </activity>
-        <activity android:name="com.spinning.www.ui.ModPassActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape">
-
-        </activity>
-        <activity android:name="com.spinning.www.ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape">
-
-        </activity>
-        <activity android:name="com.spinning.www.ui.PersonCenterActivity" android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.LoginActivity"   android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".ui.ModPassActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".ui.PersonCenterActivity" android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+    <!--友盟第三方-->
+        <!--5a38a65ab27b0a6b3a00052a-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5126ff896c738f2bfa000438" >
+        </meta-data>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="tencent100424468"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+       <!-- <activity
+            android:name=".WBShareActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
+        </activity>
+        <service android:name="com.sina.weibo.sdk.net.DownloadService"
+            android:exported="false"></service>-->
     </application>
 </manifest>

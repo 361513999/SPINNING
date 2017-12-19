@@ -16,6 +16,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file('spinning.jks')
+            storePassword "spinning"
+            keyAlias "spinning"
+            keyPassword "spinning"
+        }
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+    }
 }
 
 dependencies {
@@ -27,4 +42,15 @@ dependencies {
     implementation files('libs/okhttp-3.4.1.jar')
     implementation files('libs/okio-1.9.0.jar')
     implementation files('libs/universal-image-loader-1.9.5.jar')
+    implementation files('libs/umeng_shareboard_widget.jar')
+    implementation files('libs/umeng_social_api.jar')
+    implementation files('libs/umeng_social_net.jar')
+    implementation files('libs/umeng_social_shareboard.jar')
+    implementation files('libs/umeng_social_tool.jar')
+    implementation files('libs/open_sdk_r5923_lite.jar')
+   // implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    // implementation 'com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar'
+    implementation files('libs/SocialSDK_QQ_Simplify.jar')
+    implementation files('libs/SocialSDK_Sina_Simplify.jar')
+    implementation files('libs/SocialSDK_WeChat_Simplify.jar')
 }

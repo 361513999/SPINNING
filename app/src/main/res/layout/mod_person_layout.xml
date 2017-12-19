@@ -52,7 +52,7 @@
                     android:gravity="center"
                     android:layout_weight="110"
                     android:layout_height="match_parent">
-                    <com.spinning.www.widget.CircleImageView
+                    <com.hhkj.spinning.www.widget.CircleImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@mipmap/logo"

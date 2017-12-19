@@ -1,6 +1,6 @@
 package com.zc.http.okhttp.callback;
 
-import com.spinning.www.common.P;
+import com.hhkj.spinning.www.common.P;
 import com.zc.http.okhttp.OkHttpUtils;
 import java.io.File;
 import java.io.FileOutputStream;
