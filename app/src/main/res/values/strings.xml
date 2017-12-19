@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SPINNING</string>
+    <string name="app_name">FitNow</string>
     <string name="login_tip">登入</string>
     <string name="blind_phone_txt">绑定手机</string>
     <string name="mod_pass_txt">修改密码</string>
