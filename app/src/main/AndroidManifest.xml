@@ -50,15 +50,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ThemeActivity" >
-        <activity android:name=".ui.WelcomeActivity"   android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.WelcomeActivity"   android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".ui.LoginActivity"   android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.LoginActivity"   android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
 
         </activity>
@@ -67,15 +67,15 @@
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.ModPersonActivity"    android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".ui.PersonCenterActivity" android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.PersonCenterActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".ui.HomeActivity" android:configChanges="orientation|keyboardHidden"
+        <activity android:name=".ui.HomeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -83,7 +83,19 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".ui.MyBikeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
 
+
+        </activity>
+        <activity android:name=".ui.SportActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".ui.DrillActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
 
     <!--友盟第三方-->
         <!--5a38a65ab27b0a6b3a00052a-->

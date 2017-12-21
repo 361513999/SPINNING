@@ -6,14 +6,7 @@
             android:layout_width="match_parent"
             android:background="@drawable/shape_title_bg"
             android:layout_height="@dimen/title_heigh">
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="15dp"
-                android:src="@mipmap/title_back"/>
+            <include layout="@layout/common_back_layout"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,17 +24,18 @@
                 android:layout_width="0dp"
                 android:layout_weight="130"
                 android:layout_height="match_parent">
+
                     <ListView
                         android:id="@+id/person_left"
                         android:layout_width="match_parent"
                         android:background="@color/no_color"
                         android:cacheColorHint="@color/no_color"
                         android:dividerHeight="0.5dp"
+                        android:scrollbars="none"
                         android:choiceMode="singleChoice"
                         android:divider="@color/list_line"
                         android:listSelector="@drawable/shape_title_bg"
                         android:layout_height="wrap_content">
-
                     </ListView>
             </LinearLayout>
         <LinearLayout

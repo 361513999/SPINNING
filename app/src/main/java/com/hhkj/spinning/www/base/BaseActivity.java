@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.SharedUtils;
@@ -24,7 +25,7 @@ public abstract class BaseActivity extends Activity {
     private Base_Handler  base_handler;
 
 
-    public void backActivity(){
+    public void backActivity(View v){
         AppManager.getAppManager().finishActivity(this);
     }
     @Override

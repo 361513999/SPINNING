@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_heigh"
+        android:background="@drawable/shape_title_bg">
+
+        <include layout="@layout/common_back_layout"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="运动干货"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_font_size" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_gray">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="115">
+
+            <ListView
+                android:id="@+id/sport_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/no_color"
+                android:cacheColorHint="@color/no_color"
+
+                android:choiceMode="singleChoice"
+                android:divider="@color/list_line"
+                android:listSelector="@color/no_color"
+                android:scrollbars="none">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#414244" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="552">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="25" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:id="@+id/list_content"
+                android:layout_height="match_parent"
+                android:layout_weight="505">
+                <com.hhkj.spinning.www.widget.PullToRefreshView
+                    android:id="@+id/pull_to_refresh_list"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:focusableInTouchMode="true"
+                    android:layout_height="match_parent">
+                    <ListView
+                        android:id="@+id/sport_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:scrollbars="none"
+                        android:listSelector="@color/no_color"
+                        android:divider="@color/no_color"
+                        android:dividerHeight="6dp"
+                        android:background="@color/no_color"
+                        android:cacheColorHint="@color/no_color"/>
+                </com.hhkj.spinning.www.widget.PullToRefreshView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="25" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

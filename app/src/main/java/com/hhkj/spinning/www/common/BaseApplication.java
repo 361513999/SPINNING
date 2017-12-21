@@ -47,6 +47,7 @@ public class BaseApplication extends Application {
         // TODO Auto-generated method stub
         super.onCreate();
         application = this;
+        Config.isJumptoAppStore = true;
         Config.DEBUG = true;
         QueuedWork.isUseThreadPool = false;
         UMShareAPI.get(this);
