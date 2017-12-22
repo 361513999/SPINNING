@@ -77,10 +77,7 @@
         </activity>
         <activity android:name=".ui.HomeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
 
         </activity>
         <activity android:name=".ui.MyBikeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
@@ -96,7 +93,22 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <!--公共网页界面-->
+        <activity android:name=".ui.CommonWeb" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
 
+        </activity>
+        <activity android:name=".ui.JpActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".widget.line.ChartsActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     <!--友盟第三方-->
         <!--5a38a65ab27b0a6b3a00052a-->
         <meta-data

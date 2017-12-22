@@ -8,12 +8,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PersonLeftAdapter;
 import com.hhkj.spinning.www.base.BaseFragmentActivity;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.widget.CircleImageView;
 
 import java.util.List;
 
@@ -23,11 +26,13 @@ import java.util.List;
 
 public class PersonCenterActivity extends BaseFragmentActivity {
     private PersonLeftAdapter personLeftAdapter;
+
     private ListView person_left;
     private FrameLayout main_content;
     private FragmentManager fragmentManager;
-    int INDEX = 0;
 
+    int INDEX = 0;
+    private ImageView jp;
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -90,6 +95,11 @@ public class PersonCenterActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.person_center_layout);
+
+    }
+    @Override
+    public void init() {
+        jp = findViewById(R.id.jp);
         personLeftAdapter = new PersonLeftAdapter(PersonCenterActivity.this);
         person_left = findViewById(R.id.person_left);
         person_left.setAdapter(personLeftAdapter);
@@ -107,6 +117,15 @@ public class PersonCenterActivity extends BaseFragmentActivity {
 //        person_left.setSelection(0);
         person_left.setItemChecked(INDEX,true);
         select(INDEX);
+        jp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //奖品
+                    Intent intent = new Intent(PersonCenterActivity.this,JpActivity.class);
+                    startActivity(intent);
+            }
+        });
+
     }
     private PersonCenterItem0 personCenterItem0;
     private PersonCenterItem1 personCenterItem1;
@@ -137,9 +156,5 @@ public class PersonCenterActivity extends BaseFragmentActivity {
         }
         INDEX = KEYCODE;
         transaction.commitAllowingStateLoss();
-    }
-    @Override
-    public void init() {
-
     }
 }

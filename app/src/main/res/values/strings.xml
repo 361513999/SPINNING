@@ -10,4 +10,9 @@
     <string name="pull_to_refresh_footer_release_label">松开后加载</string>
     <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
     <string name="pull_to_refresh_footer_refreshing_label">正在加载中\u2026</string>
+
+    <string name="textsize">15</string>
+    <string name="textsizesmall">12</string>
+    <string name="textsizeX">12</string>
+
 </resources>

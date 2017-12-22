@@ -17,6 +17,8 @@ public class Common {
             .getExternalStorageDirectory().getAbsolutePath();
     public static String DIR = "/SPINNING_CACHE/";
     public static String SD = BASE_DIR+DIR;
+    public static final String STAFF_IMAGE = "IMAGES/";
+    public static final String CACHE_STAFF_IMAGES = SD+STAFF_IMAGE;
     public static String APK_LOG = SD+"LOG/";
 
 }

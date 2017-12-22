@@ -14,14 +14,14 @@ import com.hhkj.spinning.www.base.BaseActivity;
 public class WelcomeActivity extends BaseActivity {
     @Override
     public void init() {
-
+        time();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_layout);
-        time();
+
 
     }
     private void time(){

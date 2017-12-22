@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_heigh"
+        android:background="@drawable/shape_title_bg">
+
+        <include layout="@layout/common_back_layout"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:text="奖品"
+            android:textSize="@dimen/title_font_size" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/common_gray"
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="83" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:id="@+id/list_content"
+            android:layout_height="match_parent"
+            android:layout_weight="505">
+            <com.hhkj.spinning.www.widget.PullToRefreshView
+                android:id="@+id/pull_to_refresh_list"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:focusableInTouchMode="true"
+                android:layout_height="match_parent">
+                <ListView
+                    android:id="@+id/sport_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:scrollbars="none"
+                    android:listSelector="@color/no_color"
+                    android:divider="@color/no_color"
+                    android:dividerHeight="6dp"
+                    android:background="@color/no_color"
+                    android:cacheColorHint="@color/no_color"/>
+            </com.hhkj.spinning.www.widget.PullToRefreshView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="83" />
+    </LinearLayout>
+</LinearLayout>

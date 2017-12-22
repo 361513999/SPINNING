@@ -66,7 +66,7 @@ public class SportListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
-        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.welcome,  viewHolder.item_tag);
+        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.ic_launcher,  viewHolder.item_tag);
         viewHolder.item_content.setLayoutParams(new AbsListView.LayoutParams(width,height));
         return  convertView;
     }
