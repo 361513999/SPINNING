@@ -116,6 +116,7 @@ public class PersonCenterActivity extends BaseFragmentActivity {
 
 //        person_left.setSelection(0);
         person_left.setItemChecked(INDEX,true);
+        INDEX = 2;
         select(INDEX);
         jp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,20 +136,20 @@ public class PersonCenterActivity extends BaseFragmentActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         switch (KEYCODE) {
-            case 0://点餐
+            case 0:
                 personCenterItem0 = new PersonCenterItem0(PersonCenterActivity.this, getHandler());
                 transaction.replace(CONTENT, personCenterItem0);
                 break;
-            case 1://支付
+            case 1:
                 personCenterItem1 = new PersonCenterItem1(PersonCenterActivity.this, getHandler());
                 transaction.replace(CONTENT, personCenterItem1);
 
                 break;
-            case 2://点餐
+            case 2:
                 personCenterItem2 = new PersonCenterItem2(PersonCenterActivity.this, getHandler());
                 transaction.replace(CONTENT, personCenterItem2);
                 break;
-            case 3://支付
+            case 3:
                 personCenterItem3 = new PersonCenterItem3(PersonCenterActivity.this, getHandler());
                 transaction.replace(CONTENT, personCenterItem3);
 

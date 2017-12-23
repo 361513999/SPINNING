@@ -23,6 +23,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.line.view.AxisXView;
 import com.hhkj.spinning.www.widget.line.view.AxisYView_NormalType;
 import com.hhkj.spinning.www.widget.line.view.LineView;
@@ -33,7 +34,7 @@ public class ChartsActivity extends BaseActivity {
 	private LinearLayout axisXLayout = null;
 	private LinearLayout threndLine_Layout = null;
 	private LinearLayout title_layout = null;
-
+	private RelativeLayout main_content;
 	private TitleView titleView;
 	private LineView lineView;
 	private AxisYView_NormalType axisY_2;
@@ -49,10 +50,17 @@ public class ChartsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.charts_activity);
 		//视图
+		main_content = findViewById(R.id.main_content);
 		DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
-		LineUtils.screenWidth = mDisplayMetrics.widthPixels;
-		LineUtils.screenHeight = mDisplayMetrics.heightPixels;
+		main_content.post(new Runnable() {
+			@Override
+			public void run() {
+				P.c(main_content.getMeasuredHeight()+"=="+main_content.getMeasuredWidth());
+			}
+		});
+		LineUtils.screenWidth = 924;
+		LineUtils.screenHeight = 581;
 
 		//设置图区宽高、内容宽高
 		LineUtils.layoutWidth = LineUtils.screenWidth *2/2;
