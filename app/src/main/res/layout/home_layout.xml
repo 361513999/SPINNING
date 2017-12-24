@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,26 +15,28 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="280">
+
             <com.hhkj.spinning.www.widget.CircleImageView
                 android:id="@+id/home_icon_tag"
-                android:layout_marginLeft="10dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_width="37dp"
                 android:layout_height="37dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:src="@mipmap/ic_launcher"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/no_color" />
+                app:civ_border_color="@color/no_color"
+                app:civ_border_width="2dp" />
+
             <TextView
                 android:id="@+id/home_icon_txt"
-                android:layout_toRightOf="@+id/home_icon_tag"
                 android:layout_width="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginLeft="10dp"
-                android:text="昵称"
-                android:textSize="15sp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/home_icon_tag"
+                android:text="昵称"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <ImageView
@@ -49,25 +51,27 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="280">
+
             <LinearLayout
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:padding="8dp"
-                android:layout_height="match_parent">
+                android:padding="8dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@mipmap/home_btn_s"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_btn_s" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:id="@+id/home_icon_btn0"
-                android:layout_toLeftOf="@+id/home_icon_btn1"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/home_icon_btn1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -96,13 +100,14 @@
 
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginRight="10dp"
                 android:id="@+id/home_icon_btn1"
-                android:layout_toLeftOf="@+id/home_icon_btn2"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/home_icon_btn2"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -131,13 +136,14 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/home_icon_btn2"
-                android:layout_marginRight="10dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -168,60 +174,141 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_gray"
         android:orientation="vertical"
-        android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:background="@color/common_gray"
-        android:layout_height="match_parent">
+        android:paddingTop="5dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="222">
+
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="380"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="380">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="207">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="60" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="80"
+                                android:gravity="center">
+
+                                <com.hhkj.spinning.www.widget.CircleImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@mipmap/ic_launcher"
+                                    app:civ_border_color="@color/no_color"
+                                    app:civ_border_width="2dp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="60" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="175">
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="275"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="275">
 
+                <com.hhkj.spinning.www.widget.PullToRefreshView
+                    android:id="@+id/pull_to_refresh_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/home_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/no_color"
+                        android:cacheColorHint="@color/no_color"
+                        android:divider="@color/list_line"
+                        android:dividerHeight="0.5dp"
+                        android:listSelector="@color/no_color"
+                        android:scrollbars="none" />
+                </com.hhkj.spinning.www.widget.PullToRefreshView>
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="100">
+            android:layout_weight="100"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:text="推荐训练课程"
-                android:layout_marginTop="2dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:layout_height="wrap_content" />
+                android:layout_marginTop="2dp"
+                android:text="推荐训练课程"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
-                <LinearLayout
-                    android:id="@+id/gallery_content"
+            <LinearLayout
+                android:id="@+id/gallery_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <com.hhkj.spinning.www.widget.HorizontalListView
+                    android:id="@+id/gallery_bottom"
                     android:layout_width="match_parent"
-                    android:scrollbars="none"
-                    android:layout_height="match_parent">
-                    <com.hhkj.spinning.www.widget.HorizontalListView
-                        android:id="@+id/gallery_bottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:dividerWidth="8dp"
-                        android:background="@color/no_color"
-                        />
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:background="@color/no_color"
+                    app:dividerWidth="8dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

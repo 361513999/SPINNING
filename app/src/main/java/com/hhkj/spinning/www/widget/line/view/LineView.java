@@ -70,6 +70,7 @@ public class LineView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
     	paint.setColor(Color.GRAY);
+
     	paint.setAlpha(100);
     	
 		for(float lineHeight:begins){
@@ -105,6 +106,7 @@ public class LineView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         paint.setColor(color);
+
         paint.setTextSize(Integer.parseInt(getResources().getString(R.string.textsize)));// 设置字体
         for (int i = 0; i < array.length; i++) {
             if (array[i] > -1) {
@@ -113,9 +115,9 @@ public class LineView extends View {
                     if(mp){
                     	paint.setStrokeWidth(1);
                     	if(i < array.length - 1)
-                    		canvas.drawText(array[i]+"", xPoint + xScale * i, ydata-5, paint);
+                    		canvas.drawText(array[i]+"", xPoint + xScale * i, ydata-15, paint);
                     	else 
-                    		canvas.drawText(array[i]+"", xPoint - 30 + xScale * i, ydata-5, paint);
+                    		canvas.drawText(array[i]+"", xPoint - 30 + xScale * i, ydata-8, paint);
                     	paint.setStrokeWidth(3);
                     	if(LineUtils.screenWidth<540)
                     		radius=5;

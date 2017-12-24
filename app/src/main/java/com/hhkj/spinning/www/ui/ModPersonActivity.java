@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.ui;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.TPActivity;
@@ -30,9 +31,11 @@ public class ModPersonActivity extends TPActivity {
     }
 
     @Override
-    public void process(int what) {
+    public void process(Message msg) {
 
     }
+
+
     private PhotoSelect photoSelect = new PhotoSelect() {
         private void init(){
             int width = 1280;

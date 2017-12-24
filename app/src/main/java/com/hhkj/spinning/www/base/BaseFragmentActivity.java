@@ -53,7 +53,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      * 接收handler消息处理方法
      * @param what
      */
-    public abstract  void process(int what);
+    public abstract  void process(Message msg);
     private class Base_Handler extends Handler {
         WeakReference<BaseFragmentActivity> mLeakActivityRef;
         public Base_Handler(BaseFragmentActivity leakActivity) {
@@ -64,7 +64,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         public void dispatchMessage(Message msg) {
             super.dispatchMessage(msg);
             if(mLeakActivityRef.get()!=null){
-                    process(msg.what);
+                process(msg);
             }
         }
       }

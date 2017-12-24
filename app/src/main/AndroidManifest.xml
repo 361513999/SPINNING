@@ -56,7 +56,10 @@
         </activity>
         <activity android:name=".ui.LoginActivity"   android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".ui.BlindPhoneActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
@@ -102,13 +105,7 @@
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".widget.line.ChartsActivity" android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+
     <!--友盟第三方-->
         <!--5a38a65ab27b0a6b3a00052a-->
         <meta-data

@@ -132,12 +132,13 @@ public class LineUtils {
 	/**
 	 * X轴颜色
 	 */
-	public static int xScaleColor = Color.rgb(25, 156, 240);
+//	public static int xScaleColor = Color.rgb(25, 156, 240);
+	public static int xScaleColor = Color.WHITE;
 	
 	/**
 	 * Y轴颜色
 	 */
-	public static int yScaleColor = Color.rgb(25, 156, 240);
+	public static int yScaleColor = Color.WHITE;
 	
 	/**
 	 * Y轴刻度名称

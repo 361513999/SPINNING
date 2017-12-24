@@ -5,14 +5,26 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.test.suitebuilder.annotation.Suppress;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
+import com.hhkj.spinning.www.common.U;
+import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.widget.LoadView;
+import com.zc.http.okhttp.OkHttpUtils;
+import com.zc.http.okhttp.callback.StringCallback;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+
+import okhttp3.Call;
 
 
 public abstract class BaseActivity extends Activity {
@@ -37,6 +49,63 @@ public abstract class BaseActivity extends Activity {
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         AppManager.getAppManager().addActivity(this);
     }
+
+
+    private LoadView loadView = null;
+    private void cancleLoadView(){
+        if(loadView!=null){
+            loadView.cancle();
+            loadView = null;
+        }
+    }
+
+    /**
+     *
+     * @param DIRECT 访问函数
+     * @param content 访问请求参数
+     * @param result 返回结果
+     */
+    public void httpString(String DIRECT, String content, final Result result){
+        if(loadView==null){
+            loadView = new LoadView(BaseActivity.this);
+            loadView.showSheet();
+        }
+        OkHttpUtils.postString().url(U.VISTER()+DIRECT).mediaType(U.json).content(content).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                cancleLoadView();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                cancleLoadView();
+                P.c(response);
+                if(result!=null){
+                    try {
+                        final JSONObject jsonObject = new JSONObject(response);
+
+                        if(jsonObject.getBoolean("Success")){
+                           new Thread(){
+                               @Override
+                               public void run() {
+                                   super.run();
+                                   //禁止在返回中直接使用
+                                   result.success(jsonObject);
+                               }
+                           }.start();
+                        }else{
+                            result.error(jsonObject.getString("Error"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        P.c("格式错误");
+                    }
+                }
+            }
+        });
+    }
+
+
     public Handler getHandler(){
         return  base_handler;
     }
@@ -52,7 +121,8 @@ public abstract class BaseActivity extends Activity {
      * 接收handler消息处理方法
      * @param what
      */
-    public abstract  void process(int what);
+    public abstract  void process(Message msg);
+
     private class Base_Handler extends Handler {
         WeakReference<BaseActivity> mLeakActivityRef;
         public Base_Handler(BaseActivity leakActivity) {
@@ -63,7 +133,10 @@ public abstract class BaseActivity extends Activity {
         public void dispatchMessage(Message msg) {
             super.dispatchMessage(msg);
             if(mLeakActivityRef.get()!=null){
-                    process(msg.what);
+
+                    process(msg);
+
+
             }
         }
       }
@@ -81,6 +154,13 @@ public abstract class BaseActivity extends Activity {
           msg.obj = object;
           base_handler.sendEmptyMessage(what);
       }
+    public void sendMessage(int what,int arg1){
+        Message msg = new Message();
+        msg.what =what;
+        msg.arg1 = 1;
+        base_handler.sendMessage(msg);
+
+    }
 
 
     @Override

@@ -58,7 +58,7 @@ public class AxisYView_NormalType extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);// 设置画笔样式
         paint.setAntiAlias(true);// 去锯齿
-        paint.setColor(Color.BLACK);// 设置颜色
+        paint.setColor(Color.WHITE);// 设置颜色
         paint.setTextSize(Integer.parseInt(getResources().getString(R.string.textsizeX)));// 设置字体
         paint.setStrokeWidth(1);
 

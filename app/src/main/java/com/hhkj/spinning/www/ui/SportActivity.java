@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.ui;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -31,9 +32,10 @@ public class SportActivity extends BaseActivity {
     }
 
     @Override
-    public void process(int what) {
+    public void process(Message msg) {
 
     }
+
 
     @Override
     public void init() {

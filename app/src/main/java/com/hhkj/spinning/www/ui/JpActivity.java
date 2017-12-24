@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.ui;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -27,9 +28,10 @@ public class JpActivity extends BaseActivity {
     }
 
     @Override
-    public void process(int what) {
+    public void process(Message msg) {
 
     }
+
 
     @Override
     public void init() {

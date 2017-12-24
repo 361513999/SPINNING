@@ -2,6 +2,7 @@ package com.hhkj.spinning.www.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -86,10 +87,8 @@ public class PersonCenterActivity extends BaseFragmentActivity {
         }
 
     }
-    @Override
-    public void process(int what) {
-        P.c("收到"+what);
-    }
+
+
     private int CONTENT = R.id.main_content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +96,12 @@ public class PersonCenterActivity extends BaseFragmentActivity {
         setContentView(R.layout.person_center_layout);
 
     }
+
+    @Override
+    public void process(Message msg) {
+
+    }
+
     @Override
     public void init() {
         jp = findViewById(R.id.jp);

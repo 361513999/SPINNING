@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/child"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/item0"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentLeft="true"
+                android:textSize="13sp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:ems="4"
+                android:text="12月5日12:55"
+                />
+            <com.hhkj.spinning.www.widget.CircleImageView
+                android:id="@+id/item1"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/item0"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:civ_border_width="2dp"
+                android:layout_margin="5dp"
+                app:civ_border_color="@color/no_color" />
+
+            <TextView
+                android:id="@+id/item2"
+                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/item3"
+                android:layout_toRightOf="@+id/item1"
+                android:layout_centerVertical="true"
+                android:text="gdfgdfgdfgdfgdfgdfgfgdfgdf"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/item3"
+                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:ems="4"
+                android:text="12月5日12:55"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+    <!--272 42-->
+
+</LinearLayout>

@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebChromeClient;
@@ -32,9 +33,10 @@ public class CommonWeb extends BaseActivity {
 	}
 
 	@Override
-	public void process(int what) {
+	public void process(Message msg) {
 
 	}
+
 
 	@Override
 	public void init() {

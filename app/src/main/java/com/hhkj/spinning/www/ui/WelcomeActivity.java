@@ -2,6 +2,7 @@ package com.hhkj.spinning.www.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.AppManager;
@@ -24,6 +25,18 @@ public class WelcomeActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    public void process(Message msg) {
+        switch (msg.what){
+            case 0:
+                Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
+                startActivity(intent);
+                AppManager.getAppManager().finishActivity();
+                break;
+        }
+    }
+
     private void time(){
         new Thread() {
             public void run() {
@@ -45,14 +58,5 @@ public class WelcomeActivity extends BaseActivity {
             };
         }.start();
     }
-    @Override
-    public void process(int what) {
-        switch (what){
-            case 0:
-                Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
-                startActivity(intent);
-                AppManager.getAppManager().finishActivity();
-                break;
-        }
-    }
+
 }

@@ -21,7 +21,8 @@ public abstract class StringCallback extends Callback<String>
         String result = response.body().string();
 
         try {
-            P.c("返回"+ FileUtils.formatJson(result));
+            result = FileUtils.formatJson(result);
+            P.c("返回"+ result);
         } catch (JSONException e) {
             e.printStackTrace();
         }

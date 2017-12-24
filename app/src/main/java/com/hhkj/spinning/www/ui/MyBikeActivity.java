@@ -2,6 +2,7 @@ package com.hhkj.spinning.www.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,16 +17,19 @@ import com.hhkj.spinning.www.widget.ColorArcProgressBar;
 
 public class MyBikeActivity extends BaseActivity {
     private ColorArcProgressBar bike_cicle;
-    @Override
-    public void process(int what) {
 
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_bike_layout);
     }
+
+    @Override
+    public void process(Message msg) {
+
+    }
+
     /**
      * 得到屏幕宽度
      * @return

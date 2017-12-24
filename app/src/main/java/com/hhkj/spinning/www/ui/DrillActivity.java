@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.ui;
 
 import android.os.Bundle;
+import android.os.Message;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
@@ -20,9 +21,10 @@ public class DrillActivity extends BaseActivity {
     }
 
     @Override
-    public void process(int what) {
+    public void process(Message msg) {
 
     }
+
 
     @Override
     public void init() {

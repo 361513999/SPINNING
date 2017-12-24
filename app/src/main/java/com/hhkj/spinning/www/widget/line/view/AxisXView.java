@@ -22,7 +22,7 @@ public class AxisXView extends View {
     private float xScale = 5;// X轴一个刻度长度
     private int widthBorder = 5;// 内边缘宽度，为了统计图不靠在屏幕的边缘上，向边缘缩进距离
     private String[] xLableArray;// X轴标签
-    private int count = 1;//每多少个刻度显示一次文本
+    private final int count = 2;//每多少个刻度显示一次文本
     
     public AxisXView(Context context) {
         super(context);
@@ -45,11 +45,11 @@ public class AxisXView extends View {
         xScale = getScale(LineUtils.xScaleArray.length - 1, xLengh);
         xLableArray = LineUtils.xScaleArray;
 
-        if (xLableArray.length <= 10) {
+       /* if (xLableArray.length <= 10) {
             count = 2;
         } else {
             count = 4;
-        }
+        }*/
     }
 
     @Override
@@ -62,12 +62,13 @@ public class AxisXView extends View {
         linepaint.setAntiAlias(true);// 去锯齿
         linepaint.setColor(LineUtils.xScaleColor);// 设置颜色
         linepaint.setTextSize(16);// 设置字体
+
         linepaint.setStrokeWidth(3);
         // 画X轴轴线
         canvas.drawLine(xPoint, yPoint, xPoint + xLengh, yPoint, linepaint);
         for (int i = 0; xLableArray != null && i < xLableArray.length; i++) {
             // 画X轴刻度
-        	if(i%count == 0 ){
+        	if(i%count != 0 ){
         		canvas.drawLine(xPoint+xScale*i, yPoint, xPoint+xScale*i, yPoint - 8, linepaint);
         		canvas.drawText(xLableArray[i]+"", xPoint+xScale*i-5, yPoint+20, linepaint);
         	}
