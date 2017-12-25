@@ -30,7 +30,14 @@ public class WelcomeActivity extends BaseActivity {
     public void process(Message msg) {
         switch (msg.what){
             case 0:
-                Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
+                Intent intent = null;
+               if( sharedUtils.getStringValue("token").length()==0){
+                     intent = new Intent(WelcomeActivity.this,LoginActivity.class);
+
+               }else{
+                     intent = new Intent(WelcomeActivity.this,HomeActivity.class);
+
+               }
                 startActivity(intent);
                 AppManager.getAppManager().finishActivity();
                 break;

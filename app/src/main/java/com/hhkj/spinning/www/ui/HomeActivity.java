@@ -25,7 +25,7 @@ import com.hhkj.spinning.www.widget.CircleImageView;
 import com.hhkj.spinning.www.widget.HorizontalListView;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
-import com.hhkj.spinning.www.widget.us.feras.ecogallery.EcoGallery;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by cloor on 2017/12/19.
@@ -84,6 +84,13 @@ public class HomeActivity extends BaseActivity {
             }, runTime);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        home_icon_txt.setText(sharedUtils.getStringValue("userName"));
+        ImageLoader.getInstance().displayImage(sharedUtils.getStringValue("icon"),home_icon_tag);
+    }
 
     @Override
     public void init() {

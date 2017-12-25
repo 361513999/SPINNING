@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.HorizontalListView;
-import com.hhkj.spinning.www.widget.us.feras.ecogallery.EcoGallery;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;

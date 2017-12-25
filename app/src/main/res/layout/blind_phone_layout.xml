@@ -45,6 +45,7 @@
                        android:layout_height="25dp"
                        android:src="@mipmap/login_user"/>
                    <EditText
+                       android:id="@+id/phone"
                        android:layout_width="match_parent"
                        android:singleLine="true"
                        android:paddingLeft="4dp"
@@ -70,6 +71,7 @@
                        android:layout_height="wrap_content"
                        android:src="@mipmap/login_pass"/>
                    <EditText
+                       android:id="@+id/code_ma"
                        android:layout_width="0dp"
                        android:layout_weight="1"
                        android:paddingLeft="4dp"
@@ -79,6 +81,7 @@
                        android:background="@color/no_color"
                        android:layout_height="wrap_content"/>
                    <TextView
+                       android:id="@+id/get_code"
                        android:background="@drawable/shape_btn_val"
                        android:layout_width="wrap_content"
                        android:padding="4dp"
@@ -97,6 +100,7 @@
                    android:gravity="center"
                    android:layout_weight="8">
                    <TextView
+                       android:id="@+id/blind"
                        android:layout_gravity="center"
                        android:layout_width="match_parent"
                        android:padding="8dp"

@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.bean.Three_Data;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.U;
@@ -33,6 +35,7 @@ import com.zc.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -111,14 +114,24 @@ public class LoginActivity extends BaseActivity {
     public void process(Message msg) {
 
         switch (msg.what){
+            case 3:
+                Three_Data three_data = (Three_Data) msg.obj;
+                Intent intent3 = new Intent(LoginActivity.this,BlindPhoneActivity.class);
+                intent3.putExtra("obj",three_data);
+                startActivity(intent3);
+                AppManager.getAppManager().finishActivity(LoginActivity.this);
+                break;
             case 2:
                 Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);
+                AppManager.getAppManager().finishActivity(LoginActivity.this);
                 break;
             case 1:
 
                 int i =msg.arg1;
-
+                if(i==60){
+                    NewToast.makeText(LoginActivity.this,"验证码已下发",Common.TTIME).show();
+                }
                 if(i==0){
                     get_code.setText("获取验证码");
                     get_code.setEnabled(true);
@@ -143,14 +156,63 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
-                if (data != null) {
-                    Set set = data.entrySet();
+            public void onComplete(SHARE_MEDIA share_media, int i, final Map<String, String> map) {
+                if (map != null) {
+                    Set set = map.entrySet();
                     Iterator it = set.iterator();
                     while (it.hasNext()) {
                         String key = it.next().toString();
-                        P.c(key + "结果" + data.get(key));
+                        P.c(key + "结果" + map.get(key));
                     }
+
+                    JSONObject jsonObject  =new JSONObject();
+                    try {
+                        jsonObject.put("uId",map.get("openid"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    httpString("CheckUId", jsonObject.toString(), new Result() {
+                        @Override
+                        public void success(JSONObject data) {
+                            try {
+                                if(data.getString("Result").length()==0){
+
+                                    Three_Data three_data = new Three_Data();
+                                    three_data.setIcon(map.get("profile_image_url"));
+                                    three_data.setName(map.get("screen_name"));
+                                    three_data.setSex(map.get("gender"));
+                                    three_data.setUuid(map.get("openid"));
+                                   Message msg = new Message();
+                                   msg.what = 3;
+                                   msg.obj = three_data;
+                                   getHandler().sendMessage(msg);
+                                }else{
+                                    try {
+                                        sharedUtils.setStringValue("token",data.getString("Value"));
+                                        JSONObject obj = new JSONObject(data.getString("Result"));
+                                        sharedUtils.setStringValue("userName",obj.getString("UserName"));
+                                        sharedUtils.setStringValue("icon",obj.getString("Url"));
+                                        sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
+                                        getHandler().sendEmptyMessage(2);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void error(String data) {
+
+                        }
+
+                        @Override
+                        public void unLogin() {
+
+                        }
+                    });
                 }
             }
 
@@ -169,8 +231,8 @@ public class LoginActivity extends BaseActivity {
     private TextView login;
     @Override
     public void init() {
-        CommonTips commonTips = new CommonTips(LoginActivity.this,"测试一下",null);
-        commonTips.showSheet();
+      /*  CommonTips commonTips = new CommonTips(LoginActivity.this,"测试一下",null);
+        commonTips.showSheet();*/
         login = findViewById(R.id.login);
 
         code_ma = findViewById(R.id.code_ma);
@@ -207,7 +269,6 @@ public class LoginActivity extends BaseActivity {
                         public void success(JSONObject data) {
 
                             int i = 60;
-                            P.c(Thread.currentThread().getName());
                             while(i>=0){
 
                                // P.c("这里");
@@ -260,7 +321,18 @@ public class LoginActivity extends BaseActivity {
                     httpString("NumberLogin", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
-                            ;getHandler().sendEmptyMessage(2);
+                            try {
+                                sharedUtils.setStringValue("token",data.getString("Value"));
+                                JSONObject obj = new JSONObject(data.getString("Result"));
+                                sharedUtils.setStringValue("userName",obj.getString("UserName"));
+                                sharedUtils.setStringValue("icon",obj.getString("Url"));
+                                sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
+                                getHandler().sendEmptyMessage(2);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
                         }
 
                         @Override
@@ -320,8 +392,6 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
             P.c("/////onRestoreInstanceState Authorize onCancel");
-
-
             // SocializeUtils.safeCloseDialog(progressDialog);
         }
     };

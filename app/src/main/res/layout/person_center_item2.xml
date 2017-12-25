@@ -48,5 +48,5 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-                android:layout_weight="28"/>
+            android:layout_weight="28"/>
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.inter.Tips;
 
 
 public class CommonTips {
@@ -21,16 +22,22 @@ public class CommonTips {
     private IDialog dlg;
 
     private LayoutInflater inflater;
-    private String tips;
-    public CommonTips(Context context, String tips,Handler handler) {
+    public CommonTips(Context context ,Handler handler) {
         this.context = context;
         this.handler = handler;
-        this.tips = tips;
         inflater  = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
-
+    private String t0,t1,tips;
+    public void init(String t0,String t1,String tips){
+        this.t0= t0;
+        this.t1 = t1;
+        this.tips = tips;
+    }
+    private Tips tpps = null;
+    public void setI( Tips tpps){
+        this.tpps = tpps;
+    }
     public Dialog showSheet() {
         dlg = new IDialog(context, R.style.load_pop_style);
         final LinearLayout layout = (LinearLayout) inflater.inflate(
@@ -38,20 +45,34 @@ public class CommonTips {
         TextView item0 = (TextView) layout.findViewById(R.id.item0);
         TextView item1 = (TextView) layout.findViewById(R.id.item1);
         TextView txt = (TextView) layout.findViewById(R.id.txt);
-        txt.setText(tips);
+
+        if(t0!=null){
+            item0.setText(t0);
+        }
+        if(t1!=null){
+            item1.setText(t1);
+        }
+        if(tips!=null){
+            txt.setText(tips);
+        }
+
         item0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cancle();
-//                Common.copy();
+                if(tpps!=null){
+                    tpps.cancel();
+                }
 
             }
         });
         item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //清除数据
-
+                cancle();
+                if(tpps!=null){
+                    tpps.sure();
+                }
             }
         });
 
