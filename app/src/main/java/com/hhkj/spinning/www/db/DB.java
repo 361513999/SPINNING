@@ -2,8 +2,12 @@ package com.hhkj.spinning.www.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 
+import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.BaseApplication;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/12/26/026.
@@ -67,5 +71,40 @@ public class DB {
     }
     public void clear(String tableName){
         db.execSQL("DELETE FROM "+tableName);
+    }
+    public void addCenterItem1Edit(String tog,long time){
+        db.execSQL("insert into tog_time(tog,time) values(?,?)",new Object[]{tog,time});
+    }
+
+    /**
+     * 获得目标列表
+     * @param list
+     */
+    public void getCenterItemEdits(ArrayList<CenterItem1Edit> list, Handler handler){
+        list.clear();
+        String sql = "select tog,time from tog_time";
+        Cursor cursor = null;
+        String result = null;
+        int count = 0;
+        try {
+            cursor = db.rawQuery(sql,null);
+           while(cursor.moveToNext()){
+               CenterItem1Edit edit = new CenterItem1Edit();
+               edit.setTime(getLong(cursor,"time"));
+               edit.setTog(getString(cursor,"tog"));
+                list.add(edit);
+           }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+        if(handler!=null){
+            handler.sendEmptyMessage(1);
+        }
+
     }
 }

@@ -33,6 +33,15 @@ public class TimeUtil {
 		SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
 		return format.format(new Date(time));
 	}
+	public static long parseTime(String time){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+		try {
+			return  format.parse(time).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return  0;
+	}
 	public static String getDate_(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(new Date(time));
@@ -109,5 +118,56 @@ public class TimeUtil {
 		}
 
 		return result;
+	}
+	/**
+	 * 获取过去第几天的日期
+	 *
+	 * @param past
+	 * @return
+	 */
+	public static String getPastDate(int past) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
+		Date today = calendar.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String result = format.format(today);
+		return result;
+	}
+
+	/**
+	 * 获取未来 第 past 天的日期
+	 * @param past
+	 * @return
+	 */
+	public static String getFetureDate(int past) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + past);
+		Date today = calendar.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String result = format.format(today);
+
+		return result;
+	}
+	/**
+	 * 日期转周
+	 *
+	 * @param datetime
+	 * @return
+	 */
+	public static String dateToWeek(String datetime) {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		String[] weekDays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+		Calendar cal = Calendar.getInstance(); // 获得一个日历
+		Date datet = null;
+		try {
+			datet = f.parse(datetime);
+			cal.setTime(datet);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
+		if (w < 0)
+			w = 0;
+		return weekDays[w];
 	}
 }

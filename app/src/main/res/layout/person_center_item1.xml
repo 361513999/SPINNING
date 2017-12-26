@@ -16,11 +16,23 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/s_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+                <RadioGroup
+                    android:id="@+id/s_list"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
+                </RadioGroup>
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/list_line"/>
         <LinearLayout
             android:id="@+id/tog_title"
             android:layout_width="match_parent"
@@ -54,7 +66,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="123" />
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:background="@color/list_line"/>
         <com.hhkj.spinning.www.widget.InScrollListView
             android:id="@+id/tog_list"
             android:layout_width="match_parent"

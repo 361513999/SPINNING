@@ -1,5 +1,6 @@
 package com.hhkj.spinning.www.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -11,12 +12,17 @@ import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PersonCenterItem1_EditLeftAdapter;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.TimeUtil;
+import com.hhkj.spinning.www.db.DB;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.umeng.socialize.media.Base;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import library.NumberPickerView;
@@ -30,6 +36,7 @@ import library.view.GregorianLunarCalendarView;
 public class PersonCenterItem1_Edit extends BaseActivity {
     private ListView person_left;
     private PersonCenterItem1_EditLeftAdapter personCenterItem1_editLeftAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +95,37 @@ public class PersonCenterItem1_Edit extends BaseActivity {
             save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long data = 0;
                 GregorianLunarCalendarOneView.CalendarData calendarData0 = calendarView.getCalendarData();
                 final Calendar calendar0 = calendarData0.getCalendar();
                 final String show = calendar0.get(Calendar.YEAR) + "-"
                         + (calendar0.get(Calendar.MONTH) + 1) + "-"
                         + calendar0.get(Calendar.DAY_OF_MONTH)+"  "+picker_hour.getContentByCurrValue()+":"+picker_minute.getContentByCurrValue();
-                P.c(show);
+                      data = TimeUtil.parseTime(show);
+                    if(data==0){
+                        NewToast.makeText(PersonCenterItem1_Edit.this,"目标时间不合法",Common.TTIME).show();
+                        return;
+                    }else if(data<=System.currentTimeMillis()){
+                        NewToast.makeText(PersonCenterItem1_Edit.this,"目标时间应该在当前之后",Common.TTIME).show();
+                        return;
+                    }
+                   String last = btn_view.getText().toString();
+                   String temp = last.substring(0,last.length()-1);
+                try {
+                    int var =  Integer.parseInt(temp);
+                    if(var==0){
+                        NewToast.makeText(PersonCenterItem1_Edit.this,"请输入合理的目标数据",Common.TTIME).show();
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                //校验合格进行键入数据库
+                DB.getInstance().addCenterItem1Edit(temp,data);
+                setResult(1000);
+                AppManager.getAppManager().finishActivity(PersonCenterItem1_Edit.this);
+
+
             }
         });
         right_content.post(new Runnable() {
