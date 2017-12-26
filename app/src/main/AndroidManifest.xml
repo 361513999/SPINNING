@@ -105,7 +105,10 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <activity android:name=".ui.PersonCenterItem1_Edit" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
 
+        </activity>
     <!--友盟第三方-->
         <!--5a38a65ab27b0a6b3a00052a-->
         <meta-data

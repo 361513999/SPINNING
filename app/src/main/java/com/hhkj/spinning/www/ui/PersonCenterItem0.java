@@ -13,10 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.widget.CircleImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by Administrator on 2017/12/19/019.
@@ -28,16 +32,19 @@ public class PersonCenterItem0 extends Fragment {
     private CircleImageView person_icon;
     private ImageView person_edit_btn;
     private LinearLayout person_icon_content,person_icon_con0;
+    private TextView person_tag;
+    private SharedUtils sharedUtils;
     private Activity activity;
     public PersonCenterItem0(Activity activity,Handler handler){
         this.handler = handler;
         this.activity = activity;
+        sharedUtils = new SharedUtils(Common.config);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        handler.sendEmptyMessage(124);
+        person_tag = view.findViewById(R.id.person_tag);
         person_icon_content = view.findViewById(R.id.person_icon_content);
         person_icon = view.findViewById(R.id.person_icon);
         person_edit_btn = view.findViewById(R.id.person_edit_btn);
@@ -56,6 +63,8 @@ public class PersonCenterItem0 extends Fragment {
                 startActivityForResult(intent,100);
             }
         });
+        ImageLoader.getInstance().displayImage(sharedUtils.getStringValue("icon"),person_icon);
+        person_tag.setText(sharedUtils.getStringValue("userName"));
     }
 
     @Override

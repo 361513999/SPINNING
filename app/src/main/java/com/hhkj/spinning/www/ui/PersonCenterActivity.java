@@ -121,7 +121,7 @@ public class PersonCenterActivity extends BaseFragmentActivity {
 
 //        person_left.setSelection(0);
         person_left.setItemChecked(INDEX,true);
-        INDEX = 2;
+
         select(INDEX);
         jp.setOnClickListener(new View.OnClickListener() {
             @Override

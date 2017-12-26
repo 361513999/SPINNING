@@ -303,7 +303,6 @@ public class LoginActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getHandler().sendEmptyMessage(2);
                 if(phone.getText().toString().length()==0){
                     NewToast.makeText(LoginActivity.this,"请输入手机号码",Common.TTIME).show();
                 }else if(code_ma.getText().toString().length()==0){

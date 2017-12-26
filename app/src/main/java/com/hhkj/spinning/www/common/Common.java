@@ -11,7 +11,9 @@ public class Common {
     public static final String Appkey = "5a38a65ab27b0a6b3a00052a";
     public final static String DB_DIR = "data/data/"+BaseApplication.application.getPackageName()+"/databases/";
     public static final String DB_NAME = "store.spinning";
+    public static final int DB_VERSION = 1;
     public static final String config = "CONFIG";
+
     public static final int TTIME = 200;
     public static String BASE_DIR = Environment
             .getExternalStorageDirectory().getAbsolutePath();

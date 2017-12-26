@@ -53,6 +53,7 @@ allprojects {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -72,6 +73,6 @@ dependencies {
     implementation files('libs/SocialSDK_Sina_Simplify.jar')
     implementation files('libs/SocialSDK_WeChat_Simplify.jar')
     implementation files('libs/jsoup-1.7.2.jar')
-
+    compile project(path:  ':datalib')
     compile project(path: ':photolib')
 }

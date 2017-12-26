@@ -47,7 +47,7 @@ public class WelcomeActivity extends BaseActivity {
     private void time(){
         new Thread() {
             public void run() {
-                for (int i = 3; i >= 0; i--) {
+                for (int i = 1; i >= 0; i--) {
                     if (i == 0) {
                         sendEmptyMessage(0);
                     } else {
