@@ -343,6 +343,7 @@
                             app:npv_TextColorSelected="@color/white"
                             app:npv_DividerColor="@color/white"
                             app:npv_TextArray="@array/hour_display"
+
                             app:npv_TextSizeNormal="14sp"
                             app:npv_TextSizeSelected="17sp"
                             app:npv_WrapSelectorWheel="true" />
@@ -352,6 +353,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+
                             android:contentDescription="picker_minute"
                             app:npv_HintText="@string/minute_hint"
                             app:npv_ItemPaddingHorizontal="5dp"

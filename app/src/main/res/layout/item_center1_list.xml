@@ -4,19 +4,23 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical"
         android:layout_height="match_parent">
         <TextView
+            android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="提醒时间"
             android:textColor="@color/white"
             android:textSize="13sp"
             android:gravity="center"
             android:layout_weight="115" />
 
         <TextView
-            android:text="目标"
+            android:id="@+id/tog"
             android:layout_width="0dp"
+
             android:textColor="@color/white"
             android:textSize="13sp"
             android:gravity="center"
@@ -33,9 +37,10 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/edit"
+                    android:layout_width="25dp"
                     android:src="@mipmap/icon_edit"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="25dp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,9 +48,10 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/del"
+                    android:layout_width="25dp"
                     android:src="@mipmap/icon_del"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="25dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

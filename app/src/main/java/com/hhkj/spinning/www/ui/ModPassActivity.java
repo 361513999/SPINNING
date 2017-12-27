@@ -2,7 +2,6 @@ package com.hhkj.spinning.www.ui;
 
 import android.os.Bundle;
 import android.os.Message;
-
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
 

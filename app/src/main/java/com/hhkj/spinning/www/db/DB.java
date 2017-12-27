@@ -3,10 +3,15 @@ package com.hhkj.spinning.www.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
+import android.os.Message;
 
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
+import com.hhkj.spinning.www.bean.DateWeek;
 import com.hhkj.spinning.www.common.BaseApplication;
+import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.TimeUtil;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 /**
@@ -72,27 +77,73 @@ public class DB {
     public void clear(String tableName){
         db.execSQL("DELETE FROM "+tableName);
     }
+    public void clearById(String tableName,int i){
+        db.execSQL("DELETE FROM "+tableName+" WHERE i="+i);
+    }
+
     public void addCenterItem1Edit(String tog,long time){
         db.execSQL("insert into tog_time(tog,time) values(?,?)",new Object[]{tog,time});
     }
+    public void updateCenterItem1Edit(String tog,long time,int i){
+        db.execSQL("update tog_time set tog=?,time=? where i=?",new Object[]{tog,time,i});
+    }
 
+    /**
+     * 是否存在目标
+     * @param handler
+     */
+    public void isCenterItem1List(Handler handler){
+        String sql = "select count(*) from tog_time ";
+        Cursor cursor = null;
+        int count = 0;
+        try {
+            cursor = db.rawQuery(sql,null);
+            if(cursor.moveToFirst()){
+                count = cursor.getCount();
+                cursor.close();
+                if(handler!=null){
+                    if(handler!=null){
+                        Message msg = new Message();
+                        msg.what = 0;
+                        msg.arg1 = count;
+                        handler.sendMessage(msg);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+
+    }
     /**
      * 获得目标列表
      * @param list
      */
-    public void getCenterItemEdits(ArrayList<CenterItem1Edit> list, Handler handler){
+    public void getCenterItemEdits(ArrayList<CenterItem1Edit> list, Handler handler, DateWeek dateWeek){
         list.clear();
-        String sql = "select tog,time from tog_time";
+        String sql = "select i,tog,time from tog_time ";
         Cursor cursor = null;
         String result = null;
         int count = 0;
         try {
             cursor = db.rawQuery(sql,null);
            while(cursor.moveToNext()){
-               CenterItem1Edit edit = new CenterItem1Edit();
-               edit.setTime(getLong(cursor,"time"));
-               edit.setTog(getString(cursor,"tog"));
-                list.add(edit);
+               long time = getLong(cursor,"time");
+
+               if(dateWeek.getDate_start()<=time&&dateWeek.getDate_end()>=time){
+                   CenterItem1Edit edit = new CenterItem1Edit();
+                   edit.setTime(time);
+                   edit.setI(getInt(cursor,"i"));
+                   edit.setTog(getString(cursor,"tog"));
+                   list.add(edit);
+               }
+
            }
         } catch (Exception e) {
 

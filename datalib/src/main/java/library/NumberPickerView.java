@@ -745,6 +745,7 @@ public class NumberPickerView extends View{
 
     //compatible for android.widget.NumberPicker
     public void setValue(int value){
+       System.out.println(mMinValue+"--->"+mMaxValue);
         if(value < mMinValue){
             throw new IllegalArgumentException("should not set a value less than mMinValue, value is " + value);
         }

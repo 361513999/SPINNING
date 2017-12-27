@@ -7,6 +7,16 @@ import java.io.Serializable;
  */
 
 public class CenterItem1Edit implements Serializable {
+    private int i;
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
+
     private String tog;
     private long time;
 
