@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,8 +24,10 @@ import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.U;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.widget.CircleImageView;
 import com.hhkj.spinning.www.widget.CommonTips;
 import com.hhkj.spinning.www.widget.NewToast;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -49,7 +53,7 @@ import okhttp3.Call;
 public class LoginActivity extends BaseActivity {
     private ImageView weixin_btn, qq_btn;
     private TextView get_code;
-
+    private CircleImageView login_icon;
 
     //    private ProgressDialog progressDialog;
     @Override
@@ -114,6 +118,10 @@ public class LoginActivity extends BaseActivity {
     public void process(Message msg) {
 
         switch (msg.what){
+            case 4:
+                String path = (String) msg.obj;
+                ImageLoader.getInstance().displayImage(path,login_icon);
+                break;
             case 3:
                 Three_Data three_data = (Three_Data) msg.obj;
                 Intent intent3 = new Intent(LoginActivity.this,BlindPhoneActivity.class);
@@ -171,7 +179,7 @@ public class LoginActivity extends BaseActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    httpString("CheckUId", jsonObject.toString(), new Result() {
+                    httpPost("CheckUId", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
                             try {
@@ -234,7 +242,7 @@ public class LoginActivity extends BaseActivity {
       /*  CommonTips commonTips = new CommonTips(LoginActivity.this,"测试一下",null);
         commonTips.showSheet();*/
         login = findViewById(R.id.login);
-
+        login_icon = findViewById(R.id.login_icon);
         code_ma = findViewById(R.id.code_ma);
         phone = findViewById(R.id.phone);
         get_code = findViewById(R.id.get_code);
@@ -252,6 +260,49 @@ public class LoginActivity extends BaseActivity {
                 UMShareAPI.get(LoginActivity.this).doOauthVerify(LoginActivity.this, SHARE_MEDIA.WEIXIN, authListener);
             }
         });
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    String temp = editable.toString();
+                    if(temp.length()==11){
+                        httpGet("GetHeadUrl?number=" + temp, new Result() {
+                            @Override
+                            public void success(JSONObject data) {
+
+                                try {
+                                    Message msg = new Message();
+                                    msg.what =4;
+                                    msg.obj =data.getString("Result");
+                                    getHandler().sendMessage(msg);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                            @Override
+                            public void error(String data) {
+
+                            }
+
+                            @Override
+                            public void unLogin() {
+
+                            }
+                        });
+                    }
+            }
+        });
         get_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -264,7 +315,7 @@ public class LoginActivity extends BaseActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    httpString("GetCode", jsonObject.toString(), new Result() {
+                    httpPost("GetCode", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
 
@@ -317,7 +368,7 @@ public class LoginActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    httpString("NumberLogin", jsonObject.toString(), new Result() {
+                    httpPost("NumberLogin", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
                             try {

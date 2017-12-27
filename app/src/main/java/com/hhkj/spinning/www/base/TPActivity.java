@@ -7,10 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
+import com.hhkj.spinning.www.common.U;
+import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.widget.LoadView;
 import com.jph.takephoto.app.TakePhotoActivity;
+import com.zc.http.okhttp.OkHttpUtils;
+import com.zc.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2017/12/22/022.
@@ -47,6 +58,58 @@ public abstract class TPActivity extends TakePhotoActivity {
         super.onDestroy();
 
         AppManager.getAppManager().finishActivity(this);
+    }
+    private LoadView loadView = null;
+    private void cancleLoadView(){
+        if(loadView!=null){
+            loadView.cancle();
+            loadView = null;
+        }
+    }
+    /**
+     *
+     * @param DIRECT 访问函数
+     * @param content 访问请求参数
+     * @param result 返回结果
+     */
+    public void httpPost(String DIRECT, String content, final Result result){
+        if(loadView==null){
+            loadView = new LoadView(TPActivity.this);
+            loadView.showSheet();
+        }
+        OkHttpUtils.postString().url(U.VISTER()+DIRECT).mediaType(U.json).content(content).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                cancleLoadView();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                cancleLoadView();
+                P.c(response);
+                if(result!=null){
+                    try {
+                        final JSONObject jsonObject = new JSONObject(response);
+
+                        if(jsonObject.getBoolean("Success")){
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    //禁止在返回中直接使用
+                                    result.success(jsonObject);
+                                }
+                            }.start();
+                        }else{
+                            result.error(jsonObject.getString("Error"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        P.c("格式错误");
+                    }
+                }
+            }
+        });
     }
 
     /**

@@ -1,15 +1,21 @@
 package com.hhkj.spinning.www.ui;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.TPActivity;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.PhotoSelect;
+import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.inter.Tips;
+import com.hhkj.spinning.www.inter.TipsText;
 import com.hhkj.spinning.www.widget.CircleImageView;
 import com.hhkj.spinning.www.widget.CommonOneDate;
 import com.hhkj.spinning.www.widget.CommonOneSex;
@@ -17,8 +23,17 @@ import com.hhkj.spinning.www.widget.CommonPhotoPop;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.LubanOptions;
+import com.jph.takephoto.model.TImage;
+import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.model.TakePhotoOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/12/16/016.
@@ -30,7 +45,7 @@ public class ModPersonActivity extends TPActivity {
     private final int SELECT_LIMITE = 1;
     private TextView item1,item2;
     private EditText item0,item3,item4,item5;
-
+    private TextView send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +55,28 @@ public class ModPersonActivity extends TPActivity {
 
     @Override
     public void process(Message msg) {
+        switch (msg.what){
+            case 2:
 
+                ImageLoader.getInstance().displayImage("file://"+ImagePath,edit_person_icon);
+                break;
+        }
     }
 
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        ArrayList<TImage> imsge = result.getImages();
+        if(imsge!=null&&imsge.size()!=0){
+            ImagePath  = imsge.get(0).getCompressPath();
+            P.c("file://"+ImagePath);
+            P.c(Thread.currentThread().getName());
 
+          getHandler().sendEmptyMessage(2);
+           // edit_person_icon.setTag(path);
+        }
+    }
+    private String ImagePath = null;
     private PhotoSelect photoSelect = new PhotoSelect() {
         private void init(){
             int width = 1280;
@@ -79,6 +112,7 @@ public class ModPersonActivity extends TPActivity {
     };
     @Override
     public void init() {
+                send = findViewById(R.id.send);
                 item1 = findViewById(R.id.item1);
                 item2 = findViewById(R.id.item2);
                 item3 = findViewById(R.id.item3);
@@ -97,15 +131,15 @@ public class ModPersonActivity extends TPActivity {
             public void onClick(View view) {
                 CommonOneDate oneDate = new CommonOneDate(ModPersonActivity.this,null);
                 oneDate.init(null,null,"请选择出生日期");
-                oneDate.setI(new Tips() {
+                oneDate.setI(new TipsText() {
                     @Override
-                    public void cancel() {
+                    public void cancel(String txt) {
 
                     }
 
                     @Override
-                    public void sure() {
-
+                    public void sure(String txt) {
+                        item1.setText(txt);
                     }
                 });
                 oneDate.showSheet();
@@ -116,19 +150,66 @@ public class ModPersonActivity extends TPActivity {
             public void onClick(View view) {
                 CommonOneSex oneSex = new CommonOneSex(ModPersonActivity.this,null);
                 oneSex.init(null,null,"请选择性别");
-                oneSex.setI(new Tips() {
+                oneSex.setI(new TipsText() {
                     @Override
-                    public void cancel() {
+                    public void cancel(String txt) {
 
                     }
 
                     @Override
-                    public void sure() {
-
+                    public void sure(String txt) {
+                        item2.setText(txt.equals("1")?"男":"女");
                     }
                 });
                 oneSex.showSheet();
             }
         });
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("method","EditUserInfo");
+                    jsonObject.put("cls","Sys.User");
+                    jsonObject.put("token",sharedUtils.getStringValue("token"));
+                    JSONObject object = new JSONObject();
+                    if(ImagePath!=null){
+                        object.put("base64", Bitmap2StrByBase64(BitmapFactory.decodeFile( ImagePath)));
+                    }
+                    object.put("UserName",item0.getText().toString());
+                    object.put("Birthday",item1.getText().toString());
+                    object.put("Sex",item2.getText().toString().equals("男")?true:false);
+                    object.put("Height",item3.getText().toString());
+                    object.put("Weight",item4.getText().toString());
+//                    object.put("Height",item5.getText().toString());
+                    jsonObject.put("param",object.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                httpPost("Post", jsonObject.toString(), new Result() {
+                        @Override
+                        public void success(JSONObject data) {
+
+                        }
+
+                        @Override
+                        public void error(String data) {
+
+                        }
+
+                        @Override
+                        public void unLogin() {
+
+                        }
+                    });
+            }
+        });
+    }
+    private String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 }

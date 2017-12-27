@@ -1,5 +1,6 @@
 package com.zc.http.okhttp;
 
+import com.hhkj.spinning.www.common.P;
 import com.zc.http.okhttp.builder.GetBuilder;
 import com.zc.http.okhttp.builder.HeadBuilder;
 import com.zc.http.okhttp.builder.OtherRequestBuilder;
@@ -168,6 +169,7 @@ public class OkHttpUtils
             @Override
             public void run()
             {
+                P.c("错误"+e.getLocalizedMessage());
                 callback.onError(call, e, id);
                 callback.onAfter(id);
             }

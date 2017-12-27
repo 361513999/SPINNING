@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.inter.Tips;
+import com.hhkj.spinning.www.inter.TipsText;
+
+import java.util.Calendar;
 
 import library.view.GregorianLunarCalendarOneView;
 
@@ -36,8 +39,8 @@ public class CommonOneDate {
         this.t1 = t1;
         this.tips = tips;
     }
-    private Tips tpps = null;
-    public void setI( Tips tpps){
+    private TipsText tpps = null;
+    public void setI( TipsText tpps){
         this.tpps = tpps;
     }
     public Dialog showSheet() {
@@ -47,7 +50,7 @@ public class CommonOneDate {
         TextView item0 = (TextView) layout.findViewById(R.id.item0);
         TextView item1 = (TextView) layout.findViewById(R.id.item1);
         TextView txt = (TextView) layout.findViewById(R.id.txt);
-        GregorianLunarCalendarOneView calendar_view_start = layout.findViewById(R.id.calendar_view_start);
+        final GregorianLunarCalendarOneView calendar_view_start = layout.findViewById(R.id.calendar_view_start);
         calendar_view_start.init();
         if(t0!=null){
             item0.setText(t0);
@@ -64,7 +67,7 @@ public class CommonOneDate {
             public void onClick(View view) {
                 cancle();
                 if(tpps!=null){
-                    tpps.cancel();
+                    tpps.cancel(null);
                 }
 
             }
@@ -74,7 +77,13 @@ public class CommonOneDate {
             public void onClick(View v) {
                 cancle();
                 if(tpps!=null){
-                    tpps.sure();
+                    GregorianLunarCalendarOneView.CalendarData calendarData0 = calendar_view_start.getCalendarData();
+                    final Calendar calendar0 = calendarData0.getCalendar();
+                    final String show = calendar0.get(Calendar.YEAR) + "-"
+                            + (calendar0.get(Calendar.MONTH) + 1) + "-"
+                            + calendar0.get(Calendar.DAY_OF_MONTH);
+
+                    tpps.sure(show);
                 }
             }
         });

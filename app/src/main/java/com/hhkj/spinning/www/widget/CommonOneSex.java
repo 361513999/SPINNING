@@ -10,10 +10,13 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.inter.Tips;
+import com.hhkj.spinning.www.inter.TipsText;
 
 import library.view.GregorianLunarCalendarOneView;
 
@@ -36,8 +39,8 @@ public class CommonOneSex {
         this.t1 = t1;
         this.tips = tips;
     }
-    private Tips tpps = null;
-    public void setI( Tips tpps){
+    private TipsText tpps = null;
+    public void setI( TipsText tpps){
         this.tpps = tpps;
     }
     public Dialog showSheet() {
@@ -47,7 +50,8 @@ public class CommonOneSex {
         TextView item0 = (TextView) layout.findViewById(R.id.item0);
         TextView item1 = (TextView) layout.findViewById(R.id.item1);
         TextView txt = (TextView) layout.findViewById(R.id.txt);
-
+        final RadioGroup rbs = layout.findViewById(R.id.rbs);
+        ((RadioButton)rbs.getChildAt(0)).setChecked(true);
         if(t0!=null){
             item0.setText(t0);
         }
@@ -63,7 +67,7 @@ public class CommonOneSex {
             public void onClick(View view) {
                 cancle();
                 if(tpps!=null){
-                    tpps.cancel();
+                    tpps.cancel(null);
                 }
 
             }
@@ -73,7 +77,8 @@ public class CommonOneSex {
             public void onClick(View v) {
                 cancle();
                 if(tpps!=null){
-                    tpps.sure();
+                    String txt = layout.findViewById(rbs.getCheckedRadioButtonId()).getTag().toString();
+                    tpps.sure(txt);
                 }
             }
         });

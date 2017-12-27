@@ -78,7 +78,7 @@ public class BlindPhoneActivity extends BaseActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    httpString("GetCode", jsonObject.toString(), new Result() {
+                    httpPost("GetCode", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
 
@@ -139,7 +139,7 @@ public class BlindPhoneActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    httpString("BindUser", jsonObject.toString(), new Result() {
+                    httpPost("BindUser", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
                             try {

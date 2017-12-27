@@ -33,6 +33,7 @@
             android:paddingLeft="10dp"
             android:layout_weight="1">
            <RadioGroup
+               android:id="@+id/rbs"
                android:layout_width="wrap_content"
                android:orientation="vertical"
                android:layout_height="match_parent">
@@ -40,19 +41,19 @@
                    android:layout_width="wrap_content"
                    android:tag="1"
                    android:layout_marginTop="8dp"
-                   android:checked="true"
                    android:button="@drawable/ico_common_check"
                    android:layout_marginBottom="8dp"
                    android:layout_height="wrap_content" />
                <RadioButton
                    android:layout_width="wrap_content"
-                   android:tag="1"
+                   android:tag="0"
                    android:button="@drawable/ico_common_check"
                    android:layout_marginTop="8dp"
                    android:layout_marginBottom="8dp"
                    android:layout_height="wrap_content" />
            </RadioGroup>
             <LinearLayout
+                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
@@ -70,7 +71,7 @@
                     android:textColor="@color/font_normal"
                     android:textSize="16sp"
                     android:layout_marginTop="8dp"
-                    android:text="男"
+                    android:text="女"
                     android:layout_marginBottom="8dp"/>
 
             </LinearLayout>

@@ -65,7 +65,7 @@ public abstract class BaseActivity extends Activity {
      * @param content 访问请求参数
      * @param result 返回结果
      */
-    public void httpString(String DIRECT, String content, final Result result){
+    public void httpPost(String DIRECT, String content, final Result result){
         if(loadView==null){
             loadView = new LoadView(BaseActivity.this);
             loadView.showSheet();
@@ -103,6 +103,47 @@ public abstract class BaseActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void httpGet(String DIRECT,final Result result){
+        if(loadView==null){
+            loadView = new LoadView(BaseActivity.this);
+            loadView.showSheet();
+        }
+        OkHttpUtils.get().url( U.VISTER()+DIRECT ).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                cancleLoadView();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                cancleLoadView();
+                P.c(response);
+                if(result!=null){
+                    try {
+                        final JSONObject jsonObject = new JSONObject(response);
+
+                        if(jsonObject.getBoolean("Success")){
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    //禁止在返回中直接使用
+                                    result.success(jsonObject);
+                                }
+                            }.start();
+                        }else{
+                            result.error(jsonObject.getString("Error"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        P.c("格式错误");
+                    }
+                }
+            }
+        });
+
     }
 
 

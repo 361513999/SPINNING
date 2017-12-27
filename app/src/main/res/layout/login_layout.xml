@@ -26,10 +26,10 @@
                 android:padding="10dp"
                 android:layout_weight="1">
                 <com.hhkj.spinning.www.widget.CircleImageView
+                    android:id="@+id/login_icon"
                     android:layout_width="match_parent"
-
                     android:layout_height="match_parent"
-                    android:src="@mipmap/ic_launcher"
+
                     app:civ_border_width="2dp"
                     app:civ_border_color="@color/no_color" />
             </LinearLayout>
