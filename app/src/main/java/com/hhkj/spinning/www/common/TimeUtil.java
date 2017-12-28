@@ -21,6 +21,10 @@ public class TimeUtil {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(new Date(time));
 	}
+	public static String getTimeCh(long time) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.format(new Date(time));
+	}
 	public static String getTimePri(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 		return format.format(new Date(time));

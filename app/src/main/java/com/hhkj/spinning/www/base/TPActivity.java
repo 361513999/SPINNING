@@ -101,7 +101,12 @@ public abstract class TPActivity extends TakePhotoActivity {
                                 }
                             }.start();
                         }else{
-                            result.error(jsonObject.getString("Error"));
+                            if(jsonObject.getString("Result").equals("login")){
+                                result.unLogin();
+                            }else{
+                                result.error(jsonObject.getString("Error"));
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -1,4 +1,5 @@
 package com.hhkj.spinning.www.ui;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.TPActivity;
+import com.hhkj.spinning.www.bean.PersonCenter0;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.PhotoSelect;
@@ -51,6 +54,7 @@ public class ModPersonActivity extends TPActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mod_person_layout);
         takePhoto = getTakePhoto();
+
     }
 
     @Override
@@ -59,6 +63,10 @@ public class ModPersonActivity extends TPActivity {
             case 2:
 
                 ImageLoader.getInstance().displayImage("file://"+ImagePath,edit_person_icon);
+                break;
+            case 1:
+                setResult(1000);
+                AppManager.getAppManager().finishActivity(ModPersonActivity.this);
                 break;
         }
     }
@@ -120,6 +128,21 @@ public class ModPersonActivity extends TPActivity {
                 item5 = findViewById(R.id.item5);
                 item0 = findViewById(R.id.item0);
                 edit_person_icon = findViewById(R.id.edit_person_icon);
+
+            Intent intent = getIntent();
+            if(intent.hasExtra("obj")){
+                PersonCenter0 center0 = (PersonCenter0) intent.getSerializableExtra("obj");
+                item0.setText(center0.getUserName());
+                item1.setText(center0.getBirthday());
+                item2.setText(center0.isSex()?"男":"女");
+                item3.setText(center0.getHeight());
+                item4.setText(center0.getWeight());
+                item5.setText(center0.getIdealWeight());
+                ImageLoader.getInstance().displayImage(center0.getUrl(),edit_person_icon);
+
+
+            }
+
                 edit_person_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -171,16 +194,31 @@ public class ModPersonActivity extends TPActivity {
                 try {
                     jsonObject.put("method","EditUserInfo");
                     jsonObject.put("cls","Sys.User");
-                    jsonObject.put("token",sharedUtils.getStringValue("token"));
+                    jsonObject.put("toKen",sharedUtils.getStringValue("token"));
                     JSONObject object = new JSONObject();
                     if(ImagePath!=null){
-                        object.put("base64", Bitmap2StrByBase64(BitmapFactory.decodeFile( ImagePath)));
+                        object.put("Url", Bitmap2StrByBase64(BitmapFactory.decodeFile( ImagePath)));
                     }
-                    object.put("UserName",item0.getText().toString());
-                    object.put("Birthday",item1.getText().toString());
-                    object.put("Sex",item2.getText().toString().equals("男")?true:false);
-                    object.put("Height",item3.getText().toString());
-                    object.put("Weight",item4.getText().toString());
+                    object.put("Id",sharedUtils.getStringValue("id"));
+                    if(item0.getText().toString().length()!=0){
+                        object.put("UserName",item0.getText().toString());
+                    }
+                    if(item1.getText().toString().length()!=0){
+                        object.put("Birthday",item1.getText().toString());
+                    }
+                    if(item2.getText().toString().length()!=0){
+                        object.put("Sex",item2.getText().toString().equals("男")?true:false);
+                    }
+                    if(item3.getText().toString().length()!=0){
+                        object.put("Height",item3.getText().toString());
+                    }
+                    if(item4.getText().toString().length()!=0){
+                        object.put("Weight",item4.getText().toString());
+                    }
+                    if(item5.getText().toString().length()!=0){
+                        object.put("IdealWeight",item5.getText().toString());
+                    }
+
 //                    object.put("Height",item5.getText().toString());
                     jsonObject.put("param",object.toString());
 
@@ -190,6 +228,8 @@ public class ModPersonActivity extends TPActivity {
                 httpPost("Post", jsonObject.toString(), new Result() {
                         @Override
                         public void success(JSONObject data) {
+
+                            getHandler().sendEmptyMessage(1);
 
                         }
 

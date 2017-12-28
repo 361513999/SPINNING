@@ -2,6 +2,7 @@ package com.hhkj.spinning.www.base;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.U;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.ui.LoginActivity;
 import com.hhkj.spinning.www.widget.LoadView;
 import com.zc.http.okhttp.OkHttpUtils;
 import com.zc.http.okhttp.callback.StringCallback;
@@ -94,7 +96,11 @@ public abstract class BaseActivity extends Activity {
                                }
                            }.start();
                         }else{
-                            result.error(jsonObject.getString("Error"));
+                            if(jsonObject.getString("Result").equals("login")){
+                                result.unLogin();
+                            }else{
+                                result.error(jsonObject.getString("Error"));
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

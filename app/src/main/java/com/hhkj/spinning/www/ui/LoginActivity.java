@@ -196,12 +196,7 @@ public class LoginActivity extends BaseActivity {
                                    getHandler().sendMessage(msg);
                                 }else{
                                     try {
-                                        sharedUtils.setStringValue("token",data.getString("Value"));
-                                        JSONObject obj = new JSONObject(data.getString("Result"));
-                                        sharedUtils.setStringValue("userName",obj.getString("UserName"));
-                                        sharedUtils.setStringValue("icon",obj.getString("Url"));
-                                        sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
-                                        getHandler().sendEmptyMessage(2);
+                                        parseLogin(data);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -234,6 +229,16 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+    }
+    private void parseLogin (JSONObject data) throws JSONException {
+        sharedUtils.setStringValue("token",data.getString("Value"));
+        JSONObject obj = new JSONObject(data.getString("Result"));
+        sharedUtils.setStringValue("userName",obj.getString("UserName"));
+        sharedUtils.setStringValue("id",obj.getString("Id"));
+        sharedUtils.setStringValue("icon",obj.getString("Url").startsWith("http")?obj.getString("Url"):"http://"+U.IP+"/"+obj.getString("Url"));
+        sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
+        sharedUtils.setStringValue("phone",obj.getString("Phone"));
+        getHandler().sendEmptyMessage(2);
     }
     private EditText phone,code_ma;
     private TextView login;
@@ -372,12 +377,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void success(JSONObject data) {
                             try {
-                                sharedUtils.setStringValue("token",data.getString("Value"));
-                                JSONObject obj = new JSONObject(data.getString("Result"));
-                                sharedUtils.setStringValue("userName",obj.getString("UserName"));
-                                sharedUtils.setStringValue("icon",obj.getString("Url"));
-                                sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
-                                getHandler().sendEmptyMessage(2);
+                                parseLogin(data);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
