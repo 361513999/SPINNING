@@ -99,17 +99,18 @@ public class DB {
         try {
             cursor = db.rawQuery(sql,null);
             if(cursor.moveToFirst()){
-                count = cursor.getCount();
+                count = getInt(cursor,"count(*)");
                 cursor.close();
-                if(handler!=null){
+
                     if(handler!=null){
                         Message msg = new Message();
                         msg.what = 0;
                         msg.arg1 = count;
                         handler.sendMessage(msg);
+                        P.c("获取的数据"+count);
                     }
 
-                }
+
             }
         } catch (Exception e) {
 

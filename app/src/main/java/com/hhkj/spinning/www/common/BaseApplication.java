@@ -51,7 +51,7 @@ public class BaseApplication extends Application {
         Config.DEBUG = true;
         QueuedWork.isUseThreadPool = false;
         UMShareAPI.get(this);
-        PlatformConfig.setWeixin("wxb3c22f4afd141744", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wxb3c22f4afd141744", "b14688e0458766d438e88014baa9ba67");
         PlatformConfig.setQQZone("1106546585", "n8KeWMdPkW13dWdW");
 
         PlatformConfig.setSinaWeibo("","","");

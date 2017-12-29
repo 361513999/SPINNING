@@ -54,13 +54,18 @@ public abstract class BaseActivity extends Activity {
 
 
     private LoadView loadView = null;
-    private void cancleLoadView(){
+    public void cancleLoadView(){
         if(loadView!=null){
             loadView.cancle();
             loadView = null;
         }
     }
-
+    public void showLoadView(){
+        if(loadView==null){
+            loadView = new LoadView(BaseActivity.this);
+            loadView.showSheet();
+        }
+    }
     /**
      *
      * @param DIRECT 访问函数
@@ -68,10 +73,7 @@ public abstract class BaseActivity extends Activity {
      * @param result 返回结果
      */
     public void httpPost(String DIRECT, String content, final Result result){
-        if(loadView==null){
-            loadView = new LoadView(BaseActivity.this);
-            loadView.showSheet();
-        }
+        showLoadView();
         OkHttpUtils.postString().url(U.VISTER()+DIRECT).mediaType(U.json).content(content).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

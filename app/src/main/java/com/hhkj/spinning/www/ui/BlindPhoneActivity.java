@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.Three_Data;
 import com.hhkj.spinning.www.common.Common;
@@ -151,6 +152,10 @@ public class BlindPhoneActivity extends BaseActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            Intent intent = new Intent(BlindPhoneActivity.this,HomeActivity.class);
+                            startActivity(intent);
+                            AppManager.getAppManager().finishAllActivity();
+
                         }
 
                         @Override

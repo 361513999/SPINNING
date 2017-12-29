@@ -26,6 +26,7 @@ import com.hhkj.spinning.www.common.U;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.widget.CircleImageView;
 import com.hhkj.spinning.www.widget.CommonTips;
+import com.hhkj.spinning.www.widget.LoadView;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMAuthListener;
@@ -82,6 +83,15 @@ public class LoginActivity extends BaseActivity {
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
                 P.c("onRestoreInstanceState Authorize succeed");
                 //  SocializeUtils.safeCloseDialog(progressDialog);
+
+                    Set set = data.entrySet();
+                    Iterator it = set.iterator();
+                    while (it.hasNext()) {
+                        String key = it.next().toString();
+                        P.c(key + "自动//结果" + data.get(key));
+                    }
+
+
             }
 
             @Override
@@ -156,79 +166,11 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         P.c("返回了");
         UMShareAPI.get(LoginActivity.this).onActivityResult(requestCode, resultCode, data);
+        getInfo(SHARE_MEDIA.QQ);
 
-        UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
 
-            }
 
-            @Override
-            public void onComplete(SHARE_MEDIA share_media, int i, final Map<String, String> map) {
-                if (map != null) {
-                    Set set = map.entrySet();
-                    Iterator it = set.iterator();
-                    while (it.hasNext()) {
-                        String key = it.next().toString();
-                        P.c(key + "结果" + map.get(key));
-                    }
 
-                    JSONObject jsonObject  =new JSONObject();
-                    try {
-                        jsonObject.put("uId",map.get("openid"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    httpPost("CheckUId", jsonObject.toString(), new Result() {
-                        @Override
-                        public void success(JSONObject data) {
-                            try {
-                                if(data.getString("Result").length()==0){
-
-                                    Three_Data three_data = new Three_Data();
-                                    three_data.setIcon(map.get("profile_image_url"));
-                                    three_data.setName(map.get("screen_name"));
-                                    three_data.setSex(map.get("gender"));
-                                    three_data.setUuid(map.get("openid"));
-                                   Message msg = new Message();
-                                   msg.what = 3;
-                                   msg.obj = three_data;
-                                   getHandler().sendMessage(msg);
-                                }else{
-                                    try {
-                                        parseLogin(data);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void error(String data) {
-
-                        }
-
-                        @Override
-                        public void unLogin() {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA share_media, int i) {
-
-            }
-        });
     }
     private void parseLogin (JSONObject data) throws JSONException {
         sharedUtils.setStringValue("token",data.getString("Value"));
@@ -405,6 +347,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onStart(SHARE_MEDIA platform) {
             //  SocializeUtils.safeShowDialog(progressDialog);
+
         }
 
         @Override
@@ -419,16 +362,27 @@ public class LoginActivity extends BaseActivity {
                     P.c(key+"结果"+data.get(key));
                 }
             }*/
-            if (platform == SHARE_MEDIA.QQ) {
+          P.c("platform"+platform);
+            getInfo(platform);
+           /* if (platform == SHARE_MEDIA.QQ) {
                 P.c(data.get("uid"));
                 P.c(data.get("openid"));
                 P.c(data.get("accessToken"));
                 // P.c(data.get("expiration"));
-              /*uid 用户id
+              *//*uid 用户id
               openid
               accessToken （6.2以前用access_token）
-              expiration （6.2以前用expires_in）过期时间*/
+              expiration （6.2以前用expires_in）过期时间*//*
             }
+            if(platform == SHARE_MEDIA.WEIXIN){
+                Set set = data.entrySet();
+                Iterator it = set.iterator();
+                while (it.hasNext()) {
+                    String key = it.next().toString();
+                    P.c(key + "微信//结果" + data.get(key));
+                }
+                getInfo(SHARE_MEDIA.WEIXIN);
+            }*/
 
         }
 
@@ -445,6 +399,85 @@ public class LoginActivity extends BaseActivity {
             // SocializeUtils.safeCloseDialog(progressDialog);
         }
     };
+
+
+    private void getInfo(SHARE_MEDIA platform){
+        //---------
+
+        UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this,platform, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+              showLoadView();
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, final Map<String, String> map) {
+               cancleLoadView();
+                if (map != null) {
+                    Set set = map.entrySet();
+                    Iterator it = set.iterator();
+                    while (it.hasNext()) {
+                        String key = it.next().toString();
+                        P.c(key + "------" + map.get(key));
+                    }
+
+                    JSONObject jsonObject  =new JSONObject();
+                    try {
+                        jsonObject.put("uId",map.get("openid"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    httpPost("CheckUId", jsonObject.toString(), new Result() {
+                        @Override
+                        public void success(JSONObject data) {
+                            try {
+                                if(data.getString("Result").length()==0){
+
+                                    Three_Data three_data = new Three_Data();
+                                    three_data.setIcon(map.get("profile_image_url"));
+                                    three_data.setName(map.get("screen_name"));
+                                    three_data.setSex(map.get("gender"));
+                                    three_data.setUuid(map.get("openid"));
+                                    Message msg = new Message();
+                                    msg.what = 3;
+                                    msg.obj = three_data;
+                                    getHandler().sendMessage(msg);
+                                }else{
+                                    try {
+                                        parseLogin(data);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void error(String data) {
+
+                        }
+
+                        @Override
+                        public void unLogin() {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                cancleLoadView();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                cancleLoadView();
+            }
+        });
+    }
 
 
 }
