@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/child"
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="125"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/content0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="matrix"
+                    android:src="@mipmap/ic_launcher"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_weight="200"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#888888"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="2dp"
+                android:textSize="13sp"
+                android:text="tip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="2dp"
+                android:text="标题"/>
+            <TextView
+                android:id="@+id/slo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="3dp"
+                android:text="+ 全部歌单"
+                android:textColor="#888888"/>
+            <com.hhkj.spinning.www.widget.InScrollListView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginLeft="12dp"
+                android:dividerHeight="2dp"
+                android:listSelector="@color/no_color"
+                android:divider="@color/no_color"
+                android:background="@color/no_color"
+                android:cacheColorHint="@color/no_color"
+                android:layout_height="wrap_content">
+            </com.hhkj.spinning.www.widget.InScrollListView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

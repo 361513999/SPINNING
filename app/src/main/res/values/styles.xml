@@ -30,7 +30,7 @@
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:textColor">@color/_radiobtn_text</item>
-        <item name="android:drawableBottom">@drawable/_list_radio_btn</item>
+        <item name="android:background">@drawable/_list_drill_radio_btn</item>
         <item name="android:button">@null</item>
     </style>
 
@@ -43,6 +43,7 @@
     </declare-styleable>
     <style name="person_font">
         <item name="android:textSize">14sp</item>
+        <item name="android:background">@color/no_color</item>
         <item name="android:textColor">@color/person_font_color</item>
     </style>
     <style name="home_icon_font">

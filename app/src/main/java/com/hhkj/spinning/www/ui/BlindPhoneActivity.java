@@ -144,11 +144,12 @@ public class BlindPhoneActivity extends BaseActivity {
                         @Override
                         public void success(JSONObject data) {
                             try {
-                                sharedUtils.setStringValue("token",data.getString("Value"));
+                                 sharedUtils.setStringValue("token",data.getString("Value"));
                                  JSONObject obj = new JSONObject(data.getString("Result"));
                                  sharedUtils.setStringValue("userName",obj.getString("UserName"));
                                  sharedUtils.setStringValue("icon",obj.getString("Url"));
                                  sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
+                                sharedUtils.setStringValue("phone",obj.getString("Phone"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

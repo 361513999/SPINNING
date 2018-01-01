@@ -4,14 +4,14 @@
 
     <gradient
         android:angle="180"
-        android:endColor="@color/no_color"
-        android:startColor="@color/no_color" />
+        android:endColor="@color/common_gray"
+        android:startColor="@color/common_gray" />
 
     <stroke
         android:width="20px"
-        android:color="@color/no_color" />
+        android:color="@color/common_gray" />
 
-    <solid android:color="@color/no_color" />
+    <solid android:color="@color/common_gray" />
 
     <corners
         android:bottomLeftRadius="0px"
