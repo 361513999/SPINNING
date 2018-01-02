@@ -59,7 +59,6 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
         xListView.setPullLoadEnable(true);
         xListView.setXListViewListener(ixListViewListener);
         //85/335
-       P.c(" xListView.getColumnNumber()"+ xListView.getColumnNumber());
         xListView.post(new Runnable() {
             @Override
             public void run() {

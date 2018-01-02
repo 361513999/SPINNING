@@ -166,7 +166,7 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         P.c("返回了");
         UMShareAPI.get(LoginActivity.this).onActivityResult(requestCode, resultCode, data);
-        getInfo(SHARE_MEDIA.QQ);
+       // getInfo(SHARE_MEDIA.QQ);
 
 
 

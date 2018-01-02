@@ -83,12 +83,12 @@ public class DrillItem1 extends BaseFragment {
         drillItem1LeftAdapter = new DrillItem1LeftAdapter(lefts);
         item0 = view.findViewById(R.id.item0);
         item0.setAdapter(drillItem1LeftAdapter);
-        item0.postDelayed(new Runnable() {
+        item0.post(new Runnable() {
             @Override
             public void run() {
                 addView();
             }
-        },5000);
+        });
         //276   80
         drill_list = view.findViewById(R.id.drill_list);
         pull_to_refresh_list = view.findViewById(R.id.pull_to_refresh_list);

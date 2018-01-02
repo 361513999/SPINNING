@@ -8,7 +8,9 @@ import android.os.Message;
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.bean.DateWeek;
 import com.hhkj.spinning.www.common.BaseApplication;
+import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
 
 import java.sql.Time;
@@ -30,11 +32,13 @@ public class DB {
      *
      * @return
      */
+    private static SharedUtils sharedUtils;
     public static synchronized DB getInstance() {
         if (dao == null) {
             synchronized (DB.class) {
                 if (dao == null) {
                     dao = new DB();
+                    sharedUtils = new SharedUtils(Common.config);
                     dbHelper = new DBHelper(BaseApplication.application);
                     db = dbHelper.getWritableDatabase();
                 }
@@ -82,7 +86,7 @@ public class DB {
     }
 
     public void addCenterItem1Edit(String tog,long time){
-        db.execSQL("insert into tog_time(tog,time) values(?,?)",new Object[]{tog,time});
+        db.execSQL("insert into tog_time(phone,tog,time) values(?,?,?)",new Object[]{sharedUtils.getStringValue("phone"),tog,time});
     }
     public void updateCenterItem1Edit(String tog,long time,int i){
         db.execSQL("update tog_time set tog=?,time=? where i=?",new Object[]{tog,time,i});
@@ -93,11 +97,11 @@ public class DB {
      * @param handler
      */
     public void isCenterItem1List(Handler handler){
-        String sql = "select count(*) from tog_time ";
+        String sql = "select count(*) from tog_time where phone=?";
         Cursor cursor = null;
         int count = 0;
         try {
-            cursor = db.rawQuery(sql,null);
+            cursor = db.rawQuery(sql,new String[]{sharedUtils.getStringValue("phone")});
             if(cursor.moveToFirst()){
                 count = getInt(cursor,"count(*)");
                 cursor.close();
@@ -128,12 +132,12 @@ public class DB {
      */
     public void getCenterItemEdits(ArrayList<CenterItem1Edit> list, Handler handler, DateWeek dateWeek){
         list.clear();
-        String sql = "select i,tog,time from tog_time ";
+        String sql = "select i,tog,time from tog_time where phone=? ";
         Cursor cursor = null;
         String result = null;
         int count = 0;
         try {
-            cursor = db.rawQuery(sql,null);
+            cursor = db.rawQuery(sql,new String[]{sharedUtils.getStringValue("phone")});
            while(cursor.moveToNext()){
                long time = getLong(cursor,"time");
 
