@@ -10,7 +10,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.alivc.player.AliVcMediaPlayer;
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.ui.PlayerActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -53,8 +55,9 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxb3c22f4afd141744", "b14688e0458766d438e88014baa9ba67");
         PlatformConfig.setQQZone("1106546585", "n8KeWMdPkW13dWdW");
-
         PlatformConfig.setSinaWeibo("","","");
+        AliVcMediaPlayer.init(this);
+
         packgeName = getPackageName();
         if (isNeedCaughtExeption) {
             cauchException();
