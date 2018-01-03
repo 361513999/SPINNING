@@ -108,6 +108,10 @@
         </activity>
         <activity android:name=".ui.PlayerActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".ui.PlayOnlineActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

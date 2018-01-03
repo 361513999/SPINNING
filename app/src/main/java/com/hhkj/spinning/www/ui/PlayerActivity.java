@@ -115,7 +115,7 @@ public class PlayerActivity extends BaseActivity {
         mediaPlayer.setSeekCompleteListener(new MediaPlayer.MediaPlayerSeekCompleteListener() {
             @Override
             public void onSeekCompleted() {
-                    P.c("~~~");
+
             }
         });
         suf.setOnTouchListener(new View.OnTouchListener() {
@@ -136,15 +136,14 @@ public class PlayerActivity extends BaseActivity {
                     case -1:
                         mediaPlayer.seekTo(0);
                         item0.setText(formatTime(0));
-                        mediaPlayer.reset();
+                        control.setBackgroundResource(R.drawable.jz_click_pause_selector);
+                        PLAY_TAG = 1;
                         mediaPlayer.play();
-                        control.setBackgroundResource(R.drawable.jz_click_play_selector);
-                        PLAY_TAG = 0;
                         break;
                     case  0:
                         control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                         PLAY_TAG = 1;
-                        mediaPlayer.resume();
+                        mediaPlayer.play();
                         break;
                     case 1:
                         control.setBackgroundResource(R.drawable.jz_click_play_selector);
@@ -159,12 +158,15 @@ public class PlayerActivity extends BaseActivity {
             @Override
             public void onPrepared() {
                 //准备完毕可以进行seekbar释放
-
+                P.c("onPrepared");
 
                 int max = mediaPlayer.getDuration();
                 item1.setEnabled(true);
                 item1.setMax(mediaPlayer.getDuration());
                 item2.setText(formatTime(max));
+                if(PLAY_TAG==-1){
+                    return;
+                }
                 new Thread() {
                     public void run() {
 
@@ -215,6 +217,9 @@ public class PlayerActivity extends BaseActivity {
                 control.setBackgroundResource(R.drawable.jz_click_replay_selector);
                 PLAY_TAG = -1;
                 showLimite();
+                mediaPlayer.stop();
+                mediaPlayer.reset();
+                mediaPlayer.prepareToPlay(url);
             }
         });
         mediaPlayer.setVideoSizeChangeListener(new MediaPlayer.MediaPlayerVideoSizeChangeListener() {
@@ -270,6 +275,16 @@ public class PlayerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mediaPlayer!=null){
+            control.setBackgroundResource(R.drawable.jz_click_play_selector);
+            PLAY_TAG = 0;
+            mediaPlayer.pause();
+        }
     }
 
     @Override
