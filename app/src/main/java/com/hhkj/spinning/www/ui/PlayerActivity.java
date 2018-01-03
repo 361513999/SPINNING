@@ -136,6 +136,7 @@ public class PlayerActivity extends BaseActivity {
                     case -1:
                         mediaPlayer.seekTo(0);
                         item0.setText(formatTime(0));
+                        mediaPlayer.reset();
                         mediaPlayer.play();
                         control.setBackgroundResource(R.drawable.jz_click_play_selector);
                         PLAY_TAG = 0;
@@ -202,7 +203,7 @@ public class PlayerActivity extends BaseActivity {
                 mediaPlayer.seekTo(process);
                 item0.setText(formatTime(process));
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
-                PLAY_TAG = -1;
+                PLAY_TAG = 1;
                 mediaPlayer.play();
                 showLimite();
             }
@@ -212,6 +213,7 @@ public class PlayerActivity extends BaseActivity {
             @Override
             public void onCompleted() {
                 control.setBackgroundResource(R.drawable.jz_click_replay_selector);
+                PLAY_TAG = -1;
                 showLimite();
             }
         });
@@ -268,5 +270,13 @@ public class PlayerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaPlayer!=null){
+            mediaPlayer.destroy();
+        }
     }
 }
