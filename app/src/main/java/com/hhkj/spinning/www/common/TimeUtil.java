@@ -21,6 +21,10 @@ public class TimeUtil {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(new Date(time));
 	}
+	public static String getTimeYear(long time) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy");
+		return format.format(new Date(time));
+	}
 	public static String getTimeCh(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(new Date(time));
@@ -52,6 +56,16 @@ public class TimeUtil {
 	}
 	public static long parseTime(String time){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+		try {
+			return  format.parse(time).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return  0;
+	}
+	public static long parseTime_(String time){
+//		1991-11-15 00:00:00
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			return  format.parse(time).getTime();
 		} catch (ParseException e) {

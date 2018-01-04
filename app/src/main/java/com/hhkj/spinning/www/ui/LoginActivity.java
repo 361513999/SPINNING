@@ -180,6 +180,9 @@ public class LoginActivity extends BaseActivity {
         sharedUtils.setStringValue("icon",obj.getString("Url").startsWith("http")?obj.getString("Url"):"http://"+U.IP+"/"+obj.getString("Url"));
         sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
         sharedUtils.setStringValue("phone",obj.getString("Phone"));
+        sharedUtils.setStringValue("Height",obj.getString("Height"));
+        sharedUtils.setStringValue("Weight",obj.getString("Weight"));
+        sharedUtils.setStringValue("Birthday",obj.getString("Birthday"));
         getHandler().sendEmptyMessage(2);
     }
     private EditText phone,code_ma;

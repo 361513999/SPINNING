@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipException;
@@ -271,7 +272,16 @@ public class FileUtils {
 			}
 		}
 	}
-
+	/**
+	 * 格式化double数据
+	 */
+	public static double formatDouble(double fromDouble){
+		BigDecimal b = new BigDecimal(fromDouble);
+		// 保留2位小数
+		double targetDouble = b.setScale(1, BigDecimal.ROUND_HALF_UP)
+				.doubleValue();
+		return targetDouble;
+	}
 
 	/**
 	 * 433
