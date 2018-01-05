@@ -2,8 +2,10 @@ package com.hhkj.spinning.www.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.DrillItem1LeftAdapter;
 import com.hhkj.spinning.www.adapter.DrillItem1RightAdapter;
 import com.hhkj.spinning.www.adapter.SportListAdapter;
+import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
@@ -22,6 +25,7 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
@@ -101,7 +105,7 @@ public class DrillItem1 extends BaseFragment {
                 int width = (drill_list.getMeasuredWidth()-div)/2;
                 double height = (80.0/136.0)*width;
                 P.c(width+"==="+height);
-                drillItem1RightAdapter = new DrillItem1RightAdapter(activity,width, (int) height);
+                drillItem1RightAdapter = new DrillItem1RightAdapter(activity,width, (int) height,drill_handler);
                 drill_list.setAdapter(drillItem1RightAdapter);
             }
         });
@@ -120,7 +124,31 @@ public class DrillItem1 extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.drill_item1, container, false);
+        drill_handler = new Drill_Handler(DrillItem1.this);
         return view;
 
     }
+    private Drill_Handler drill_handler;
+    private class Drill_Handler extends Handler {
+        WeakReference<DrillItem1> mLeakActivityRef;
+        public Drill_Handler(DrillItem1 leakActivity) {
+            mLeakActivityRef = new WeakReference<DrillItem1>(leakActivity);
+        }
+
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            if(mLeakActivityRef.get()!=null){
+
+            switch (msg.what){
+                case  0:
+                    Intent intent = new Intent(activity,PlayOnlineActivity.class);
+                    startActivity(intent);
+                    break;
+             }
+
+            }
+        }
+    }
+
 }

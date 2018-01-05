@@ -2,8 +2,10 @@ package com.hhkj.spinning.www.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ScrollView;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.DrillItem0Adapter;
 import com.hhkj.spinning.www.adapter.DrillItem1RightAdapter;
+import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
@@ -21,6 +24,8 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
 import com.hhkj.spinning.www.widget.xlist.XListView;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -74,7 +79,31 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.drill_item0, container, false);
+        drill_handler = new Drill_Handler(DrillItem0.this);
         return view;
 
+    }
+    private Drill_Handler drill_handler;
+    private class Drill_Handler extends Handler {
+        WeakReference<DrillItem0> mLeakActivityRef;
+        public Drill_Handler(DrillItem0 leakActivity) {
+            mLeakActivityRef = new WeakReference<DrillItem0>(leakActivity);
+        }
+
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            if(mLeakActivityRef.get()!=null){
+
+               switch (msg.what){
+                   case 0:
+                       Intent intent = new Intent(activity,PlayerActivity.class);
+                       startActivity(intent);
+                       break;
+               }
+
+
+            }
+        }
     }
 }

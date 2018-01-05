@@ -17,4 +17,6 @@
     <color name="umeng_blue">#0086DC</color>
     <color name="font_normal">#333333</color>
     <color name="font_light">#666666</color>
+    <color name="font_online_bottom">#868686</color>
+    <color name="font_online_bottom_div">#F9F94F</color>
 </resources>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_heigh"
@@ -17,32 +19,250 @@
             android:textColor="@color/white"
             android:textSize="@dimen/title_font_size" />
     </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <FrameLayout
+
+
+        <LinearLayout
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <SurfaceView
-                android:id="@+id/suf"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="524">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <SurfaceView
+                    android:id="@+id/suf"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-                <Button
-                    android:id="@+id/control"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/control"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/jz_click_pause_selector"
+                        android:visibility="gone" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/bottom_content"
                     android:visibility="gone"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/jz_click_play_selector" />
-            </RelativeLayout>
-        </FrameLayout>
+                    android:layout_width="match_parent"
+                    android:background="#4D4D4D"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="心率"/>
+                        <TextView
+                            android:id="@+id/bottom_0"
+                            android:layout_width="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:text="120"
+                            android:textColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@color/font_online_bottom_div"
+                            android:layout_height="0.5dp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="RATE"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="速度"/>
+                        <TextView
+                            android:id="@+id/bottom_1"
+                            android:layout_width="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:text="120"
+                            android:textColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@color/font_online_bottom_div"
+                            android:layout_height="0.5dp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="SPEED"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="时间"/>
+                        <TextView
+                            android:id="@+id/bottom_2"
+                            android:layout_width="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:text="120"
+                            android:textColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@color/font_online_bottom_div"
+                            android:layout_height="0.5dp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="TIME"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="卡路里"/>
+                        <TextView
+                            android:id="@+id/bottom_3"
+                            android:layout_width="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:text="120"
+                            android:textColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@color/font_online_bottom_div"
+                            android:layout_height="0.5dp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="CAL"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="里程"/>
+                        <TextView
+                            android:id="@+id/bottom_4"
+                            android:layout_width="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:text="120"
+                            android:textColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@color/font_online_bottom_div"
+                            android:layout_height="0.5dp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/font_online_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="DIST"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:layout_height="match_parent"
+                android:layout_weight="144" >
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/pull_to_refresh_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ListView
+                        android:id="@+id/lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/no_color"
+                        android:cacheColorHint="@color/no_color"
+                        android:choiceMode="singleChoice"
+                        android:dividerHeight="0.5dp"
+                        android:divider="@color/list_line"
+                        android:listSelector="@color/no_color"
+                        android:scrollbars="none">
+                    </ListView>
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
 </LinearLayout>
