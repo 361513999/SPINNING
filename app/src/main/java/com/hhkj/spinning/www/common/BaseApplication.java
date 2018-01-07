@@ -14,12 +14,15 @@ import com.alivc.player.AliVcMediaPlayer;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.ui.PlayerActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -33,6 +36,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -55,7 +59,7 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxb3c22f4afd141744", "b14688e0458766d438e88014baa9ba67");
         PlatformConfig.setQQZone("1106546585", "n8KeWMdPkW13dWdW");
-        PlatformConfig.setSinaWeibo("","","");
+        PlatformConfig.setSinaWeibo("", "", "");
         AliVcMediaPlayer.init(this);
 
         packgeName = getPackageName();
@@ -76,28 +80,122 @@ public class BaseApplication extends Application {
     }
 
     public void initImageLoader(Context context) {
-        // This configuration tuning is custom. You can tune every option, you
-        // may tune some of them,
-        // or you can create default configuration by
-        // ImageLoaderConfiguration.createDefault(this);
-        // method.
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                context).threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
 
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
-                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
-                .diskCacheFileCount(200)
-                //.writeDebugLogs() // Remove for release app
+        DisplayImageOptions dio = new DisplayImageOptions.Builder().build();
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                /**
+                 * 传入另一个DisplayImageOptions会覆盖上面的设置
+                 */
+                .cloneFrom(dio)
+                /**
+                 * 加载时的图片
+                 */
+//                .showImageOnLoading(bd)
+//                .showImageOnLoading(R.drawable.ic_stub)
+//                .showStubImage(R.drawable.ic_stub)
+                /**
+                 * 加载图片失败后显示的图片
+                 */
+                //   .showImageOnFail(bd)
+                //    .showImageOnFail(R.drawable.ic_error)
+                /**
+                 * 加载图片为空的时候
+                 */
+                //     .showImageForEmptyUri(bd)
+                //    .showImageForEmptyUri(R.drawable.ic_empty)
+                /**
+                 * 在内存中缓存
+                 * 默认：true
+                 */
+                .cacheInMemory(true)
+                .cacheInMemory()
+                /**
+                 * 在磁盘中缓存
+                 * 默认：true
+                 */
+                .cacheOnDisk(true)
+                .cacheOnDisc(true)
+                .cacheOnDisc()
+                /**
+                 * 设置Bitmap.Config
+                 * 默认：Bitmap.Config.ARGB_8888
+                 */
+                .bitmapConfig(Bitmap.Config.ARGB_8888)
+                /**
+                 * 是否考虑EXIF的信息
+                 * 默认：false
+                 */
+                .considerExifParams(false)
+                /**
+                 * 设置解析图片参数
+                 */
+                .decodingOptions(new BitmapFactory.Options())
+                /**
+                 * 设置加载图片的时间
+                 * 默认：0
+                 */
+                .delayBeforeLoading(0)
+                /**
+                 * 设置自定义BitmapDisplayer
+                 * 默认：SimpleBitmapDisplayer
+                 */
+                .displayer(DefaultConfigurationFactory.createBitmapDisplayer())
+                /**
+                 * 设置辅助的传递对象
+                 * 默认：null
+                 */
+                .extraForDownloader(null)
+                /**
+                 * 设置自定义Hanlder
+                 */
+                .handler(null)
+                /**
+                 * 设置解码时图片的缩放
+                 * 默认：ImageScaleType.IN_SAMPLE_POWER_OF_2
+                 */
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+                /**
+                 * 在图片加载到内存中前进行处理
+                 * 默认：null
+                 */
+                .preProcessor(null)
+                /**
+                 * 在显示图片时对图片处理
+                 * 默认：null
+                 */
+                .postProcessor(null)
+                /**
+                 * 设置是否在加载图片前重置
+                 * 默认：true
+                 */
+                .resetViewBeforeLoading(true)
+                .resetViewBeforeLoading()
+
                 .build();
-        // Initialize ImageLoader with configuration.
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration
+                .Builder(this)
+                .defaultDisplayImageOptions(options)
+                .memoryCacheExtraOptions(480, 800) // maxwidth, max height，即保存的每个缓存文件的最大长宽
+                .threadPoolSize(3)//线程池内加载的数量
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
+                .memoryCacheSize(2 * 1024 * 1024)
+                .discCacheSize(50 * 1024 * 1024)
+//                .discCacheFileNameGenerator(newMd5FileNameGenerator())//将保存的时候的URI名称用MD5 加密
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .discCacheFileCount(500) //缓存的文件数量
+                .imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
+                .writeDebugLogs() // Remove for releaseapp
+                .build();//开始构建
+
         ImageLoader.getInstance().init(config);
     }
 
 
-  public static  DisplayImageOptions options = new DisplayImageOptions.Builder()
+   /* public static DisplayImageOptions options = new DisplayImageOptions.Builder()
             .showImageOnLoading(R.mipmap.img_load) // resource or
             // drawable
             .showImageForEmptyUri(R.mipmap.no_img) // resource or
@@ -112,7 +210,7 @@ public class BaseApplication extends Application {
             .bitmapConfig(Bitmap.Config.ARGB_8888) // default
             .displayer(new SimpleBitmapDisplayer()) // default
             .handler(new Handler()) // default
-            .build();
+            .build();*/
 
     /**
      * 获得应用版本
@@ -219,7 +317,7 @@ public class BaseApplication extends Application {
      * 百度服務
      */
     /*public LocationClient mLocationClient = null;
-	public BDLocationListener myListener = new MyLocationListener();
+    public BDLocationListener myListener = new MyLocationListener();
 
 	private void initLocation() {
 		LocationClientOption option = new LocationClientOption();

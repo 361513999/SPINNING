@@ -13,7 +13,7 @@ public class Common {
     public static final String DB_NAME = "store.spinning";
     public static final int DB_VERSION = 1;
     public static final String config = "CONFIG";
-
+    public static final int SHOW_NUM = 8;
     public static final int TTIME = 200;
     public static String BASE_DIR = Environment
             .getExternalStorageDirectory().getAbsolutePath();

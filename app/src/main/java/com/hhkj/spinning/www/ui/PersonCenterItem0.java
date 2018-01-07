@@ -67,7 +67,7 @@ public class PersonCenterItem0 extends BaseFragment {
             if (mLeakActivityRef.get() != null) {
                 switch (msg.what){
                     case 1:
-                        ImageLoader.getInstance().displayImage(sharedUtils.getStringValue("icon"),person_icon);
+                        ImageLoader.getInstance().displayImage(FileUtils.addImage(sharedUtils.getStringValue("icon")),person_icon);
                         person_tag.setText(sharedUtils.getStringValue("userName"));
                         String height = sharedUtils.getStringValue("Height");
                         String weight = sharedUtils.getStringValue("Weight");
@@ -175,7 +175,7 @@ public class PersonCenterItem0 extends BaseFragment {
                     JSONObject obj = new JSONObject(data.getString("Result"));
                     sharedUtils.setStringValue("userName",obj.getString("UserName"));
                     sharedUtils.setStringValue("id",obj.getString("Id"));
-                    sharedUtils.setStringValue("icon",obj.getString("Url").startsWith("http")?obj.getString("Url"):"http://"+ U.IP+"/"+obj.getString("Url"));
+                    sharedUtils.setStringValue("icon",obj.getString("Url"));
                     sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
                     sharedUtils.setStringValue("phone",obj.getString("Phone"));
                     sharedUtils.setStringValue("Height",obj.getString("Height"));
@@ -187,7 +187,7 @@ public class PersonCenterItem0 extends BaseFragment {
                     center0.setIdealWeight(obj.getString("IdealWeight"));
                     center0.setWeight(obj.getString("Weight"));
                     center0.setSex(obj.getBoolean("Sex"));
-                    center0.setUrl(obj.getString("Url").startsWith("http")?obj.getString("Url"):"http://"+ U.IP+"/"+obj.getString("Url"));
+                    center0.setUrl(obj.getString("Url"));
                     center0.setUserName(obj.getString("UserName"));
 
                     base_handler.sendEmptyMessage(1);

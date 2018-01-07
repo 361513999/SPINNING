@@ -44,6 +44,12 @@
             android:textColor="@color/white"
             android:text="最新"
             android:layout_marginBottom="3dp"/>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/drill_item1_refr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
         <com.hhkj.spinning.www.widget.PullToRefreshView
             android:id="@+id/pull_to_refresh_list"
             android:layout_width="match_parent"
@@ -62,5 +68,6 @@
                 android:background="@color/no_color"
                 android:cacheColorHint="@color/no_color"/>
         </com.hhkj.spinning.www.widget.PullToRefreshView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </LinearLayout>

@@ -17,7 +17,7 @@
                 android:id="@+id/item0"
                 android:layout_marginLeft="5dp"
                 android:layout_alignParentLeft="true"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,22 +42,34 @@
                 android:layout_toLeftOf="@+id/item3"
                 android:layout_toRightOf="@+id/item1"
                 android:layout_centerVertical="true"
-                android:text="gdfgdfgdfgdfgdfgdfgfgdfgdf"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <TextView
+            <LinearLayout
                 android:id="@+id/item3"
-                android:textSize="13sp"
                 android:layout_marginLeft="5dp"
                 android:layout_alignParentRight="true"
+                android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:ems="4"
-                android:text="12月5日12:55"
-                />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/item4"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:ems="4"
+                    android:layout_marginBottom="1dp"
+                    />
+                <TextView
+                    android:id="@+id/item5"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
     <!--272 42-->

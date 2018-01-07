@@ -21,6 +21,7 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.Three_Data;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.U;
 import com.hhkj.spinning.www.inter.Result;
@@ -130,7 +131,7 @@ public class LoginActivity extends BaseActivity {
         switch (msg.what){
             case 4:
                 String path = (String) msg.obj;
-                ImageLoader.getInstance().displayImage(path,login_icon);
+                ImageLoader.getInstance().displayImage(FileUtils.addImage(path),login_icon);
                 break;
             case 3:
                 Three_Data three_data = (Three_Data) msg.obj;
@@ -177,7 +178,7 @@ public class LoginActivity extends BaseActivity {
         JSONObject obj = new JSONObject(data.getString("Result"));
         sharedUtils.setStringValue("userName",obj.getString("UserName"));
         sharedUtils.setStringValue("id",obj.getString("Id"));
-        sharedUtils.setStringValue("icon",obj.getString("Url").startsWith("http")?obj.getString("Url"):"http://"+U.IP+"/"+obj.getString("Url"));
+        sharedUtils.setStringValue("icon",obj.getString("Url"));
         sharedUtils.setBooleanValue("Sex",obj.getBoolean("Sex"));
         sharedUtils.setStringValue("phone",obj.getString("Phone"));
         sharedUtils.setStringValue("Height",obj.getString("Height"));

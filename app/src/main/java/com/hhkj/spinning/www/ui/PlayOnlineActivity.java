@@ -1,7 +1,9 @@
 package com.hhkj.spinning.www.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alivc.player.AliVcMediaPlayer;
 import com.alivc.player.MediaPlayer;
@@ -20,6 +23,10 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PlayOnlineAdapter;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.inter.Result;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by cloor on 2018/1/4.
@@ -30,6 +37,13 @@ public class PlayOnlineActivity extends BaseActivity {
     private PlayOnlineAdapter playOnlineAdapter;
     private LinearLayout bottom_content;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    @Override
+    public void backActivity(View v) {
+        super.backActivity(v);
+        exitOnline();
+    }
+
     @Override
     public void process(Message msg) {
         switch (msg.what){
@@ -45,17 +59,29 @@ public class PlayOnlineActivity extends BaseActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     };
-
+    String onlineId ;
     @Override
     public void init() {
+        title = findViewById(R.id.title);
         swipeRefreshLayout = findViewById(R.id.pull_to_refresh_list);
         swipeRefreshLayout.setOnRefreshListener(listener);
-
         bottom_content = findViewById(R.id.bottom_content);
         suf = findViewById(R.id.suf);
         control = findViewById(R.id.control);
         mediaPlayer = new AliVcMediaPlayer(PlayOnlineActivity.this,suf);
         lists = findViewById(R.id.lists);
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("param")){
+            String param = intent.getStringExtra("param");
+
+            String temp[] = param.split(";");
+            onlineId = temp[0];
+            title.setText(temp[2]);
+            url = temp[1];
+            P.c("拉流地址"+url);
+        }
+
         lists.post(new Runnable() {
             @Override
             public void run() {
@@ -122,6 +148,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 }
             }
         });
+        mediaPlayer.enableNativeLog();
         mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
             @Override
             public void onPrepared() {
@@ -132,7 +159,118 @@ public class PlayOnlineActivity extends BaseActivity {
         showLimite();
 
 
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                addPerson();
+                getPersonList();
+                handler.postDelayed(this,10000);
+            }
+        });
     }
+    private Handler handler = new Handler();
+
+    private void addPerson(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cls","Sys.VideoInfo");
+            jsonObject.put("method","AddOnlineUser");
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            object.put("Id",onlineId);
+            object.put("Kll","1");
+            object.put("Km","2");
+            object.put("Sd","3");
+            object.put("Xl","4");
+            jsonObject.put("param",object.toString());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+    }
+    private void getPersonList(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cls","Sys.VideoInfo");
+            jsonObject.put("method","GetOnlineUserList");
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            object.put("Id",onlineId);
+            jsonObject.put("param",object.toString());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+    }
+    private void exitOnline(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cls","Sys.VideoInfo");
+            jsonObject.put("method","RemoveOnlineUser");
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            object.put("Id",onlineId);
+            jsonObject.put("param",object.toString());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+    }
+
     private CountDownTimer bottomTimer;
     private void showBottom(){
 
@@ -184,10 +322,11 @@ public class PlayOnlineActivity extends BaseActivity {
 
     }
     private int PLAY_TAG = 1;
-    String url = "https://player.alicdn.com/video/aliyunmedia.mp4";
+    String url;
     private SurfaceView suf;
     private AliVcMediaPlayer mediaPlayer;
     private Button control;
+    private TextView title;
     @Override
     protected void onDestroy() {
         super.onDestroy();

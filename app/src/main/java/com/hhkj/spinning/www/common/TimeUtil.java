@@ -73,6 +73,11 @@ public class TimeUtil {
 		}
 		return  0;
 	}
+	public static String getTimeHome(long time) {
+		SimpleDateFormat format = new SimpleDateFormat("MM月dd日\nHH:mm");
+		return format.format(new Date(time));
+	}
+
 	public static String getDate_(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(new Date(time));

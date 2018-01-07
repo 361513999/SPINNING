@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class DrillItem1 extends BaseFragment {
     private Activity activity;
     private Handler handler;
     private ViewPager item0;
+    private SwipeRefreshLayout drill_item1_refr;
     private GridView drill_list;
     private PullToRefreshView pull_to_refresh_list;
     private DrillItem1LeftAdapter drillItem1LeftAdapter;
@@ -81,6 +83,14 @@ public class DrillItem1 extends BaseFragment {
             }, runTime);
         }
     };
+    private SwipeRefreshLayout.OnRefreshListener listener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+
+            drill_item1_refr.setRefreshing(true);
+
+        }
+    };
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -94,9 +104,12 @@ public class DrillItem1 extends BaseFragment {
             }
         });
         //276   80
+        drill_item1_refr = view.findViewById(R.id.drill_item1_refr);
+        drill_item1_refr.setOnRefreshListener(listener);
         drill_list = view.findViewById(R.id.drill_list);
         pull_to_refresh_list = view.findViewById(R.id.pull_to_refresh_list);
-        pull_to_refresh_list.setOnHeaderRefreshListener(listHeadListener);
+//        pull_to_refresh_list.setOnHeaderRefreshListener(listHeadListener);
+        pull_to_refresh_list.setEnablePullTorefresh(false);
         pull_to_refresh_list.setOnFooterRefreshListener(listFootListener);
         drill_list.post(new Runnable() {
             @Override

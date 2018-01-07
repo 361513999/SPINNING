@@ -302,4 +302,16 @@ public class FileUtils {
 		JSONObject jsonObject = new JSONObject(json);
 		return jsonObject.getString("d");
 	}
+
+
+	public static String formatImageUrl(String url){
+		return  url.replace("\\","/");
+	}
+	public static String addImage(String str){
+		if(str.startsWith("http://")){
+			return  str;
+		}
+		P.c("解析"+U.BASE_IMAGE+formatImageUrl(str));
+		return  U.BASE_IMAGE+formatImageUrl(str);
+	}
 }

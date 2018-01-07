@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class DrillItem0 extends BaseFragment {
         private Activity activity;
     private DrillItem0Adapter drillItem0Adapter ;
         private Handler handler;
+        private SwipeRefreshLayout drill_item0_refr;
     private XListView xListView;
 
         public DrillItem0(Activity activity, Handler handler){
@@ -57,11 +59,23 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
         xListView.stopLoadMore();
     }
 };
+    private SwipeRefreshLayout.OnRefreshListener listener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+
+            drill_item0_refr.setRefreshing(true);
+
+        }
+    };
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         xListView = view.findViewById(R.id.grids);
+        drill_item0_refr = view.findViewById(R.id.drill_item0_refr);
+        drill_item0_refr.setOnRefreshListener(listener);
+
         xListView.setPullLoadEnable(true);
+        xListView.setPullRefreshEnable(false);
         xListView.setXListViewListener(ixListViewListener);
         //85/335
         xListView.post(new Runnable() {

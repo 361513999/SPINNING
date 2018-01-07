@@ -5,12 +5,18 @@
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     android:layout_height="match_parent" >
-
-    <com.hhkj.spinning.www.widget.xlist.XListView
-        android:id="@+id/grids"
-        android:scrollbars="vertical"
-        android:fastScrollEnabled="true"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/drill_item0_refr"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.hhkj.spinning.www.widget.xlist.XListView
+            android:id="@+id/grids"
+            android:scrollbars="vertical"
+            android:fastScrollEnabled="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

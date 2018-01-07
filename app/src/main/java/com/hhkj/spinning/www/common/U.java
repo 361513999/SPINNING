@@ -10,8 +10,10 @@ import okhttp3.MediaType;
  */
 
 public class U {
+
     public static String IP = "39.104.61.90";
     public static String BASEIP = IP+":"+"8001";
+    public static String BASE_IMAGE = "http://"+IP+"/";
     private static final String BASE_URL = "/DataService.svc/";
     public static MediaType json = MediaType.parse("application/json; charset=utf-8");
     

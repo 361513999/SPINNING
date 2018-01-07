@@ -72,8 +72,11 @@ public abstract class BaseActivity extends Activity {
      * @param content 访问请求参数
      * @param result 返回结果
      */
-    public void httpPost(String DIRECT, String content, final Result result){
-        showLoadView();
+    public void httpPostSON(String DIRECT, String content, final Result result,boolean isShow){
+        if(isShow){
+            showLoadView();
+        }
+
         OkHttpUtils.postString().url(U.VISTER()+DIRECT).mediaType(U.json).content(content).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -89,14 +92,14 @@ public abstract class BaseActivity extends Activity {
                         final JSONObject jsonObject = new JSONObject(response);
 
                         if(jsonObject.getBoolean("Success")){
-                           new Thread(){
-                               @Override
-                               public void run() {
-                                   super.run();
-                                   //禁止在返回中直接使用
-                                   result.success(jsonObject);
-                               }
-                           }.start();
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    //禁止在返回中直接使用
+                                    result.success(jsonObject);
+                                }
+                            }.start();
                         }else{
                             if(jsonObject.getString("Result").equals("login")){
                                 result.unLogin();
@@ -111,6 +114,10 @@ public abstract class BaseActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void httpPost(String DIRECT, String content, final Result result){
+        httpPostSON(DIRECT,content,result,true);
     }
 
     public void httpGet(String DIRECT,final Result result){

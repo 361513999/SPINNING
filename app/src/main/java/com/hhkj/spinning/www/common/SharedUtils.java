@@ -56,7 +56,7 @@ public class SharedUtils {
 		editor = preferences.edit();
 		editor.putString(key, value);
 		boolean flg = editor.commit();
-		P.c("保存"+flg);
+		P.c("保存"+key+"=="+value);
 	}
 	public void setIntValue(String key,int value){
 		editor = preferences.edit();
