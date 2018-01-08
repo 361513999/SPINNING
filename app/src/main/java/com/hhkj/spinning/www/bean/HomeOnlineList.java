@@ -13,6 +13,42 @@ public class HomeOnlineList implements Serializable {
     private String startTime;
     private String time;
     private String name;
+    private String image;
+    private int status;
+    private int playTime;
+    private String beginTime;
+
+    public int getPlayTime() {
+        return playTime;
+    }
+
+    public void setPlayTime(int playTime) {
+        this.playTime = playTime;
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;

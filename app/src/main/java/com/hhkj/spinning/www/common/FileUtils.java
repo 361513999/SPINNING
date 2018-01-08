@@ -307,6 +307,12 @@ public class FileUtils {
 	public static String formatImageUrl(String url){
 		return  url.replace("\\","/");
 	}
+
+	/**
+	 * 添加地址
+	 * @param str
+	 * @return
+	 */
 	public static String addImage(String str){
 		if(str.startsWith("http://")){
 			return  str;

@@ -14,6 +14,7 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.TPActivity;
 import com.hhkj.spinning.www.bean.PersonCenter0;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.PhotoSelect;
 import com.hhkj.spinning.www.inter.Result;
@@ -138,7 +139,8 @@ public class ModPersonActivity extends TPActivity {
                 item3.setText(center0.getHeight());
                 item4.setText(center0.getWeight());
                 item5.setText(center0.getIdealWeight());
-                ImageLoader.getInstance().displayImage(center0.getUrl(),edit_person_icon);
+
+                ImageLoader.getInstance().displayImage(FileUtils.addImage(center0.getUrl()),edit_person_icon);
 
 
             }
