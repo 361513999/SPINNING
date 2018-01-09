@@ -14,6 +14,15 @@ public class PersonCenter0 implements Serializable {
     private String Height;
     private String Weight;
     private String IdealWeight;
+    private String info;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public String getUserName() {
         return userName;

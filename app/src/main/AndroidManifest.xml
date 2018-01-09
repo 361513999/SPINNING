@@ -117,6 +117,30 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <service android:name=".service.SpinningService" android:enabled="true" android:priority="1000"
+            android:persistent="true"
+            android:process=":com.spinning.www">
+            <intent-filter>
+                <action android:name="spinning.spinning.www"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".service.WatchService" android:enabled="true" android:priority="1000"
+            android:persistent="true"
+            android:process=":watch.spinning.www">
+            <intent-filter>
+                <action android:name="watch.spinning.www"></action>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".receiver.BootBroadcastReceiver" >
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.intent.action.USER_PRESENT" />
+                    <action android:name="com.spinning.destroy"/> //这个就是自定义的action
+
+                </intent-filter>
+
+        </receiver>
     <!--友盟第三方-->
         <!--5a38a65ab27b0a6b3a00052a-->
         <meta-data

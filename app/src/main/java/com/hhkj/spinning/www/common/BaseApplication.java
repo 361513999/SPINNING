@@ -12,6 +12,7 @@ import java.util.Date;
 
 import com.alivc.player.AliVcMediaPlayer;
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.service.SpinningService;
 import com.hhkj.spinning.www.ui.PlayerActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -32,6 +33,7 @@ import com.umeng.socialize.common.QueuedWork;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -72,9 +74,14 @@ public class BaseApplication extends Application {
 //		mLocationClient.registerLocationListener(myListener); // 注册监听函数
 //		initLocation();
 //		mLocationClient.start();
-
+       startService();
     }
-
+    private void startService(){
+        Intent startServiceIntent = new Intent(this, SpinningService.class);
+        startServiceIntent.putExtra("watch","");
+        startServiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(startServiceIntent);
+    }
     public static String getName() {
         return packgeName;
     }

@@ -48,7 +48,7 @@ public class ModPersonActivity extends TPActivity {
     private CircleImageView edit_person_icon;
     private final int SELECT_LIMITE = 1;
     private TextView item1,item2;
-    private EditText item0,item3,item4,item5;
+    private EditText item0,item3,item4,item5,item6;
     private TextView send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +127,7 @@ public class ModPersonActivity extends TPActivity {
                 item3 = findViewById(R.id.item3);
                 item4 = findViewById(R.id.item4);
                 item5 = findViewById(R.id.item5);
+                 item6 = findViewById(R.id.item6);
                 item0 = findViewById(R.id.item0);
                 edit_person_icon = findViewById(R.id.edit_person_icon);
 
@@ -139,7 +140,7 @@ public class ModPersonActivity extends TPActivity {
                 item3.setText(center0.getHeight());
                 item4.setText(center0.getWeight());
                 item5.setText(center0.getIdealWeight());
-
+                item6.setText(center0.getInfo());
                 ImageLoader.getInstance().displayImage(FileUtils.addImage(center0.getUrl()),edit_person_icon);
 
 
@@ -220,6 +221,10 @@ public class ModPersonActivity extends TPActivity {
                     if(item5.getText().toString().length()!=0){
                         object.put("IdealWeight",item5.getText().toString());
                     }
+                    if(item6.getText().toString().length()!=0){
+                        object.put("UserExplain",item6.getText().toString());
+                    }
+
 
 //                    object.put("Height",item5.getText().toString());
                     jsonObject.put("param",object.toString());

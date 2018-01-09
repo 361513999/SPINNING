@@ -13,6 +13,12 @@ import android.annotation.SuppressLint;
  */
 @SuppressLint("SimpleDateFormat")
 public class TimeUtil {
+	public static long getNow(){
+
+		return  System.currentTimeMillis();
+	}
+
+
 	public static String getTimeAll(long time){
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS"); 
 		return formatter.format(time);

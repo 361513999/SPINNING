@@ -15,6 +15,7 @@ import com.hhkj.spinning.www.common.TimeUtil;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Administrator on 2017/12/26/026.
@@ -84,12 +85,21 @@ public class DB {
     public void clearById(String tableName,int i){
         db.execSQL("DELETE FROM "+tableName+" WHERE i="+i);
     }
+    //清除当前时间前一天的记录
+    public void clearByDay(String tableName){
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.DAY_OF_YEAR,-1);
+        db.execSQL("DELETE FROM "+tableName+" where time<="+nowTime.getTime().getTime());
+    }
 
     public void addCenterItem1Edit(String tog,long time){
-        db.execSQL("insert into tog_time(phone,tog,time) values(?,?,?)",new Object[]{sharedUtils.getStringValue("phone"),tog,time});
+        db.execSQL("insert into tog_time(phone,tog,time,show) values(?,?,?,?)",new Object[]{sharedUtils.getStringValue("phone"),tog,time,false});
     }
     public void updateCenterItem1Edit(String tog,long time,int i){
         db.execSQL("update tog_time set tog=?,time=? where i=?",new Object[]{tog,time,i});
+    }
+    public void updateCenterItem1EditSuccess(int i){
+        db.execSQL("update tog_time set show=? where i=?",new Object[]{true,i});
     }
 
     /**
@@ -124,8 +134,44 @@ public class DB {
                 cursor = null;
             }
         }
-
     }
+    public CenterItem1Edit getTask(){
+
+//        clearByDay("tog_time");
+        String sql = "select i,tog,time from tog_time where phone=? and show='0' and time>? order by time ";
+        Cursor cursor = null;
+        CenterItem1Edit edit = null;
+        try {
+            cursor = db.rawQuery(sql,new String[]{sharedUtils.getStringValue("phone"),String.valueOf(TimeUtil.getNow())});
+            P.c(TimeUtil.getNow()+"数据数量"+cursor.getCount());
+            if(cursor.moveToFirst()){
+              long time =   getLong(cursor,"time");
+              long now = TimeUtil.getNow();
+              long starttime = now-(1000*60);
+              long endtime = now+(1000*60);
+              P.c(TimeUtil.getTime(time)+"-----"+TimeUtil.getTime(starttime)+"=="+TimeUtil.getTime(endtime));
+              if(time>=starttime&&time<=endtime){
+                  edit = new CenterItem1Edit();
+                  edit.setI(getInt(cursor,"i"));
+                  edit.setTog(getString(cursor,"tog"));
+                  edit.setTime(getLong(cursor,"time"));
+                  updateCenterItem1EditSuccess(edit.getI());
+              }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+
+        return  edit;
+    }
+
+
     /**
      * 获得目标列表
      * @param list

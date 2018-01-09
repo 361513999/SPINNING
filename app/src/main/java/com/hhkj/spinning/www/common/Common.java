@@ -7,6 +7,7 @@ import android.os.Environment;
  */
 
 public class Common {
+    public  volatile  static boolean isRunning = false;
     //应用签名    ba2928e597b995ae1cb5a75b059f71d5
     public static final String Appkey = "5a38a65ab27b0a6b3a00052a";
     public final static String DB_DIR = "data/data/"+BaseApplication.application.getPackageName()+"/databases/";

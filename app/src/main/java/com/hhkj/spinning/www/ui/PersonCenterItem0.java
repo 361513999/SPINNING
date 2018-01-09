@@ -189,6 +189,7 @@ public class PersonCenterItem0 extends BaseFragment {
                     center0.setSex(obj.getBoolean("Sex"));
                     center0.setUrl(obj.getString("Url"));
                     center0.setUserName(obj.getString("UserName"));
+                    center0.setInfo(obj.getString("UserExplain"));
 
                     base_handler.sendEmptyMessage(1);
 

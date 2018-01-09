@@ -30,7 +30,7 @@ android {
         }
     }
     //打包后应用名称
-   /* applicationVariants.all { variant ->
+/*   applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             def fileName
@@ -41,10 +41,18 @@ android {
                     //除了release就是debug
                     fileName = "spinning_debug.apk"
                 }
-                output.outputFile = new File(outputFile.parent, fileName)
+                //以上的在3.0版本不能用
+//              output.outputFile= new File(outputFile.parent, fileName)
+                output.outputFile = applicationId + versionName + ".apk"
+
             }
         }
     }*/
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.name}-${variant.versionName}.apk"
+        }
+    }
 
 }
 allprojects {

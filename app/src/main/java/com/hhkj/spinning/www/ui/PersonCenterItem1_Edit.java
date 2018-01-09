@@ -14,6 +14,7 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.db.DB;
 import com.hhkj.spinning.www.widget.NewToast;
@@ -113,10 +114,11 @@ public class PersonCenterItem1_Edit extends BaseActivity {
                         + (calendar0.get(Calendar.MONTH) + 1) + "-"
                         + calendar0.get(Calendar.DAY_OF_MONTH) + "  " + picker_hour.getContentByCurrValue() + ":" + picker_minute.getContentByCurrValue();
                 data = TimeUtil.parseTime(show);
+
                 if (data == 0) {
                     NewToast.makeText(PersonCenterItem1_Edit.this, "目标时间不合法", Common.TTIME).show();
                     return;
-                } else if (data <= System.currentTimeMillis()) {
+                } else if (data <= TimeUtil.getNow()) {
                     NewToast.makeText(PersonCenterItem1_Edit.this, "目标时间应该在当前之后", Common.TTIME).show();
                     return;
                 }
