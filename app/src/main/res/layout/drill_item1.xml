@@ -20,12 +20,26 @@
             android:textColor="@color/white"
             android:text="直播"
             android:layout_marginBottom="3dp"/>
-       <android.support.v4.view.ViewPager
-           android:id="@+id/item0"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/item0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v4.view.ViewPager>
+           <LinearLayout
+               android:id="@+id/item1"
+               android:orientation="horizontal"
+               android:layout_width="match_parent"
+               android:gravity="right|bottom"
+               android:paddingRight="10dp"
+               android:paddingBottom="10dp"
+               android:layout_height="match_parent">
 
-       </android.support.v4.view.ViewPager>
+           </LinearLayout>
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout

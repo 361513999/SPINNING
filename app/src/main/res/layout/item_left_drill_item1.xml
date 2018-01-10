@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.hhkj.spinning.www.widget.indicator.CircleIndicator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircleIndicator="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item2"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:layout_gravity="bottom|right"
+    CircleIndicator:ci_background="@android:color/white"
+    CircleIndicator:ci_gravity="center"
+    CircleIndicator:ci_margin="2dp"
+    CircleIndicator:ci_mode="outside"
+    CircleIndicator:ci_radius="5dp"
+    CircleIndicator:ci_selected_background="0xffe6454a" />

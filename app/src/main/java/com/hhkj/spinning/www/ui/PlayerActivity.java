@@ -66,6 +66,7 @@ public class PlayerActivity extends BaseActivity {
 
         return strMinute + ":" + strSecond;
     }
+    private volatile boolean  TIME_RUNNING = true;
     @Override
     public void init() {
         suf = findViewById(R.id.suf);
@@ -187,12 +188,23 @@ public class PlayerActivity extends BaseActivity {
                             if(mediaPlayer.isPlaying()){
                                 getHandler().sendEmptyMessage(0);
                             }
+                           /* if(TIME_RUNNING){
+                                if(mediaPlayer.isPlaying()){
+                                    getHandler().sendEmptyMessage(0);
+                                }
+
+                            }else{
+                                if(mediaPlayer.isPlaying()){
+                                    TIME_RUNNING = true;
+                                }
+                            }*/
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
+
                         }
 
                     };
@@ -209,17 +221,19 @@ public class PlayerActivity extends BaseActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                TIME_RUNNING = false;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+
                 int process = seekBar.getProgress();
                 mediaPlayer.seekTo(process);
                 item0.setText(formatTime(process));
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                 PLAY_TAG = 1;
                 mediaPlayer.play();
+              //  TIME_RUNNING = true;
                 showLimite();
             }
         });

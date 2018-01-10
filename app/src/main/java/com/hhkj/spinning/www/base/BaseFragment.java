@@ -29,18 +29,26 @@ public class BaseFragment extends Fragment {
             loadView = null;
         }
     }
-
+    public void showLoadView(Activity activity){
+        if(loadView==null){
+            loadView = new LoadView(activity);
+            loadView.showSheet();
+        }
+    }
+    public void httpPost(String DIRECT, String content, final Result result,Activity activity){
+        httpPostSON(DIRECT,content,result,activity,true);
+    }
     /**
      *
      * @param DIRECT 访问函数
      * @param content 访问请求参数
      * @param result 返回结果
      */
-    public void httpPost(String DIRECT, String content, final Result result, Activity activity){
-        if(loadView==null){
-            loadView = new LoadView(activity);
-            loadView.showSheet();
-        }
+    public void httpPostSON(String DIRECT, String content, final Result result, Activity activity,boolean show){
+            if(show){
+                showLoadView(activity);
+            }
+
         OkHttpUtils.postString().url(U.VISTER()+DIRECT).mediaType(U.json).content(content).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

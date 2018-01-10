@@ -5,10 +5,13 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseFragmentActivity;
+
+import java.util.zip.Inflater;
 
 /**
  * Created by Administrator on 2017/12/21/021.
@@ -76,7 +79,8 @@ public class DrillActivity extends BaseFragmentActivity {
                 transaction.replace(CONTENT, drillItem0);
                 break;
             case 1:
-                drillItem1 = new DrillItem1(DrillActivity.this, getHandler());
+
+                drillItem1 = new DrillItem1(DrillActivity.this, getHandler(),sharedUtils);
                 transaction.replace(CONTENT, drillItem1);
 
                 break;

@@ -22,6 +22,7 @@ import com.hhkj.spinning.www.adapter.HomeListAdapter;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.HomeOnlineList;
+import com.hhkj.spinning.www.bean.VideoBean;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
@@ -66,9 +67,16 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.home_layout);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ISRUN = false;
+    }
+
+    private boolean ISRUN = true;
     private void time(long midTime,int flag) {
 
-        while (midTime > 0) {
+        while (midTime > 0&&ISRUN) {
             midTime--;
             long hh = midTime / 60 / 60 % 60;
             long mm = midTime / 60 % 60;
@@ -225,6 +233,15 @@ public class HomeActivity extends BaseActivity {
             case 5:
                 NewToast.makeText(HomeActivity.this, "还未开播", Common.TTIME).show();
                 break;
+            case 6:
+                    homeEcoAdapter.updata(videoBeans);
+                break;
+            case 7:
+                VideoBean bean = (VideoBean) msg.obj;
+                Intent intent7 = new Intent(HomeActivity.this,PlayerActivity.class);
+                intent7.putExtra("param",bean.getTitle()+";"+FileUtils.addImage(bean.getUrl()));
+                startActivity(intent7);
+                break;
         }
     }
 
@@ -267,6 +284,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ISRUN = true;
         home_icon_txt.setText(sharedUtils.getStringValue("userName"));
         ImageLoader.getInstance().displayImage(FileUtils.addImage(sharedUtils.getStringValue("icon")), home_icon_tag);
     }
@@ -386,7 +404,7 @@ public class HomeActivity extends BaseActivity {
                 //  int count = 10;
                 // int temp = FileUtils.dip2px(HomeActivity.this, 10)*(count-2);
                 // gallery_bottom.setLayoutParams(new LinearLayout.LayoutParams((int)((count*width)+temp),(int)height));
-                homeEcoAdapter = new HomeEcoAdapter(HomeActivity.this, (int) width, (int) height);
+                homeEcoAdapter = new HomeEcoAdapter(HomeActivity.this, (int) width, (int) height,videoBeans,getHandler());
                 gallery_bottom.setAdapter(homeEcoAdapter);
 
             }
@@ -440,6 +458,65 @@ public class HomeActivity extends BaseActivity {
         CURRENT_LIST_PAGE = 1;
         onlineLists.clear();
         getOnlineList();
-
+        getNewVideo();
     }
+
+    private ArrayList<VideoBean> videoBeans = new ArrayList<>();
+    private void getNewVideo(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("cls", "Sys.PlayVideo");
+            jsonObject.put("method", "LoadPlayVideo");
+            jsonObject.put("toKen", sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            object.put("pageSize", Common.SHOW_NUM);
+            object.put("pageIndex", 1);
+            object.put("app", "");
+//            object.put("column","EndTime");
+//            object.put("orderByType","desc");
+
+            jsonObject.put("param", object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+                try {
+                    videoBeans.clear();
+                    String result = data.getString("Result");
+                    JSONArray jsonArray = new JSONArray(result);
+                    int len = jsonArray.length();
+
+                    for(int i=0;i<len;i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        VideoBean bean = new VideoBean();
+                        bean.setImage(object.getString("TitleUrl"));
+                        bean.setUrl(object.getString("Url"));
+                        bean.setTitle(object.getString("Title"));
+                        bean.setTime(object.getString("LongTime"));
+                        videoBeans.add(bean);
+                    }
+                    getHandler().sendEmptyMessage(6);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+    }
+
+
 }
