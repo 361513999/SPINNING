@@ -120,7 +120,7 @@ public class HomeActivity extends BaseActivity {
 
 
                         item_left6.setText("未开始");
-                    } else if (online.getStatus() == 1) {
+                    } else if (online.getStatus() == 1||online.getStatus() == 2) {
                         new Thread(){
                             @Override
                             public void run() {
@@ -131,7 +131,7 @@ public class HomeActivity extends BaseActivity {
                                 time(minutes,1);
                             }
                         }.start();
-                        item_left6.setText("正在直播");
+                        item_left6.setText(online.getStatus()==1?"正在直播":"暂时停播");
                     }
                     item_left6.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -172,6 +172,14 @@ public class HomeActivity extends BaseActivity {
                     public void success(JSONObject data) {
                         try {
                             String result = data.getString("Result");
+                            String value = data.getString("Value");
+                            JSONObject object = new JSONObject(value);
+                            if( object.getInt("PlayStatus")!=1){
+
+                                getHandler().sendEmptyMessage(5);
+                                return;
+                            }
+
                             JSONArray jsonArray = new JSONArray(result);
                             int len = jsonArray.length();
                             if (len != 0) {
@@ -213,6 +221,9 @@ public class HomeActivity extends BaseActivity {
                     item_left5.setText("距离结束:" + obj);
                 }
 
+                break;
+            case 5:
+                NewToast.makeText(HomeActivity.this, "还未开播", Common.TTIME).show();
                 break;
         }
     }

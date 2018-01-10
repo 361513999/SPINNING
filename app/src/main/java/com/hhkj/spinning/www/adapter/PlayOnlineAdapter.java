@@ -12,7 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.bean.PlayOnlinePerson;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 
 /**
@@ -25,23 +29,27 @@ public class PlayOnlineAdapter extends BaseAdapter {
 
     private int height = 0;
     private Handler handler;
-    public PlayOnlineAdapter(Context context,int height, Handler handler){
+    private ArrayList<PlayOnlinePerson> onlinePeople;
+    public PlayOnlineAdapter(Context context,int height, Handler handler,ArrayList<PlayOnlinePerson> onlinePeople){
         this.context = context;
-
+        this.onlinePeople = onlinePeople;
         this.height = height;
         this.handler = handler;
         inflater = LayoutInflater.from(context);
 
     }
-
+    public void updata(ArrayList<PlayOnlinePerson> onlinePeople){
+        this.onlinePeople = onlinePeople;
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
-        return 20;
+        return onlinePeople.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return onlinePeople.get(position);
     }
 
     @Override
@@ -65,6 +73,8 @@ public class PlayOnlineAdapter extends BaseAdapter {
 //            viewHolder.txt = (TextView) convertView.findViewById(R.id.txt);
             viewHolder.item1 = convertView.findViewById(R.id.item1);
             viewHolder.item0 = convertView.findViewById(R.id.item0);
+            viewHolder.item2 = convertView.findViewById(R.id.item2);
+            viewHolder.item3 = convertView.findViewById(R.id.item3);
             viewHolder.child = convertView.findViewById(R.id.child);
             convertView.setTag(R.mipmap.ic_launcher + position);
         } else {
@@ -88,8 +98,13 @@ public class PlayOnlineAdapter extends BaseAdapter {
                 handler.sendEmptyMessage(0);
             }
         });
-        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.ic_launcher,viewHolder.item1);
 
+        PlayOnlinePerson person = onlinePeople.get(position);
+
+        ImageLoader.getInstance().displayImage(FileUtils.addImage(person.getIco()),viewHolder.item1);
+        viewHolder.item2.setText(person.getName());
+        viewHolder.item0.setText(String.valueOf(position+1));
+        viewHolder.item3.setText(person.getKcal()+" Kcal");
         return  convertView;
     }
 }

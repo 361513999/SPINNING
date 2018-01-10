@@ -60,8 +60,15 @@ public void showNoty(long time,String tog){
             .setContentTitle("FitNow提醒服务")
             .setContentText(TimeUtil.getTimeH(time)+"的目标"+tog+"卡")
             .setOngoing(false)
+
             .setContentIntent(pendingIntent)
             .build();
+    //使用默认的声音
+    notification.defaults |= Notification.DEFAULT_SOUND;
+
+//使用默认的震动
+    notification.defaults |= Notification.DEFAULT_VIBRATE;
+
          /*使用startForeground,如果id为0，那么notification将不会显示*/
     startForeground(1,notification);
 }

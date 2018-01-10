@@ -72,7 +72,7 @@ public class DrillActivity extends BaseFragmentActivity {
 
         switch (KEYCODE) {
             case 0:
-                drillItem0 = new DrillItem0(DrillActivity.this, getHandler());
+                drillItem0 = new DrillItem0(DrillActivity.this, getHandler(),sharedUtils);
                 transaction.replace(CONTENT, drillItem0);
                 break;
             case 1:

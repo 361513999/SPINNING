@@ -22,11 +22,15 @@ import com.alivc.player.MediaPlayer;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PlayOnlineAdapter;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.bean.PlayOnlinePerson;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.Result;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by cloor on 2018/1/4.
@@ -41,6 +45,7 @@ public class PlayOnlineActivity extends BaseActivity {
     @Override
     public void backActivity(View v) {
         super.backActivity(v);
+
         exitOnline();
     }
 
@@ -48,10 +53,15 @@ public class PlayOnlineActivity extends BaseActivity {
     public void process(Message msg) {
         switch (msg.what){
             case  0:
+
                 showBottom();
+                break;
+            case 1:
+                playOnlineAdapter.updata(personArrayList);
                 break;
         }
     }
+    private volatile boolean isRun = true;
     private SwipeRefreshLayout.OnRefreshListener listener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -80,6 +90,7 @@ public class PlayOnlineActivity extends BaseActivity {
             title.setText(temp[2]);
             url = temp[1];
             P.c("拉流地址"+url);
+//
         }
 
         lists.post(new Runnable() {
@@ -88,7 +99,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 //128   40
                 int width = lists.getMeasuredWidth();
                 int height = (int) ((40.0/128.0)*width);
-                playOnlineAdapter = new PlayOnlineAdapter(PlayOnlineActivity.this,height,getHandler());
+                playOnlineAdapter = new PlayOnlineAdapter(PlayOnlineActivity.this,height,getHandler(),personArrayList);
                 lists.setAdapter(playOnlineAdapter);
 
             }
@@ -115,7 +126,8 @@ public class PlayOnlineActivity extends BaseActivity {
             }
         });
         if (mediaPlayer != null) {
-            mediaPlayer.prepareToPlay(url);
+            mediaPlayer.prepareAndPlay(url);
+
 
         }
 
@@ -148,12 +160,27 @@ public class PlayOnlineActivity extends BaseActivity {
                 }
             }
         });
+
         mediaPlayer.enableNativeLog();
         mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
             @Override
             public void onPrepared() {
                 P.c("准备完成");
+                mediaPlayer.setVolume(100);
                 mediaPlayer.play();
+            }
+        });
+        mediaPlayer.setPcmDataListener(new MediaPlayer.MediaPlayerPcmDataListener() {
+            @Override
+            public void onPcmData(byte[] bytes, int i) {
+                P.c(i+"~~~~");
+            }
+        });
+            mediaPlayer.setMediaType(MediaPlayer.MediaType.Live);
+        mediaPlayer.setErrorListener(new MediaPlayer.MediaPlayerErrorListener() {
+            @Override
+            public void onError(int i, String s) {
+                P.c(i+"视频错误"+s);
             }
         });
         showLimite();
@@ -162,14 +189,27 @@ public class PlayOnlineActivity extends BaseActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                addPerson();
-                getPersonList();
-                handler.postDelayed(this,10000);
+               new Thread(){
+                   @Override
+                   public void run() {
+                       super.run();
+                    while (isRun){
+                        addPerson();
+                        getPersonList();
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                   }
+               }.start();
+
             }
         });
     }
     private Handler handler = new Handler();
-
+    private ArrayList<PlayOnlinePerson> personArrayList = new ArrayList<>();
     private void addPerson(){
         JSONObject jsonObject = new JSONObject();
         try {
@@ -182,6 +222,7 @@ public class PlayOnlineActivity extends BaseActivity {
             object.put("Km","2");
             object.put("Sd","3");
             object.put("Xl","4");
+            object.put("Kcal",5);
             jsonObject.put("param",object.toString());
 
 
@@ -192,6 +233,7 @@ public class PlayOnlineActivity extends BaseActivity {
         httpPostSON("Post", jsonObject.toString(), new Result() {
             @Override
             public void success(JSONObject data) {
+
 
             }
 
@@ -224,6 +266,33 @@ public class PlayOnlineActivity extends BaseActivity {
         httpPostSON("Post", jsonObject.toString(), new Result() {
             @Override
             public void success(JSONObject data) {
+                try {
+
+                    String result = data.getString("Result");
+
+                    JSONArray jsonArray = new JSONArray(result);
+                    int len  = jsonArray.length();
+                    if(len!=0){
+                        personArrayList.clear();
+                    }
+                    for(int i=0;i<len;i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        PlayOnlinePerson person = new PlayOnlinePerson();
+                        person.setIco(object.getString("Url"));
+                        person.setName(object.getString("Name"));
+                        person.setKcal(object.getString("Kcal"));
+                        person.setKll(object.getString("Kll"));
+                        person.setKm(object.getString("Km"));
+                        person.setSd(object.getString("Sd"));
+                        person.setXl(object.getString("Xl"));
+                        personArrayList.add(person);
+
+                    }
+                    getHandler().sendEmptyMessage(1);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -332,6 +401,17 @@ public class PlayOnlineActivity extends BaseActivity {
         super.onDestroy();
         if(mediaPlayer!=null){
             mediaPlayer.destroy();
+        }
+        isRun = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mediaPlayer!=null){
+            control.setBackgroundResource(R.drawable.jz_click_play_selector);
+            PLAY_TAG = 0;
+            mediaPlayer.pause();
         }
     }
 

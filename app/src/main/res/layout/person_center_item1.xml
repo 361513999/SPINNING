@@ -87,15 +87,24 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:background="@color/list_line"/>
-        <com.hhkj.spinning.www.widget.InScrollListView
-            android:id="@+id/tog_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/no_color"
-            android:listSelector="@null"
-            android:cacheColorHint="@color/no_color"
-            android:divider="@color/list_line"
-            android:dividerHeight="0.5dp" />
+        <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:orientation="vertical"
+               android:layout_height="wrap_content">
+               <com.hhkj.spinning.www.widget.InScrollListView
+                   android:id="@+id/tog_list"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@color/no_color"
+                   android:listSelector="@null"
+                   android:cacheColorHint="@color/no_color"
+                   android:divider="@color/list_line"
+                   android:dividerHeight="0.5dp" />
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -127,7 +136,8 @@
                 android:text="亲,你还没有目标哦~"
                 android:textColor="@color/white" />
         </LinearLayout>
-
+           </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <View

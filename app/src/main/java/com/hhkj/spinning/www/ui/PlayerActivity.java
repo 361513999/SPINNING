@@ -1,5 +1,6 @@
 package com.hhkj.spinning.www.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Message;
@@ -39,8 +40,7 @@ public class PlayerActivity extends BaseActivity {
     private Button control;
     private int voice = 0;
     private SeekBar item1;
-    private TextView item0,item2;
-
+    private TextView item0,item2,title;
     /*
 * 毫秒转化
 */
@@ -75,6 +75,19 @@ public class PlayerActivity extends BaseActivity {
         item2 = findViewById(R.id.item2);
         item3 = findViewById(R.id.item3);
         control = findViewById(R.id.control);
+        title = findViewById(R.id.title);
+        Intent intent = getIntent();
+        if(intent.hasExtra("param")){
+            String param = intent.getStringExtra("param");
+
+            String temp[] = param.split(";");
+
+            title.setText(temp[0]);
+            url = temp[1];
+            P.c("点播地址"+url);
+//
+        }
+
         mediaPlayer = new AliVcMediaPlayer(PlayerActivity.this,suf);
         voice =  mediaPlayer.getVolume();
         if (mediaPlayer != null) {
