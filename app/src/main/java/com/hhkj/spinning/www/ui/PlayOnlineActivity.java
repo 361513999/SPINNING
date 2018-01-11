@@ -79,6 +79,15 @@ public class PlayOnlineActivity extends BaseActivity {
         suf = findViewById(R.id.suf);
         control = findViewById(R.id.control);
         mediaPlayer = new AliVcMediaPlayer(PlayOnlineActivity.this,suf);
+
+//        mediaPlayer.setMediaType(MediaPlayer.MediaType.Live);
+        mediaPlayer.setInfoListener(new MediaPlayer.MediaPlayerInfoListener() {
+            @Override
+            public void onInfo(int i, int i1) {
+
+            }
+        });
+
         lists = findViewById(R.id.lists);
 
         Intent intent = getIntent();
@@ -87,12 +96,13 @@ public class PlayOnlineActivity extends BaseActivity {
 
             String temp[] = param.split(";");
             onlineId = temp[0];
+           // url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515682074-0-0-e297fe01d236acdb8d9ad58e640f2d87";
             title.setText(temp[2]);
             url = temp[1];
             P.c("拉流地址"+url);
 //
         }
-
+//        url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515652417-0-0-32be550eee35893b7c38cd7b6fec83aa";
         lists.post(new Runnable() {
             @Override
             public void run() {
@@ -168,6 +178,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 P.c("准备完成");
                 mediaPlayer.setVolume(100);
                 mediaPlayer.play();
+
             }
         });
         mediaPlayer.setPcmDataListener(new MediaPlayer.MediaPlayerPcmDataListener() {
@@ -176,7 +187,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 P.c(i+"~~~~");
             }
         });
-            mediaPlayer.setMediaType(MediaPlayer.MediaType.Live);
+
         mediaPlayer.setErrorListener(new MediaPlayer.MediaPlayerErrorListener() {
             @Override
             public void onError(int i, String s) {

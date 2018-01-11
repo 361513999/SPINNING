@@ -473,8 +473,8 @@ public class HomeActivity extends BaseActivity {
             object.put("pageSize", Common.SHOW_NUM);
             object.put("pageIndex", 1);
             object.put("app", "");
-//            object.put("column","EndTime");
-//            object.put("orderByType","desc");
+            object.put("column","EditTime");
+            object.put("orderByType","desc");
 
             jsonObject.put("param", object.toString());
         } catch (JSONException e) {

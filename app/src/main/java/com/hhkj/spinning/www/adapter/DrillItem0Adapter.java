@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,9 +60,10 @@ public class DrillItem0Adapter extends BaseAdapter {
     private class ViewHolder {
 
         LinearLayout child,content0;
-        TextView slo,item0,item1;
+        TextView item0,item1;
         InScrollListView content;
         ImageView item2;
+        Button slo;
     }
 
     @Override
@@ -95,7 +97,12 @@ public class DrillItem0Adapter extends BaseAdapter {
          viewHolder.slo.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            viewHolder.content.setVisibility(View.VISIBLE);
+            if(viewHolder.content.getVisibility()==View.VISIBLE){
+                viewHolder.content.setVisibility(View.GONE);
+            }else{
+                viewHolder.content.setVisibility(View.VISIBLE);
+            }
+
         }
     });
 
