@@ -10,14 +10,15 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.common.P;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 
 public class CommonWeb extends BaseActivity {
@@ -49,7 +50,15 @@ public class CommonWeb extends BaseActivity {
 				return true;
 			}
 		});
-		commonView.getSettings().setJavaScriptEnabled(true);
+		WebSettings webSettings = commonView.getSettings();
+		webSettings.setJavaScriptEnabled(true);
+		webSettings.setAppCacheEnabled(true);
+		webSettings.setDatabaseEnabled(true);
+		webSettings.setDomStorageEnabled(true);
+		webSettings.setAppCacheMaxSize(Long.MAX_VALUE);
+		webSettings.setAppCachePath(this.getDir("appcache", 0).getPath());
+		webSettings.setDatabasePath(this.getDir("databases", 0).getPath());
+		webSettings.setBuiltInZoomControls(false);
 		WebViewClient webViewClient = new WebViewClient(){
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -58,6 +67,15 @@ public class CommonWeb extends BaseActivity {
 				commonView.loadUrl(url);
 
 				return true;
+			}
+
+			@Override
+			public void onPageFinished(WebView webView, String s) {
+				super.onPageFinished(webView, s);
+				if (!commonView.getSettings().getLoadsImagesAutomatically()) {
+					commonView.getSettings().setLoadsImagesAutomatically(true);
+				}
+				P.c(commonView.getTitle());
 			}
 		};
 		WebChromeClient webChromeClient = new WebChromeClient(){
@@ -75,7 +93,7 @@ public class CommonWeb extends BaseActivity {
 			commonView.loadUrl(getIntent().getStringExtra("url"));
 		}else if (getIntent().hasExtra("content")) {
 
-			commonView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			commonView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 			commonView.getSettings().setLoadWithOverviewMode(true);
 //			tv_detail.loadData(details, "text/html", "UTF-8");
 

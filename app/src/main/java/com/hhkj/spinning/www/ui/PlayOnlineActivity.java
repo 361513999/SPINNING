@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -41,7 +43,7 @@ public class PlayOnlineActivity extends BaseActivity {
     private PlayOnlineAdapter playOnlineAdapter;
     private LinearLayout bottom_content;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private WebView webView;
     @Override
     public void backActivity(View v) {
         super.backActivity(v);
@@ -72,6 +74,7 @@ public class PlayOnlineActivity extends BaseActivity {
     String onlineId ;
     @Override
     public void init() {
+        webView = findViewById(R.id.webView);
         title = findViewById(R.id.title);
         swipeRefreshLayout = findViewById(R.id.pull_to_refresh_list);
         swipeRefreshLayout.setOnRefreshListener(listener);
@@ -87,7 +90,10 @@ public class PlayOnlineActivity extends BaseActivity {
 
             }
         });
-
+   /*     Intent intent0 = new Intent(PlayOnlineActivity.this,CommonWeb.class);
+//        intent0.putExtra("url","http://admin.pooboofit.com/index.html");
+        intent0.putExtra("url","http://player.alicdn.com/demo/live/pc.html?key=1");
+        startActivity(intent0);*/
         lists = findViewById(R.id.lists);
 
         Intent intent = getIntent();
@@ -102,6 +108,7 @@ public class PlayOnlineActivity extends BaseActivity {
             P.c("拉流地址"+url);
 //
         }
+        url = "rtmp://live.jw100.com/111/3";
 //        url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515652417-0-0-32be550eee35893b7c38cd7b6fec83aa";
         lists.post(new Runnable() {
             @Override

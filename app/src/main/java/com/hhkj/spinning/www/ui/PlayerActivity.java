@@ -294,8 +294,10 @@ public class PlayerActivity extends BaseActivity {
         countDownTimer.start();
 
     }
-    String url = "https://player.alicdn.com/video/aliyunmedia.mp4";
+//    String url = "https://player.alicdn.com/video/aliyunmedia.mp4";
+    String url = "rtmp://live.jw100.com/111/3";
     private SurfaceView suf;
+
     private AliVcMediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
