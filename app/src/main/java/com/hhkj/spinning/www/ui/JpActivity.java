@@ -46,8 +46,8 @@ public class JpActivity extends BaseActivity {
                 int width = list_content.getMeasuredWidth();
                 double fix = 90.0/505.0;
                 int height = (int) (width*fix);
-                sportListAdapter = new SportListAdapter(JpActivity.this,width,height);
-                sport_list.setAdapter(sportListAdapter);
+//                sportListAdapter = new SportListAdapter(JpActivity.this,width,height);
+//                sport_list.setAdapter(sportListAdapter);
             }
         });
     }

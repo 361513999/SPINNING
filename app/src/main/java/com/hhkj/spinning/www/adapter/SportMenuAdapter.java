@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.bean.SportMenu;
 
 import java.util.ArrayList;
 
@@ -19,26 +20,27 @@ import java.util.ArrayList;
 public class SportMenuAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<String> rbs = new ArrayList<>();
-    public SportMenuAdapter(Context context){
+    private ArrayList<SportMenu> sportMenus;
+    public SportMenuAdapter(Context context,ArrayList<SportMenu> sportMenus){
         this.context = context;
+        this.sportMenus =sportMenus;
         inflater = LayoutInflater.from(context);
-        init();
+
     }
-    private void init(){
-        rbs.add("骑行方法");
-        rbs.add("注意事项");
-        rbs.add("饮食搭配");
-        rbs.add("特别推荐");
+    public void updata(ArrayList<SportMenu> sportMenus){
+        this.sportMenus = sportMenus;
+        notifyDataSetChanged();
     }
+
+
     @Override
     public int getCount() {
-        return rbs.size();
+        return sportMenus.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return rbs.get(position);
+        return sportMenus.get(position);
     }
 
     @Override
@@ -53,6 +55,9 @@ public class SportMenuAdapter extends BaseAdapter {
     public void selected(int position){
         this.index = position;
         notifyDataSetChanged();
+    }
+    public int getSelectId(){
+        return  index;
     }
 
     @Override
@@ -69,8 +74,8 @@ public class SportMenuAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
-        String it = rbs.get(position);
-        viewHolder.item0.setText(it);
+        SportMenu it = sportMenus.get(position);
+        viewHolder.item0.setText(it.getName());
         if(index==position){
             viewHolder.item0.setTextColor(Color.WHITE);
             viewHolder.item1.setBackgroundResource(R.drawable.shape_sport_item_pressed);

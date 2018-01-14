@@ -108,7 +108,7 @@ public class PlayOnlineActivity extends BaseActivity {
             P.c("拉流地址"+url);
 //
         }
-        url = "rtmp://live.jw100.com/111/3";
+        url = "http://live.jw100.com/111/3.flv";
 //        url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515652417-0-0-32be550eee35893b7c38cd7b6fec83aa";
         lists.post(new Runnable() {
             @Override

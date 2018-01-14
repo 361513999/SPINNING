@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.bean.SportList;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -23,24 +25,29 @@ import java.util.ArrayList;
 public class SportListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<String> rbs = new ArrayList<>();
     private int width ,height= 0;
-    public SportListAdapter(Context context,int width ,int height){
+    private ArrayList<SportList> sportLists;
+    public SportListAdapter(Context context,int width ,int height, ArrayList<SportList> sportLists){
         this.context = context;
         this.width = width;
         this.height = height;
+        this.sportLists = sportLists;
         inflater = LayoutInflater.from(context);
 
+    }
+    public void updata( ArrayList<SportList> sportLists){
+        this.sportLists = sportLists;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return sportLists.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return sportLists.get(position);
     }
 
     @Override
@@ -50,6 +57,7 @@ public class SportListAdapter extends BaseAdapter {
     private class ViewHolder {
         ImageView item_tag;
         LinearLayout item_content;
+        TextView item0,item1;
     }
 
     @Override
@@ -61,13 +69,19 @@ public class SportListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_sport_list, null);
             viewHolder.item_tag = convertView.findViewById(R.id.item_tag);
             viewHolder.item_content = convertView.findViewById(R.id.item_content);
+            viewHolder.item0 = convertView.findViewById(R.id.item0);
+            viewHolder.item1 = convertView.findViewById(R.id.item1);
             convertView.setTag(R.mipmap.ic_launcher + position);
         } else {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
-        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.ic_launcher,  viewHolder.item_tag);
+
+        SportList list = sportLists.get(position);
+        ImageLoader.getInstance().displayImage(FileUtils.addImage(list.getImage()),  viewHolder.item_tag);
         viewHolder.item_content.setLayoutParams(new AbsListView.LayoutParams(width,height));
+        viewHolder.item0.setText(list.getName());
+        viewHolder.item1.setText(list.getTip());
         return  convertView;
     }
 }
