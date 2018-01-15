@@ -76,7 +76,7 @@ public class SportActivity extends BaseActivity {
                 sportMenuAdapter.selected(i);
                 CURRENT_LIST_PAGE = 1;
                 sportLists.clear();
-                getListById(String.valueOf(sportMenus.get(sportMenuAdapter.getSelectId())));
+                getListById(String.valueOf(sportMenus.get(sportMenuAdapter.getSelectId()).getId()));
             }
         });
         CURRENT_LIST_PAGE = 1;
@@ -244,7 +244,6 @@ public class SportActivity extends BaseActivity {
             }, runTime);
         }
     };
-    private boolean isMore = true;
     private PullToRefreshView.OnFooterRefreshListener listFootListener = new PullToRefreshView.OnFooterRefreshListener() {
         @Override
         public void onFooterRefresh(PullToRefreshView view) {
@@ -252,7 +251,7 @@ public class SportActivity extends BaseActivity {
                 @Override
                 public void run() {
                     pull_to_refresh_list.onFooterRefreshComplete();
-                    if (isMore) {
+                    if (CURRENT_LIST_MORE) {
                         getListById(String.valueOf(sportMenus.get(sportMenuAdapter.getSelectId())));
                     } else {
                         NewToast.makeText(SportActivity.this, "没有数据可加载", Common.TTIME).show();
