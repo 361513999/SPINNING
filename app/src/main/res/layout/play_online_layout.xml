@@ -33,12 +33,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="524">
-
-                <SurfaceView
-                    android:id="@+id/suf"
+                <com.hhkj.spinning.www.media.NEVideoView
+                    android:id="@+id/video_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -47,22 +46,37 @@
                         android:id="@+id/control"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/jz_click_pause_selector"
-                        android:visibility="gone" />
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <WebView
-                        android:id="@+id/webView"
                         android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/jz_click_pause_selector" />
 
-                    </WebView>
+                </RelativeLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/buffering_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:text="@string/buffering"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="13dp" />
+
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Large"
+                        android:layout_width="50dip"
+                        android:layout_height="50dip" />
                 </LinearLayout>
+
+
                 <LinearLayout
                     android:id="@+id/bottom_content"
                     android:visibility="gone"

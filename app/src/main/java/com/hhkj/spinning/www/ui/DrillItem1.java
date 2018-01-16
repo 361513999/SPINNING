@@ -16,7 +16,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.DrillItem1LeftAdapter;
 import com.hhkj.spinning.www.adapter.DrillItem1RightAdapter;
@@ -37,11 +36,9 @@ import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
 import com.hhkj.spinning.www.widget.indicator.CircleIndicator;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 

@@ -107,9 +107,10 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                 int height = (int) ((85/335.0)*(xListView.getMeasuredWidth()/2));
                 drillItem0Adapter = new DrillItem0Adapter(activity,height,audioBeans,drill_handler);
                 xListView.setAdapter(drillItem0Adapter);
+                getAudio();
             }
         });
-        getAudio();
+
 
     }
     private boolean CURRENT_LIST_MORE = true;

@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.HomeEcoAdapter;
 import com.hhkj.spinning.www.adapter.HomeListAdapter;

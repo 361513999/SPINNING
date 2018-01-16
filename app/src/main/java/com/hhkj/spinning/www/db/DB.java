@@ -115,7 +115,6 @@ public class DB {
             if(cursor.moveToFirst()){
                 count = getInt(cursor,"count(*)");
                 cursor.close();
-
                     if(handler!=null){
                         Message msg = new Message();
                         msg.what = 0;
@@ -143,7 +142,7 @@ public class DB {
         CenterItem1Edit edit = null;
         try {
             cursor = db.rawQuery(sql,new String[]{sharedUtils.getStringValue("phone"),String.valueOf(TimeUtil.getNow())});
-            P.c(TimeUtil.getNow()+"数据数量"+cursor.getCount()+"==="+TimeUtil.getTime(TimeUtil.getNow()));
+           // P.c(TimeUtil.getNow()+"数据数量"+cursor.getCount()+"==="+TimeUtil.getTime(TimeUtil.getNow()));
             if(cursor.moveToFirst()){
               long time =   getLong(cursor,"time");
               long now = TimeUtil.getNow();
@@ -152,7 +151,7 @@ public class DB {
               P.c(TimeUtil.getTime(time)+"-----"+TimeUtil.getTime(starttime)+"=="+TimeUtil.getTime(endtime));
               if(time>=starttime&&time<=endtime){
                   edit = new CenterItem1Edit();
-                  P.c("提醒操作");
+                //  P.c("提醒操作");
                   edit.setI(getInt(cursor,"i"));
                   edit.setTog(getString(cursor,"tog"));
                   edit.setTime(getLong(cursor,"time"));

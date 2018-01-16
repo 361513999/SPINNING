@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,6 +28,9 @@ import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.PlayOnlinePerson;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.media.NEMediaController;
+import com.hhkj.spinning.www.media.NEVideoView;
+import com.netease.neliveplayer.sdk.constant.NEType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +47,6 @@ public class PlayOnlineActivity extends BaseActivity {
     private PlayOnlineAdapter playOnlineAdapter;
     private LinearLayout bottom_content;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private WebView webView;
     @Override
     public void backActivity(View v) {
         super.backActivity(v);
@@ -72,83 +75,43 @@ public class PlayOnlineActivity extends BaseActivity {
         }
     };
     String onlineId ;
+    private View mBuffer;
+    private Button control;
     @Override
     public void init() {
-        webView = findViewById(R.id.webView);
         title = findViewById(R.id.title);
         swipeRefreshLayout = findViewById(R.id.pull_to_refresh_list);
         swipeRefreshLayout.setOnRefreshListener(listener);
         bottom_content = findViewById(R.id.bottom_content);
-        suf = findViewById(R.id.suf);
+        videoView = findViewById(R.id.video_view);
+        mBuffer = findViewById(R.id.buffering_prompt);
         control = findViewById(R.id.control);
-        mediaPlayer = new AliVcMediaPlayer(PlayOnlineActivity.this,suf);
-
-//        mediaPlayer.setMediaType(MediaPlayer.MediaType.Live);
-        mediaPlayer.setInfoListener(new MediaPlayer.MediaPlayerInfoListener() {
-            @Override
-            public void onInfo(int i, int i1) {
-
-            }
-        });
-   /*     Intent intent0 = new Intent(PlayOnlineActivity.this,CommonWeb.class);
-//        intent0.putExtra("url","http://admin.pooboofit.com/index.html");
-        intent0.putExtra("url","http://player.alicdn.com/demo/live/pc.html?key=1");
-        startActivity(intent0);*/
         lists = findViewById(R.id.lists);
-
+        //直播操作
         Intent intent = getIntent();
         if(intent.hasExtra("param")){
             String param = intent.getStringExtra("param");
-
             String temp[] = param.split(";");
             onlineId = temp[0];
-           // url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515682074-0-0-e297fe01d236acdb8d9ad58e640f2d87";
             title.setText(temp[2]);
             url = temp[1];
-            P.c("拉流地址"+url);
+            url = "http://live.jw100.com/111/3.flv";
 //
         }
-        url = "http://live.jw100.com/111/3.flv";
-//        url = "rtmp://live.jw100.com/fitnow/123?auth_key=1515652417-0-0-32be550eee35893b7c38cd7b6fec83aa";
-        lists.post(new Runnable() {
-            @Override
-            public void run() {
-                //128   40
-                int width = lists.getMeasuredWidth();
-                int height = (int) ((40.0/128.0)*width);
-                playOnlineAdapter = new PlayOnlineAdapter(PlayOnlineActivity.this,height,getHandler(),personArrayList);
-                lists.setAdapter(playOnlineAdapter);
 
-            }
-        });
-        suf.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                if(mediaPlayer!=null){
-                    mediaPlayer.setVideoSurface(surfaceHolder.getSurface());
-                }
-            }
+        url = "rtmp://v68f25ff4.live.126.net/live/11371c6d02574bd4b20f38c1a2312282";
 
-            @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-                if (mediaPlayer != null) {
-                    mediaPlayer.setSurfaceChanged();
-                }
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-            }
-        });
-        if (mediaPlayer != null) {
-            mediaPlayer.prepareAndPlay(url);
-
-
-        }
-
-        suf.setOnTouchListener(new View.OnTouchListener() {
+        videoView.setMediaType("livestream");
+//        videoView.setBufferStrategy(NEType.NELPANTIJITTER); //点播抗抖动
+        videoView.setBufferStrategy(NEType.NELPLOWDELAY); //直播低延时
+        videoView.setBufferingIndicator(mBuffer);
+        videoView.setHardwareDecoder(false);
+        videoView.setEnableBackgroundPlay(false);
+        videoView.setVideoPath(url);
+        videoView.requestFocus();
+        videoView.start();
+        showLimite();
+        videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 showLimite();
@@ -167,65 +130,77 @@ public class PlayOnlineActivity extends BaseActivity {
                     case  0:
                         control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                         PLAY_TAG = 1;
-                        mediaPlayer.play();
+                        videoView.start();
                         break;
                     case 1:
                         control.setBackgroundResource(R.drawable.jz_click_play_selector);
                         PLAY_TAG = 0;
-                        mediaPlayer.pause();
+                        videoView.pause();
                         break;
                 }
             }
         });
-
-        mediaPlayer.enableNativeLog();
-        mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
-            @Override
-            public void onPrepared() {
-                P.c("准备完成");
-                mediaPlayer.setVolume(100);
-                mediaPlayer.play();
-
-            }
-        });
-        mediaPlayer.setPcmDataListener(new MediaPlayer.MediaPlayerPcmDataListener() {
-            @Override
-            public void onPcmData(byte[] bytes, int i) {
-                P.c(i+"~~~~");
-            }
-        });
-
-        mediaPlayer.setErrorListener(new MediaPlayer.MediaPlayerErrorListener() {
-            @Override
-            public void onError(int i, String s) {
-                P.c(i+"视频错误"+s);
-            }
-        });
-        showLimite();
-
-
-        handler.post(new Runnable() {
+        lists.post(new Runnable() {
             @Override
             public void run() {
-               new Thread(){
-                   @Override
-                   public void run() {
-                       super.run();
-                    while (isRun){
-                        addPerson();
-                        getPersonList();
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                   }
-               }.start();
+                //128   40
+                int width = lists.getMeasuredWidth();
+                int height = (int) ((40.0/128.0)*width);
+                playOnlineAdapter = new PlayOnlineAdapter(PlayOnlineActivity.this,height,getHandler(),personArrayList);
+                lists.setAdapter(playOnlineAdapter);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                super.run();
+                                while (isRun){
+                                    addPerson();
+                                    getPersonList();
+                                    try {
+                                        Thread.sleep(10000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }.start();
 
+                    }
+                });
             }
         });
+
+
+
     }
+
+    private CountDownTimer countDownTimer;
+    private void showLimite(){
+        videoView.setEnabled(false);
+        control.setVisibility(View.VISIBLE);
+        //
+        if(countDownTimer==null){
+            countDownTimer = new CountDownTimer(3000,1000) {
+                @Override
+                public void onTick(long l) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    videoView.setEnabled(true);
+                    control.setVisibility(View.GONE);
+                }
+            };
+        }
+
+        countDownTimer.cancel();
+        countDownTimer.start();
+
+    }
+
     private Handler handler = new Handler();
     private ArrayList<PlayOnlinePerson> personArrayList = new ArrayList<>();
     private void addPerson(){
@@ -384,52 +359,26 @@ public class PlayOnlineActivity extends BaseActivity {
     }
 
 
-    private CountDownTimer countDownTimer;
-    private void showLimite(){
-        suf.setEnabled(false);
-        control.setVisibility(View.VISIBLE);
-        //
-        if(countDownTimer==null){
-            countDownTimer = new CountDownTimer(3000,1000) {
-                @Override
-                public void onTick(long l) {
 
-                }
-
-                @Override
-                public void onFinish() {
-                    suf.setEnabled(true);
-                    control.setVisibility(View.GONE);
-                }
-            };
-        }
-
-        countDownTimer.cancel();
-        countDownTimer.start();
-
-    }
-    private int PLAY_TAG = 1;
+    private int PLAY_TAG = 0;
     String url;
-    private SurfaceView suf;
-    private AliVcMediaPlayer mediaPlayer;
-    private Button control;
+    private NEVideoView videoView;
     private TextView title;
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer!=null){
-            mediaPlayer.destroy();
-        }
         isRun = false;
+
+        videoView.destroy();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(mediaPlayer!=null){
+        if(videoView!=null){
             control.setBackgroundResource(R.drawable.jz_click_play_selector);
             PLAY_TAG = 0;
-            mediaPlayer.pause();
+            videoView.pause();
         }
     }
 

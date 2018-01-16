@@ -93,9 +93,8 @@ dependencies {
     implementation files('libs/jsoup-1.7.2.jar')
     compile(name: 'AlivcReporter', ext: 'aar')
     compile(name: 'AlivcPlayer', ext: 'aar')
-
     compile project(path: ':datalib')
     compile project(path: ':photolib')
     implementation files('libs/tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar')
-
+    implementation files('libs/NELivePlayer-1.4.0.jar')
 }

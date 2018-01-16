@@ -39,6 +39,7 @@ import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.common.P;
 
 /*
  * Implementation Notes:
@@ -1133,6 +1134,8 @@ public class PLA_ListView extends PLA_AbsListView {
                 invokeOnItemScrollListener();
                 return;
             } else if (mItemCount != mAdapter.getCount()) {
+
+                P.c("mItemCount"+mItemCount+"~~~"+mAdapter.getCount());
                 throw new IllegalStateException("The content of the adapter has changed but "
                         + "ListView did not receive a notification. Make sure the content of "
                         + "your adapter is not modified from a background thread, but only " + "from the UI thread. [in ListView("

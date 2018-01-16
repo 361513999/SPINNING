@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
@@ -56,7 +55,6 @@ public class LoginActivity extends BaseActivity {
     private ImageView weixin_btn, qq_btn;
     private TextView get_code;
     private CircleImageView login_icon;
-
     //    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

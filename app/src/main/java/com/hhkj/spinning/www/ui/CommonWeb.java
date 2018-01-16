@@ -92,11 +92,9 @@ public class CommonWeb extends BaseActivity {
 		if(getIntent().hasExtra("url")){
 			commonView.loadUrl(getIntent().getStringExtra("url"));
 		}else if (getIntent().hasExtra("content")) {
-
 			commonView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 			commonView.getSettings().setLoadWithOverviewMode(true);
 //			tv_detail.loadData(details, "text/html", "UTF-8");
-
 			Document doc_Dis = Jsoup.parse(getIntent().getStringExtra("content"));
 			Elements ele_Img = doc_Dis.getElementsByTag("img");
 			if (ele_Img.size() != 0) {

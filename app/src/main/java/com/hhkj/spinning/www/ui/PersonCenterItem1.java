@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.CenterItem1Adapter;
+import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.bean.DateWeek;
 import com.hhkj.spinning.www.common.Common;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ValidFragment")
-public class PersonCenterItem1 extends Fragment {
+public class PersonCenterItem1 extends BaseFragment {
     private TextView add_tog;
     private ListView tog_list;
     private LinearLayout tog_title,s_l,date_view;

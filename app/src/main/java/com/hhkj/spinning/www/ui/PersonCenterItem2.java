@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.line.LineData;
 import com.hhkj.spinning.www.widget.line.LineUtils;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ValidFragment")
-public class PersonCenterItem2 extends Fragment {
+public class PersonCenterItem2 extends BaseFragment {
     private Handler handler;
     private Activity activity;
     public PersonCenterItem2(Activity activity, Handler handler){
