@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/jz_click_pause_selector" />
+                        android:background="@drawable/jz_click_play_selector" />
 
                 </RelativeLayout>
 

@@ -30,6 +30,7 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.media.NEMediaController;
 import com.hhkj.spinning.www.media.NEVideoView;
+import com.netease.neliveplayer.sdk.NELivePlayer;
 import com.netease.neliveplayer.sdk.constant.NEType;
 
 import org.json.JSONArray;
@@ -110,7 +111,15 @@ public class PlayOnlineActivity extends BaseActivity {
         videoView.setVideoPath(url);
         videoView.requestFocus();
         videoView.start();
-        showLimite();
+        videoView.setOnPreparedListener(new NELivePlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(NELivePlayer neLivePlayer) {
+                control.setBackgroundResource(R.drawable.jz_click_play_selector);
+                PLAY_TAG = 0;
+                showLimite();
+            }
+        });
+
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -360,7 +369,7 @@ public class PlayOnlineActivity extends BaseActivity {
 
 
 
-    private int PLAY_TAG = 0;
+    private int PLAY_TAG = 1;
     String url;
     private NEVideoView videoView;
     private TextView title;
