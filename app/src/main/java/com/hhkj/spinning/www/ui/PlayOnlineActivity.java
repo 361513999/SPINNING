@@ -26,10 +26,12 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PlayOnlineAdapter;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.PlayOnlinePerson;
+import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.media.NEMediaController;
 import com.hhkj.spinning.www.media.NEVideoView;
+import com.hhkj.spinning.www.widget.NewToast;
 import com.netease.neliveplayer.sdk.NELivePlayer;
 import com.netease.neliveplayer.sdk.constant.NEType;
 
@@ -100,7 +102,7 @@ public class PlayOnlineActivity extends BaseActivity {
 //
         }
 
-        url = "rtmp://v68f25ff4.live.126.net/live/11371c6d02574bd4b20f38c1a2312282";
+      //  url = "rtmp://v68f25ff4.live.126.net/live/11371c6d02574bd4b20f38c1a2312282";
 
         videoView.setMediaType("livestream");
 //        videoView.setBufferStrategy(NEType.NELPANTIJITTER); //点播抗抖动
@@ -119,6 +121,17 @@ public class PlayOnlineActivity extends BaseActivity {
                 showLimite();
             }
         });
+        videoView.setOnVideoParseErrorListener(new NELivePlayer.OnVideoParseErrorListener() {
+            @Override
+            public void onVideoParseError(NELivePlayer neLivePlayer) {
+                control.setBackgroundResource(R.drawable.jz_click_replay_selector);
+                PLAY_TAG = -1;
+                NewToast.makeText(PlayOnlineActivity.this,"直播异常,请重试", Common.TTIME).show();
+                showLimite();
+
+            }
+        });
+
 
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -135,7 +148,12 @@ public class PlayOnlineActivity extends BaseActivity {
 
 
                 switch (PLAY_TAG){
+                    case -1:
 
+                        control.setBackgroundResource(R.drawable.jz_click_pause_selector);
+                        PLAY_TAG = 1;
+                        videoView.resume();
+                        break;
                     case  0:
                         control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                         PLAY_TAG = 1;

@@ -29,7 +29,6 @@ import library.view.GregorianLunarCalendarOneView;
 public class PersonCenterItem1_Edit extends BaseActivity {
     private ListView person_left;
     private PersonCenterItem1_EditLeftAdapter personCenterItem1_editLeftAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
