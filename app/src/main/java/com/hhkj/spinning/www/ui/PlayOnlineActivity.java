@@ -98,8 +98,9 @@ public class PlayOnlineActivity extends BaseActivity {
             onlineId = temp[0];
             title.setText(temp[2]);
             url = temp[1];
-            url = "http://live.jw100.com/111/3.flv";
+//            url = "http://live.jw100.com/111/3.flv";
 //
+            P.c("直播地址"+url);
         }
 
       //  url = "rtmp://v68f25ff4.live.126.net/live/11371c6d02574bd4b20f38c1a2312282";
@@ -116,8 +117,8 @@ public class PlayOnlineActivity extends BaseActivity {
         videoView.setOnPreparedListener(new NELivePlayer.OnPreparedListener() {
             @Override
             public void onPrepared(NELivePlayer neLivePlayer) {
-                control.setBackgroundResource(R.drawable.jz_click_play_selector);
-                PLAY_TAG = 0;
+                control.setBackgroundResource(R.drawable.jz_click_pause_selector);
+                PLAY_TAG = 1;
                 showLimite();
             }
         });
@@ -131,7 +132,24 @@ public class PlayOnlineActivity extends BaseActivity {
 
             }
         });
+        videoView.setOnErrorListener(new NELivePlayer.OnErrorListener() {
+            @Override
+            public boolean onError(NELivePlayer neLivePlayer, int i, int i1) {
+                P.c("播放异常");
+                control.setBackgroundResource(R.drawable.jz_click_replay_selector);
+                PLAY_TAG = -1;
+                NewToast.makeText(PlayOnlineActivity.this,"直播异常,请重试", Common.TTIME).show();
+                showLimite();
 
+                return true;
+            }
+        });
+        videoView.setOnVideoParseErrorListener(new NELivePlayer.OnVideoParseErrorListener() {
+            @Override
+            public void onVideoParseError(NELivePlayer neLivePlayer) {
+                P.c("解析异常");
+            }
+        });
 
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override

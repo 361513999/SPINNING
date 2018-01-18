@@ -190,6 +190,16 @@ public class TimeUtil {
 
 		return result;
 	}
+	public static long getFetureSec(int past) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + past);
+		Date today = calendar.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String result = format.format(today);
+	//	P.c("转换"+result);
+
+		return today.getTime();
+	}
 	/**
 	 * 日期转周
 	 *

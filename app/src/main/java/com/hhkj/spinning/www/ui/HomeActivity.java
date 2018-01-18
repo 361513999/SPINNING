@@ -121,6 +121,8 @@ public class HomeActivity extends BaseActivity {
                                long from = System.currentTimeMillis();
                                long to = TimeUtil.parseTime_(online.getBeginTime());
                                long minutes = (to - from) / 1000;
+                               ISRUN = true;
+                               P.c("计算未开始"+minutes);
                                time(minutes,0);
                            }
                        }.start();
@@ -133,8 +135,12 @@ public class HomeActivity extends BaseActivity {
                             public void run() {
                                 super.run();
                                 long from = System.currentTimeMillis();
-                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
+//                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
+                                long to = TimeUtil.getFetureSec(online.getPlayTime());
+                                P.c(TimeUtil.getTime(TimeUtil.parseTime_(online.getBeginTime()))+"=="+TimeUtil.getTime(to));
                                 long minutes = (to - from) / 1000;
+                                ISRUN = true;
+                                P.c(online.getPlayTime()+"计算已开始"+minutes);
                                 time(minutes,1);
                             }
                         }.start();
