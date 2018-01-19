@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -72,8 +73,8 @@ public class HomeActivity extends BaseActivity {
         ISRUN = false;
     }
 
-    private boolean ISRUN = true;
-    private void time(long midTime,int flag) {
+    private volatile   boolean ISRUN = true;
+    private   void time(long midTime,int flag) {
 
         while (midTime > 0&&ISRUN) {
             midTime--;
@@ -94,10 +95,72 @@ public class HomeActivity extends BaseActivity {
             }
         }
     }
+    private void getNormal(final HomeOnlineList online){
+        cancleLoadView();
+        ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getImage()), item_left0);
+        ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getIco()), item_left1);
+        item_left2.setText(online.getName());
+        item_left3.setText(online.getPlayTime() + " 分钟");
+        item_left4.setText(online.getTitle());
+        if (online.getStatus() == 0) {
+            new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    long from = System.currentTimeMillis();
+                    long to = TimeUtil.parseTime_(online.getBeginTime());
+                    long minutes = (to - from) / 1000;
+                    ISRUN = true;
+                    P.c("计算未开始"+minutes);
+                    time(minutes,0);
+                }
+            }.start();
 
+
+            item_left6.setText("未开始");
+        } else if (online.getStatus() == 1||online.getStatus() == 2) {
+            new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    long from = System.currentTimeMillis();
+//                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
+                    long to = TimeUtil.getFetureSec(online.getPlayTime());
+                    P.c(TimeUtil.getTime(TimeUtil.parseTime_(online.getBeginTime()))+"=="+TimeUtil.getTime(to));
+                    long minutes = (to - from) / 1000;
+                    ISRUN = true;
+                    P.c(online.getPlayTime()+"计算已开始"+minutes);
+                    time(minutes,1);
+                }
+            }.start();
+            item_left6.setText(online.getStatus()==1?"正在直播":"暂时停播");
+        }
+        item_left6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = online;
+                getHandler().sendMessage(msg);
+            }
+        });
+    }
     @Override
     public void process(Message msg) {
         switch (msg.what) {
+            case -3:
+
+                final HomeOnlineList list = (HomeOnlineList) msg.obj;
+                ISRUN = false;
+                showLoadView();
+                item_left6.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getNormal(list);
+                    }
+                },1200);
+
+                break;
             case -2:
                 NewToast.makeText(HomeActivity.this, "最后一页", 1000).show();
                 break;
@@ -107,54 +170,7 @@ public class HomeActivity extends BaseActivity {
                 }
                 int size = onlineLists.size();
                 if (size != 0) {
-                    final HomeOnlineList online = onlineLists.get(0);
-                    ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getImage()), item_left0);
-                    ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getIco()), item_left1);
-                    item_left2.setText(online.getName());
-                    item_left3.setText(online.getPlayTime() + " 分钟");
-                    item_left4.setText(online.getTitle());
-                    if (online.getStatus() == 0) {
-                     new Thread(){
-                           @Override
-                           public void run() {
-                               super.run();
-                               long from = System.currentTimeMillis();
-                               long to = TimeUtil.parseTime_(online.getBeginTime());
-                               long minutes = (to - from) / 1000;
-                               ISRUN = true;
-                               P.c("计算未开始"+minutes);
-                               time(minutes,0);
-                           }
-                       }.start();
-
-
-                        item_left6.setText("未开始");
-                    } else if (online.getStatus() == 1||online.getStatus() == 2) {
-                        new Thread(){
-                            @Override
-                            public void run() {
-                                super.run();
-                                long from = System.currentTimeMillis();
-//                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
-                                long to = TimeUtil.getFetureSec(online.getPlayTime());
-                                P.c(TimeUtil.getTime(TimeUtil.parseTime_(online.getBeginTime()))+"=="+TimeUtil.getTime(to));
-                                long minutes = (to - from) / 1000;
-                                ISRUN = true;
-                                P.c(online.getPlayTime()+"计算已开始"+minutes);
-                                time(minutes,1);
-                            }
-                        }.start();
-                        item_left6.setText(online.getStatus()==1?"正在直播":"暂时停播");
-                    }
-                    item_left6.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Message msg = new Message();
-                            msg.what = 2;
-                            msg.obj = online;
-                            getHandler().sendMessage(msg);
-                        }
-                    });
+                    getNormal(onlineLists.get(0));
                 }else{
                     ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.video_default, item_left0);
                     ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.logo, item_left1);
@@ -166,6 +182,7 @@ public class HomeActivity extends BaseActivity {
                 homeListAdapter.updata(onlineLists);
                 break;
             case 2:
+
                 final HomeOnlineList online = (HomeOnlineList) msg.obj;
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -422,6 +439,12 @@ public class HomeActivity extends BaseActivity {
                 double height = width * fix;
                 homeListAdapter = new HomeListAdapter(HomeActivity.this, (int) width, (int) height, onlineLists, getHandler());
                 home_list.setAdapter(homeListAdapter);
+                home_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+                });
 
             }
         });

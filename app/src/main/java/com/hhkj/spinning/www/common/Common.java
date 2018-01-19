@@ -23,5 +23,5 @@ public class Common {
     public static final String STAFF_IMAGE = "IMAGES/";
     public static final String CACHE_STAFF_IMAGES = SD+STAFF_IMAGE;
     public static String APK_LOG = SD+"LOG/";
-
+    public static int MUSIC_INDEX = -1;
 }

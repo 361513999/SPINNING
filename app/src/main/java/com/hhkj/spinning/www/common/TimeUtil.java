@@ -27,6 +27,19 @@ public class TimeUtil {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(new Date(time));
 	}
+	public static String getTimemm(long time) {
+		SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+		return format.format(new Date(time));
+	}
+	public static long getTimepmm(String time) {
+		SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+		try {
+			return  format.parse(time).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return  0;
+	}
 	public static String getTimeYear(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy");
 		return format.format(new Date(time));

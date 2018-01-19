@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -42,6 +43,7 @@ public class DrillActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.drill_layout);
     }
 

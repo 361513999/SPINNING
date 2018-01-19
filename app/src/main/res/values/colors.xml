@@ -19,4 +19,5 @@
     <color name="font_light">#666666</color>
     <color name="font_online_bottom">#868686</color>
     <color name="font_online_bottom_div">#F9F94F</color>
+    <color name="music_ico_bg">#262626</color>
 </resources>

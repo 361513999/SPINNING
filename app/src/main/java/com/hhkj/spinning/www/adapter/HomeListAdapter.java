@@ -105,7 +105,7 @@ public class HomeListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Message msg = new Message();
-                msg.what = 2;
+                msg.what = -3;
                 msg.obj = obj;
                 handler.sendMessage(msg);
             }

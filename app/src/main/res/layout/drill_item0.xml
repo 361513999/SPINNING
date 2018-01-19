@@ -4,7 +4,13 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="10dp"
+    android:orientation="vertical"
     android:layout_height="match_parent" >
+    <SurfaceView
+        android:id="@+id/suf"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/drill_item0_refr"
         android:layout_width="match_parent"

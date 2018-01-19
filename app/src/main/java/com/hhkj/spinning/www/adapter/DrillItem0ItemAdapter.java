@@ -1,6 +1,7 @@
 package com.hhkj.spinning.www.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -25,10 +26,15 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Map<String,String>> maps;
     private Handler handler;
-    public DrillItem0ItemAdapter(Context context,ArrayList<Map<String,String>> maps,Handler handler){
+    private int index;
+    private int playIndex;
+
+    public DrillItem0ItemAdapter(Context context,ArrayList<Map<String,String>> maps,Handler handler,int index,int playIndex){
         this.context = context;
         this.maps = maps;
         this.handler = handler;
+        this.index = index;
+        this.playIndex = playIndex;
         inflater = LayoutInflater.from(context);
 
     }
@@ -53,7 +59,7 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null
                 || convertView.getTag(R.mipmap.ic_launcher + position) == null) {
@@ -66,14 +72,20 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
+        if(playIndex==position){
+            viewHolder.item0.setTextColor(context.getResources().getColor(R.color.white));
+        }else{
+            viewHolder.item0.setTextColor(Color.parseColor("#888888"));
+        }
         final Map<String,String> map = maps.get(position);
         viewHolder.item0.setText(map.get("title"));
         viewHolder.item0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Message msg = new Message();
-                msg.what = 0;
-                msg.obj = map;
+                msg.what = 3;
+                msg.arg1 = index;
+                msg.arg2 = position;
                 handler.sendMessage(msg);
             }
         });

@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alivc.player.AliVcMediaPlayer;
@@ -62,7 +63,7 @@ public class PlayOnlineActivity extends BaseActivity {
         switch (msg.what){
             case  0:
 
-                showBottom();
+//                showBottom();
                 break;
             case 1:
                 playOnlineAdapter.updata(personArrayList);
@@ -77,12 +78,17 @@ public class PlayOnlineActivity extends BaseActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     };
+    private LinearLayout over,person_list;
+    private RelativeLayout title_layout;
     String onlineId ;
     private View mBuffer;
     private Button control;
     @Override
     public void init() {
+        over = findViewById(R.id.over);
         title = findViewById(R.id.title);
+        title_layout = findViewById(R.id.title_layout);
+        person_list = findViewById(R.id.person_list);
         swipeRefreshLayout = findViewById(R.id.pull_to_refresh_list);
         swipeRefreshLayout.setOnRefreshListener(listener);
         bottom_content = findViewById(R.id.bottom_content);
@@ -90,6 +96,14 @@ public class PlayOnlineActivity extends BaseActivity {
         mBuffer = findViewById(R.id.buffering_prompt);
         control = findViewById(R.id.control);
         lists = findViewById(R.id.lists);
+        bottom_content.post(new Runnable() {
+            @Override
+            public void run() {
+                over.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,bottom_content.getMeasuredHeight()));
+            }
+        });
+
+
         //直播操作
         Intent intent = getIntent();
         if(intent.hasExtra("param")){
@@ -120,8 +134,23 @@ public class PlayOnlineActivity extends BaseActivity {
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                 PLAY_TAG = 1;
                 showLimite();
+                new CountDownTimer(3000,1000){
+
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        over.setVisibility(View.GONE);
+                        person_list.setVisibility(View.GONE);
+                        title_layout.setVisibility(View.GONE);
+                    }
+                }.start();
             }
         });
+
         videoView.setOnVideoParseErrorListener(new NELivePlayer.OnVideoParseErrorListener() {
             @Override
             public void onVideoParseError(NELivePlayer neLivePlayer) {
@@ -155,7 +184,15 @@ public class PlayOnlineActivity extends BaseActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 showLimite();
-
+                if(over.getVisibility()==View.VISIBLE){
+                    over.setVisibility(View.GONE);
+                    person_list.setVisibility(View.GONE);
+                    title_layout.setVisibility(View.GONE);
+                }else{
+                    over.setVisibility(View.VISIBLE);
+                    person_list.setVisibility(View.VISIBLE);
+                    title_layout.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });
