@@ -98,7 +98,8 @@
 
         </activity>
         <!--公共网页界面-->
-        <activity android:name=".ui.CommonWeb" >
+        <activity android:name=".ui.CommonWeb" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
 
         </activity>
         <activity android:name=".ui.JpActivity" android:configChanges="orientation|keyboardHidden|screenSize"
