@@ -149,6 +149,8 @@ public class DrillItem1 extends BaseFragment {
                         bean.setUrl(object.getString("Url"));
                         bean.setTitle(object.getString("Title"));
                         bean.setTime(object.getString("LongTime"));
+                        bean.setId(object.getInt("Id"));
+
                         videoBeans.add(bean);
                     }
                     drill_handler.sendEmptyMessage(1);
@@ -296,7 +298,7 @@ public class DrillItem1 extends BaseFragment {
                 case  0:
                     VideoBean bean = (VideoBean) msg.obj;
                     Intent intent = new Intent(activity,PlayerActivity.class);
-                    intent.putExtra("param",bean.getTitle()+";"+FileUtils.addImage(bean.getUrl()));
+                    intent.putExtra("param",bean);
                     startActivity(intent);
                     break;
                 case 1:

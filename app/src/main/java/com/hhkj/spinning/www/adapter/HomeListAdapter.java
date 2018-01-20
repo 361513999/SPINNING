@@ -67,7 +67,7 @@ public class HomeListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null
                 || convertView.getTag(R.mipmap.ic_launcher + position) == null) {
@@ -106,6 +106,7 @@ public class HomeListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Message msg = new Message();
                 msg.what = -3;
+                msg.arg1 = position;
                 msg.obj = obj;
                 handler.sendMessage(msg);
             }

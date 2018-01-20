@@ -176,6 +176,7 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                             audioBean.setTitle(jsob.getString("Title"));
                             audioBean.setImage(jsob.getString("TitleUrl"));
                             audioBean.setTip(jsob.getString("Remark"));
+
                             JSONArray array = jsob.getJSONArray("Audios");
                             int jen = array.length();
                             ArrayList<Map<String,String>> maps = new ArrayList<>();
@@ -185,6 +186,7 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                                 map.put("title",obj.getString("Title"));
                                 map.put("url",obj.getString("Url"));
                                 map.put("time",obj.getString("LongTime"));
+                                map.put("id",obj.getString("Id"));
                                 maps.add(map);
                             }
                             audioBean.setMaps(maps);
@@ -264,14 +266,12 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
 
                         drillItem0Adapter.updata(audioBeans);
                        break;
-                   case 3:
+
+                   case 2:
+
                        is = true;
                        drillItem0Adapter.open(is);
                        //在这里进行操作是否展开下级
-                   case 2:
-                       if(!click3){
-                           is = drillItem0Adapter.getIs();
-                       }
                        //開始播放
                        final int index = msg.arg1;
                          int play = msg.arg2;
@@ -293,6 +293,7 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                                mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
                                @Override
                                public void onPrepared() {
+                                   click(music.get("id"));
                                    NewToast.makeText(activity,"开始播放",Common.TTIME).show();
                                  }
                               });
@@ -317,6 +318,37 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                }
             }
         }
+    }
+    private void click(String id){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            jsonObject.put("cls","Sys.PlayAudio");
+            jsonObject.put("method","SetPalyCount");
+            JSONObject object = new JSONObject();
+            object.put("Id",Integer.parseInt(id));
+            jsonObject.put("param",object.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },activity,false);
     }
 
 }

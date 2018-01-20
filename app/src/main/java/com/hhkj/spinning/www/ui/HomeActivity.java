@@ -96,6 +96,7 @@ public class HomeActivity extends BaseActivity {
         }
     }
     private void getNormal(final HomeOnlineList online){
+
         cancleLoadView();
         ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getImage()), item_left0);
         ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getIco()), item_left1);
@@ -149,13 +150,14 @@ public class HomeActivity extends BaseActivity {
     public void process(Message msg) {
         switch (msg.what) {
             case -3:
-
+                final int index = msg.arg1;
                 final HomeOnlineList list = (HomeOnlineList) msg.obj;
                 ISRUN = false;
                 showLoadView();
                 item_left6.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        home_list.setItemChecked(index,true);
                         getNormal(list);
                     }
                 },1200);
@@ -171,6 +173,7 @@ public class HomeActivity extends BaseActivity {
                 int size = onlineLists.size();
                 if (size != 0) {
                     getNormal(onlineLists.get(0));
+                    home_list.setItemChecked(0,true);
                 }else{
                     ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.video_default, item_left0);
                     ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.logo, item_left1);
@@ -261,7 +264,7 @@ public class HomeActivity extends BaseActivity {
             case 7:
                 VideoBean bean = (VideoBean) msg.obj;
                 Intent intent7 = new Intent(HomeActivity.this,PlayerActivity.class);
-                intent7.putExtra("param",bean.getTitle()+";"+FileUtils.addImage(bean.getUrl()));
+                intent7.putExtra("param",bean);
                 startActivity(intent7);
                 break;
         }
@@ -388,7 +391,14 @@ public class HomeActivity extends BaseActivity {
             CURRENT_LIST_PAGE = 1;
             onlineLists.clear();
             home_refre.setRefreshing(true);
-            getOnlineList();
+            ISRUN = false;
+            item_left6.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getOnlineList();
+                }
+            },1200);
+
         }
     };
 
@@ -524,6 +534,7 @@ public class HomeActivity extends BaseActivity {
                         bean.setUrl(object.getString("Url"));
                         bean.setTitle(object.getString("Title"));
                         bean.setTime(object.getString("LongTime"));
+                        bean.setId(object.getInt("Id"));
                         videoBeans.add(bean);
                     }
                     getHandler().sendEmptyMessage(6);

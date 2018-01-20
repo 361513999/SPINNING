@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.SharedUtils;
@@ -38,6 +40,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         sharedUtils = new SharedUtils(Common.config);
         base_handler = new Base_Handler(BaseFragmentActivity.this);
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);

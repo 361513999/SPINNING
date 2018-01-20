@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -18,7 +20,13 @@ import com.alivc.player.AliVcMediaPlayer;
 import com.alivc.player.MediaPlayer;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.bean.VideoBean;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.inter.Result;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2018/1/3/003.
@@ -36,7 +44,7 @@ public class PlayerActivity extends BaseActivity {
         }
     }
     private int PLAY_TAG= 0;
-    private CheckBox item3;
+    private CheckBox item3,item4;
     private Button control;
     private int voice = 0;
     private SeekBar item1;
@@ -67,24 +75,41 @@ public class PlayerActivity extends BaseActivity {
         return strMinute + ":" + strSecond;
     }
     private volatile boolean  TIME_RUNNING = true;
+    private VideoBean videoBean;
+    private LinearLayout bottom_content,control_layout1,bottom_control;
+    private RelativeLayout title_layout;
     @Override
     public void init() {
+
+        title_layout = findViewById(R.id.title_layout);
+        bottom_content = findViewById(R.id.bottom_content);
+        bottom_control = findViewById(R.id.bottom_control);
+        control_layout1 = findViewById(R.id.control_layout1);
         suf = findViewById(R.id.suf);
         item1 = findViewById(R.id.item1);
         item1.setEnabled(false);
         item0 = findViewById(R.id.item0);
         item2 = findViewById(R.id.item2);
         item3 = findViewById(R.id.item3);
+        item4 = findViewById(R.id.item4);
         control = findViewById(R.id.control);
         title = findViewById(R.id.title);
+        bottom_content.post(new Runnable() {
+            @Override
+            public void run() {
+                control_layout1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,bottom_content.getMeasuredHeight()));
+
+            }
+        });
+
         Intent intent = getIntent();
         if(intent.hasExtra("param")){
-            String param = intent.getStringExtra("param");
+            videoBean = (VideoBean) intent.getSerializableExtra("param");
 
-            String temp[] = param.split(";");
 
-            title.setText(temp[0]);
-            url = temp[1];
+
+            title.setText(videoBean.getTitle());
+            url = FileUtils.addImage(videoBean.getUrl());
             P.c("点播地址"+url);
 //
         }
@@ -173,7 +198,7 @@ public class PlayerActivity extends BaseActivity {
             public void onPrepared() {
                 //准备完毕可以进行seekbar释放
                 P.c("onPrepared");
-
+                click();
                 int max = mediaPlayer.getDuration();
                 item1.setEnabled(true);
                 item1.setMax(mediaPlayer.getDuration());
@@ -181,6 +206,9 @@ public class PlayerActivity extends BaseActivity {
                 if(PLAY_TAG==-1){
                     return;
                 }
+                control.setBackgroundResource(R.drawable.jz_click_pause_selector);
+                PLAY_TAG = 1;
+                mediaPlayer.play();
                 new Thread() {
                     public void run() {
 
@@ -268,12 +296,46 @@ public class PlayerActivity extends BaseActivity {
         });
 
 
-
     }
+    private void click(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            jsonObject.put("cls","Sys.PlayVideo");
+            jsonObject.put("method","SetPalyCount");
+            JSONObject object = new JSONObject();
+            object.put("Id",videoBean.getId());
+            jsonObject.put("param",object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+    }
+
+
     private CountDownTimer countDownTimer;
     private void showLimite(){
         suf.setEnabled(false);
         control.setVisibility(View.VISIBLE);
+        bottom_control.setVisibility(View.VISIBLE);
+        title_layout.setVisibility(View.VISIBLE);
          //
         if(countDownTimer==null){
             countDownTimer = new CountDownTimer(3000,1000) {
@@ -285,6 +347,8 @@ public class PlayerActivity extends BaseActivity {
                 @Override
                 public void onFinish() {
                     suf.setEnabled(true);
+                    bottom_control.setVisibility(View.GONE);
+                    title_layout.setVisibility(View.GONE);
                     control.setVisibility(View.GONE);
                 }
             };

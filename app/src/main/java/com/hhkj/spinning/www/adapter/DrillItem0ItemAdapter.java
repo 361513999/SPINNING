@@ -83,7 +83,7 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Message msg = new Message();
-                msg.what = 3;
+                msg.what = 2;
                 msg.arg1 = index;
                 msg.arg2 = position;
                 handler.sendMessage(msg);

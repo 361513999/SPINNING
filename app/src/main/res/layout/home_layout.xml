@@ -297,6 +297,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_marginLeft="2dp"
                 android:layout_height="match_parent"
                 android:layout_weight="275">
                 <android.support.v4.widget.SwipeRefreshLayout
@@ -315,12 +316,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:listSelector="@drawable/shape_title_bg"
                         android:background="@color/no_color"
                         android:cacheColorHint="@color/no_color"
                         android:divider="@color/list_line"
                         android:dividerHeight="0.5dp"
-                        android:listSelector="@color/no_color"
+                        android:choiceMode="singleChoice"
                         android:scrollbars="none" />
                 </com.hhkj.spinning.www.widget.PullToRefreshView>
                 </android.support.v4.widget.SwipeRefreshLayout>

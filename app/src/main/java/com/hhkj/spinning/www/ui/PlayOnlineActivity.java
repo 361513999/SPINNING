@@ -133,7 +133,7 @@ public class PlayOnlineActivity extends BaseActivity {
             public void onPrepared(NELivePlayer neLivePlayer) {
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                 PLAY_TAG = 1;
-                showLimite();
+               // showLimite();
                 new CountDownTimer(3000,1000){
 
                     @Override
@@ -183,7 +183,7 @@ public class PlayOnlineActivity extends BaseActivity {
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                showLimite();
+               // showLimite();
                 if(over.getVisibility()==View.VISIBLE){
                     over.setVisibility(View.GONE);
                     person_list.setVisibility(View.GONE);
