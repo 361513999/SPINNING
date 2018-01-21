@@ -57,8 +57,8 @@
 
                                <Button
                                    android:id="@+id/control"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"
+                                   android:layout_width="60dp"
+                                   android:layout_height="60dp"
                                    android:visibility="gone"
                                    android:layout_centerInParent="true"
                                    android:background="@drawable/jz_click_play_selector" />
@@ -83,8 +83,8 @@
 
                                <ProgressBar
                                    style="@android:style/Widget.ProgressBar.Large"
-                                   android:layout_width="50dip"
-                                   android:layout_height="50dip" />
+                                   android:layout_width="40dip"
+                                   android:layout_height="40dip" />
                            </LinearLayout>
                        </FrameLayout>
                        <LinearLayout

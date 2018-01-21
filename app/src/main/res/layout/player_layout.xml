@@ -22,21 +22,38 @@
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
+                                android:gravity="center"
                                 android:layout_height="match_parent">
-
                                 <Button
                                     android:id="@+id/control"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:visibility="gone"
+                                    android:background="@drawable/jz_click_play_selector" />
+                                <LinearLayout
+                                    android:id="@+id/buffering_prompt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:visibility="gone"
-                                    android:layout_centerInParent="true"
-                                    android:background="@drawable/jz_click_play_selector" />
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_below="@+id/control"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="vertical">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:adjustViewBounds="true"
+                                        android:text="@string/buffering"
+                                        android:textColor="#FFFFFFFF"
+                                        android:textSize="13dp" />
+                                    <ProgressBar
+                                        style="@android:style/Widget.ProgressBar.Large"
+                                        android:layout_width="40dip"
+                                        android:layout_height="40dip" />
+                                </LinearLayout>
                             </RelativeLayout>
                     </FrameLayout>
-
-
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -250,14 +267,11 @@
                             android:text="00:00"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
-
                         <SeekBar
                             android:id="@+id/item1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-
-                            />
+                            android:layout_weight="1"/>
 
                         <TextView
                             android:id="@+id/item2"

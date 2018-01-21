@@ -78,9 +78,10 @@ public class PlayerActivity extends BaseActivity {
     private VideoBean videoBean;
     private LinearLayout bottom_content,control_layout1,bottom_control;
     private RelativeLayout title_layout;
+    private View buffering_prompt;
     @Override
     public void init() {
-
+        buffering_prompt = findViewById(R.id.buffering_prompt);
         title_layout = findViewById(R.id.title_layout);
         bottom_content = findViewById(R.id.bottom_content);
         bottom_control = findViewById(R.id.bottom_control);
@@ -120,7 +121,7 @@ public class PlayerActivity extends BaseActivity {
             mediaPlayer.prepareToPlay(url);
 
         }
-        showLimite();
+//        showLimite();
 //        sumSeek();
         suf.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -169,8 +170,6 @@ public class PlayerActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                     showLimite();
-
-
                 switch (PLAY_TAG){
                     case -1:
                         mediaPlayer.seekTo(0);
@@ -197,6 +196,7 @@ public class PlayerActivity extends BaseActivity {
             @Override
             public void onPrepared() {
                 //准备完毕可以进行seekbar释放
+                buffering_prompt.setVisibility(View.GONE);
                 P.c("onPrepared");
                 click();
                 int max = mediaPlayer.getDuration();

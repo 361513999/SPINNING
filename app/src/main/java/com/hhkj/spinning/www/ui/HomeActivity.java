@@ -42,6 +42,8 @@ import java.io.File;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by cloor on 2017/12/19.
@@ -70,10 +72,15 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        ISRUN = false;
+        if(timer!=null){
+            timer.cancel();
+            timer = null;
+        }
+
     }
 
-    private volatile   boolean ISRUN = true;
+
+/*    private volatile   boolean ISRUN = true;
     private   void time(long midTime,int flag) {
 
         while (midTime > 0&&ISRUN) {
@@ -94,46 +101,30 @@ public class HomeActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     private void getNormal(final HomeOnlineList online){
 
-        cancleLoadView();
+
         ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getImage()), item_left0);
         ImageLoader.getInstance().displayImage(FileUtils.addImage(online.getIco()), item_left1);
         item_left2.setText(online.getName());
         item_left3.setText(online.getPlayTime() + " 分钟");
         item_left4.setText(online.getTitle());
         if (online.getStatus() == 0) {
-            new Thread(){
-                @Override
-                public void run() {
-                    super.run();
-                    long from = System.currentTimeMillis();
-                    long to = TimeUtil.parseTime_(online.getBeginTime());
-                    long minutes = (to - from) / 1000;
-                    ISRUN = true;
-                    P.c("计算未开始"+minutes);
-                    time(minutes,0);
-                }
-            }.start();
-
-
+            long from = System.currentTimeMillis();
+            long to = TimeUtil.parseTime_(online.getBeginTime());
+            long minutes = (to - from) / 1000;
+            midTime = minutes;
+            midFlag = 0;
             item_left6.setText("未开始");
         } else if (online.getStatus() == 1||online.getStatus() == 2) {
-            new Thread(){
-                @Override
-                public void run() {
-                    super.run();
-                    long from = System.currentTimeMillis();
+            long from = System.currentTimeMillis();
 //                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
-                    long to = TimeUtil.getFetureSec(online.getPlayTime());
-                    P.c(TimeUtil.getTime(TimeUtil.parseTime_(online.getBeginTime()))+"=="+TimeUtil.getTime(to));
-                    long minutes = (to - from) / 1000;
-                    ISRUN = true;
-                    P.c(online.getPlayTime()+"计算已开始"+minutes);
-                    time(minutes,1);
-                }
-            }.start();
+            long to = TimeUtil.getFetureSec(online.getPlayTime());
+            P.c(TimeUtil.getTime(TimeUtil.parseTime_(online.getBeginTime()))+"=="+TimeUtil.getTime(to));
+            long minutes = (to - from) / 1000;
+            midFlag = 1;
+            midTime  = minutes;
             item_left6.setText(online.getStatus()==1?"正在直播":"暂时停播");
         }
         item_left6.setOnClickListener(new View.OnClickListener() {
@@ -146,21 +137,17 @@ public class HomeActivity extends BaseActivity {
             }
         });
     }
+    private long midTime = 0;
+    private int midFlag = 0;
     @Override
     public void process(Message msg) {
         switch (msg.what) {
             case -3:
                 final int index = msg.arg1;
                 final HomeOnlineList list = (HomeOnlineList) msg.obj;
-                ISRUN = false;
-                showLoadView();
-                item_left6.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        home_list.setItemChecked(index,true);
-                        getNormal(list);
-                    }
-                },1200);
+
+                home_list.setItemChecked(index,true);
+                getNormal(list);
 
                 break;
             case -2:
@@ -309,7 +296,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ISRUN = true;
+        createTime();
+
         home_icon_txt.setText(sharedUtils.getStringValue("userName"));
         ImageLoader.getInstance().displayImage(FileUtils.addImage(sharedUtils.getStringValue("icon")), home_icon_tag);
     }
@@ -391,7 +379,6 @@ public class HomeActivity extends BaseActivity {
             CURRENT_LIST_PAGE = 1;
             onlineLists.clear();
             home_refre.setRefreshing(true);
-            ISRUN = false;
             item_left6.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -401,7 +388,32 @@ public class HomeActivity extends BaseActivity {
 
         }
     };
+    private  Timer timer;
+    private void createTime(){
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
 
+            @Override
+            public void run() {
+                // 需要做的事:发送消息
+                midTime--;
+                long hh = midTime / 60 / 60 % 60;
+                long mm = midTime / 60 % 60;
+                long ss = midTime % 60;
+                Message msg = new Message();
+                msg.what = 4;
+                msg.arg1 = midFlag;
+                if(midTime<0){
+                    msg.obj = "00小时 00分钟 00秒";
+                }else{
+                    msg.obj = hh + "小时" + mm + "分钟" + ss + "秒";
+                }
+
+                getHandler().sendMessage(msg);
+            }
+        };
+        timer.schedule(task,1000,1000);
+    }
     @Override
     public void init() {
         pull_to_refresh_list = findViewById(R.id.pull_to_refresh_list);
@@ -493,6 +505,8 @@ public class HomeActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+
         CURRENT_LIST_PAGE = 1;
         onlineLists.clear();
         getOnlineList();
