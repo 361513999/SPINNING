@@ -161,7 +161,7 @@ public class PlayerActivity extends BaseActivity {
         suf.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-               showLimite();
+               showLimite(true);
 
                 return false;
             }
@@ -169,7 +169,7 @@ public class PlayerActivity extends BaseActivity {
         control.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    showLimite();
+                    showLimite(true);
                 switch (PLAY_TAG){
                     case -1:
                         mediaPlayer.seekTo(0);
@@ -209,6 +209,7 @@ public class PlayerActivity extends BaseActivity {
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                 PLAY_TAG = 1;
                 mediaPlayer.play();
+                showLimite(false);
                 new Thread() {
                     public void run() {
 
@@ -262,7 +263,7 @@ public class PlayerActivity extends BaseActivity {
                 PLAY_TAG = 1;
                 mediaPlayer.play();
               //  TIME_RUNNING = true;
-                showLimite();
+                showLimite(true);
             }
         });
 
@@ -271,7 +272,7 @@ public class PlayerActivity extends BaseActivity {
             public void onCompleted() {
                 control.setBackgroundResource(R.drawable.jz_click_replay_selector);
                 PLAY_TAG = -1;
-                showLimite();
+                showLimite(true);
                 mediaPlayer.stop();
                 mediaPlayer.reset();
                 mediaPlayer.prepareToPlay(url);
@@ -331,11 +332,15 @@ public class PlayerActivity extends BaseActivity {
 
 
     private CountDownTimer countDownTimer;
-    private void showLimite(){
-        suf.setEnabled(false);
-        control.setVisibility(View.VISIBLE);
-        bottom_control.setVisibility(View.VISIBLE);
-        title_layout.setVisibility(View.VISIBLE);
+    private void showLimite(boolean flag){
+        if(flag){
+            suf.setEnabled(false);
+            control.setVisibility(View.VISIBLE);
+            bottom_control.setVisibility(View.VISIBLE);
+            title_layout.setVisibility(View.VISIBLE);
+            //只关闭不提前显示
+        }
+
          //
         if(countDownTimer==null){
             countDownTimer = new CountDownTimer(3000,1000) {

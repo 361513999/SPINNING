@@ -95,23 +95,7 @@
                            android:paddingLeft="5dp"
                            android:layout_height="match_parent"
                            android:layout_weight="144" >
-                           <android.support.v4.widget.SwipeRefreshLayout
-                               android:id="@+id/pull_to_refresh_list"
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent">
-                               <ListView
-                                   android:id="@+id/lists"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="match_parent"
-                                   android:background="@color/no_color"
-                                   android:cacheColorHint="@color/no_color"
-                                   android:choiceMode="singleChoice"
-                                   android:dividerHeight="0.5dp"
-                                   android:divider="@color/list_line"
-                                   android:listSelector="@color/no_color"
-                                   android:scrollbars="none">
-                               </ListView>
-                           </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
                        </LinearLayout>
@@ -123,12 +107,55 @@
                         android:layout_height="wrap_content"></LinearLayout>
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="524"
+                        android:layout_height="match_parent"/>
+                    <LinearLayout
+                        android:id="@+id/person_list1"
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:paddingRight="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="144" >
+                        <android.support.v4.widget.SwipeRefreshLayout
+                            android:id="@+id/pull_to_refresh_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <ListView
+                                android:id="@+id/lists"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/no_color"
+                                android:cacheColorHint="@color/no_color"
+                                android:choiceMode="singleChoice"
+                                android:dividerHeight="0.5dp"
+                                android:divider="@color/list_line"
+                                android:listSelector="@color/no_color"
+                                android:scrollbars="none">
+                            </ListView>
+                        </android.support.v4.widget.SwipeRefreshLayout>
 
 
+                    </LinearLayout>
+                </LinearLayout>
 
-
-
-
+                    <LinearLayout
+                        android:id="@+id/over1"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></LinearLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/bottom_content"
                     android:layout_width="match_parent"

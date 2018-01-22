@@ -78,13 +78,14 @@ public class PlayOnlineActivity extends BaseActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     };
-    private LinearLayout over,person_list;
+    private LinearLayout over,over1,person_list;
     private RelativeLayout title_layout;
     String onlineId ;
     private View mBuffer;
     private Button control;
     @Override
     public void init() {
+        over1 = findViewById(R.id.over1);
         over = findViewById(R.id.over);
         title = findViewById(R.id.title);
         title_layout = findViewById(R.id.title_layout);
@@ -99,7 +100,9 @@ public class PlayOnlineActivity extends BaseActivity {
         bottom_content.post(new Runnable() {
             @Override
             public void run() {
-                over.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,bottom_content.getMeasuredHeight()));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,bottom_content.getMeasuredHeight());
+                over.setLayoutParams(params);
+                over1.setLayoutParams(params);
             }
         });
 
@@ -164,7 +167,7 @@ public class PlayOnlineActivity extends BaseActivity {
         videoView.setOnErrorListener(new NELivePlayer.OnErrorListener() {
             @Override
             public boolean onError(NELivePlayer neLivePlayer, int i, int i1) {
-                P.c("播放异常");
+                P.c("播放异常"+i+"--"+i);
                 control.setBackgroundResource(R.drawable.jz_click_replay_selector);
                 PLAY_TAG = -1;
                 NewToast.makeText(PlayOnlineActivity.this,"直播异常,请重试", Common.TTIME).show();
