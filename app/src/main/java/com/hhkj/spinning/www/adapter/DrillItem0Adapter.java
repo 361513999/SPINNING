@@ -142,19 +142,36 @@ public class DrillItem0Adapter extends BaseAdapter {
         P.c("是否展开"+is);
         if(is&&index==position){
             viewHolder.content.setVisibility(View.VISIBLE);
+            viewHolder.slo.setText("- 全部歌单");
         }else{
+            viewHolder.slo.setText("+ 全部歌单");
             viewHolder.content.setVisibility(View.GONE);
         }
+      /*  if(is){
+
+        }else{
+
+
+        }*/
+
          viewHolder.slo.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(viewHolder.content.getVisibility()==View.VISIBLE){
-                is = false;
-                viewHolder.content.setVisibility(View.GONE);
+            if(bean.getMaps().size()!=0){
+                if(viewHolder.content.getVisibility()==View.VISIBLE){
+                    is = false;
+//                viewHolder.content.setVisibility(View.GONE);
+
+                }else{
+                    is = true;
+//                viewHolder.content.setVisibility(View.VISIBLE);
+                }
+                index= position;
+                notifyDataSetChanged();
             }else{
-                is = true;
-                viewHolder.content.setVisibility(View.VISIBLE);
+                NewToast.makeText(context,"无更多资源", Common.TTIME).show();
             }
+
 
         }
     });

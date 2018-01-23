@@ -125,7 +125,7 @@ public class HomeActivity extends BaseActivity {
             long minutes = (to - from) / 1000;
             midFlag = 1;
             midTime  = minutes;
-            item_left6.setText(online.getStatus()==1?"正在直播":"暂时停播");
+            item_left6.setText(online.getStatus()==1?"正在直播":"未开始");
         }
         item_left6.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -457,7 +457,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void run() {
                 double width = home_list.getMeasuredWidth();
-                double fix = 42.0 / 272.0;
+                double fix = 45.0 / 272.0;
                 double height = width * fix;
                 homeListAdapter = new HomeListAdapter(HomeActivity.this, (int) width, (int) height, onlineLists, getHandler());
                 home_list.setAdapter(homeListAdapter);

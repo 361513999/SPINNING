@@ -125,6 +125,8 @@ public class DrillItem1 extends BaseFragment {
             object.put("pageSize", Common.SHOW_NUM);
             object.put("pageIndex", CURRENT_LIST_PAGE);
             object.put("app", "");
+            object.put("column","EditTime");
+            object.put("orderByType","desc");
             jsonObject.put("param", object.toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -194,7 +196,7 @@ public class DrillItem1 extends BaseFragment {
             public void run() {
                 int div  = FileUtils.dip2px(activity,4 );
                 int width = (drill_list.getMeasuredWidth()-div)/2;
-                double height = (80.0/136.0)*width;
+                double height = (83.0/136.0)*width;
                 P.c(width+"==="+height);
                 drillItem1RightAdapter = new DrillItem1RightAdapter(activity,width, (int) height,drill_handler,videoBeans);
                 drill_list.setAdapter(drillItem1RightAdapter);

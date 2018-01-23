@@ -88,6 +88,7 @@ public class HomeListAdapter extends BaseAdapter {
         }
         final HomeOnlineList obj = lists.get(position);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width,height);
+      //  viewHolder.child.setPadding(0,4,0,4);
         viewHolder.child.setLayoutParams(layoutParams);
         double fix = 70.0/100.0;
         int cWidth = (int) (height*fix);

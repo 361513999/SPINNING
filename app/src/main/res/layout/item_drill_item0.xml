@@ -88,7 +88,6 @@
                 android:paddingTop="2dp"
                 android:background="@color/no_color"
                 android:layout_marginLeft="3dp"
-                android:text="+ 全部歌单"
                 android:textColor="#888888"/>
             <com.hhkj.spinning.www.widget.InScrollListView
                 android:id="@+id/content"
