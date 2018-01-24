@@ -236,7 +236,7 @@ public class SportActivity extends BaseActivity {
                 @Override
                 public void run() {
                     pull_to_refresh_list.onHeaderRefreshComplete();
-                    CURRENT_LIST_PAGE = 0;
+                    CURRENT_LIST_PAGE = 1;
                     sportLists.clear();
                     getListById(String.valueOf(sportMenus.get(sportMenuAdapter.getSelectId()).getId()));
 

@@ -75,7 +75,7 @@ public class CommonWeb extends BaseActivity {
 				if (!commonView.getSettings().getLoadsImagesAutomatically()) {
 					commonView.getSettings().setLoadsImagesAutomatically(true);
 				}
-				P.c(commonView.getTitle());
+			//	P.c(commonView.getTitle());
 			}
 		};
 		WebChromeClient webChromeClient = new WebChromeClient(){

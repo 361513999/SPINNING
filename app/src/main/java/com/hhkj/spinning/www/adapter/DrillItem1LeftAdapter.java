@@ -71,8 +71,8 @@ public class DrillItem1LeftAdapter extends PagerAdapter {
         }else if(online.getStatus()==1){
             item_left6.setText("正在直播");
 
-        }else if(online.getStatus()==2){
-            item_left6.setText("未开始");
+        }else if(online.getStatus()==2||online.getStatus()==3||online.getStatus()==4){
+            item_left6.setText("已结束");
         }
 
         container.addView(view);

@@ -110,6 +110,7 @@ public class HomeActivity extends BaseActivity {
         item_left2.setText(online.getName());
         item_left3.setText(online.getPlayTime() + " 分钟");
         item_left4.setText(online.getTitle());
+        midStatus = online.getStatus();
         if (online.getStatus() == 0) {
             long from = System.currentTimeMillis();
             long to = TimeUtil.parseTime_(online.getBeginTime());
@@ -117,7 +118,7 @@ public class HomeActivity extends BaseActivity {
             midTime = minutes;
             midFlag = 0;
             item_left6.setText("未开始");
-        } else if (online.getStatus() == 1||online.getStatus() == 2) {
+        } else {
             long from = System.currentTimeMillis();
 //                                long to = TimeUtil.parseTime_(online.getBeginTime())+(1000*60*online.getPlayTime());
             long to = TimeUtil.getFetureSec(online.getPlayTime());
@@ -125,7 +126,8 @@ public class HomeActivity extends BaseActivity {
             long minutes = (to - from) / 1000;
             midFlag = 1;
             midTime  = minutes;
-            item_left6.setText(online.getStatus()==1?"正在直播":"未开始");
+
+            item_left6.setText(online.getStatus()==1?"正在直播":"已结束");
         }
         item_left6.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +141,7 @@ public class HomeActivity extends BaseActivity {
     }
     private long midTime = 0;
     private int midFlag = 0;
+    private int midStatus = -1;
     @Override
     public void process(Message msg) {
         switch (msg.what) {
@@ -406,7 +409,12 @@ public class HomeActivity extends BaseActivity {
                 if(midTime<0){
                     msg.obj = "00小时 00分钟 00秒";
                 }else{
-                    msg.obj = hh + "小时" + mm + "分钟" + ss + "秒";
+                    if(midStatus==2||midStatus==3||midStatus==4){
+                        msg.obj = "00小时 00分钟 00秒";
+                    }else{
+                        msg.obj = hh + "小时" + mm + "分钟" + ss + "秒";
+                    }
+
                 }
 
                 getHandler().sendMessage(msg);
@@ -461,6 +469,7 @@ public class HomeActivity extends BaseActivity {
                 double height = width * fix;
                 homeListAdapter = new HomeListAdapter(HomeActivity.this, (int) width, (int) height, onlineLists, getHandler());
                 home_list.setAdapter(homeListAdapter);
+                debugList(home_list,home_refre);
                 home_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

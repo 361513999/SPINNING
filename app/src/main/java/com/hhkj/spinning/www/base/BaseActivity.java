@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.test.suitebuilder.annotation.Suppress;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
@@ -70,6 +73,29 @@ public abstract class BaseActivity extends Activity {
             loadView.showSheet();
         }
     }
+    public void debugList(final ListView listView, final SwipeRefreshLayout refreshLayout){
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(listView != null && listView.getChildCount() > 0){
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                refreshLayout.setEnabled(enable);
+            }});
+    }
+
     /**
      *
      * @param DIRECT 访问函数

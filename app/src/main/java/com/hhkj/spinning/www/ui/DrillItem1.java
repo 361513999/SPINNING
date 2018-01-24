@@ -199,6 +199,7 @@ public class DrillItem1 extends BaseFragment {
                 double height = (83.0/136.0)*width;
                 P.c(width+"==="+height);
                 drillItem1RightAdapter = new DrillItem1RightAdapter(activity,width, (int) height,drill_handler,videoBeans);
+                debugList(drill_list,drill_item1_refr);
                 drill_list.setAdapter(drillItem1RightAdapter);
             }
         });

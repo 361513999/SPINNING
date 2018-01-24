@@ -3,6 +3,9 @@ package com.hhkj.spinning.www.base;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.U;
@@ -37,6 +40,27 @@ public class BaseFragment extends Fragment {
     }
     public void httpPost(String DIRECT, String content, final Result result,Activity activity){
         httpPostSON(DIRECT,content,result,activity,true);
+    }
+    public void debugList(final AbsListView listView, final SwipeRefreshLayout refreshLayout){
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(listView != null && listView.getChildCount() > 0){
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                refreshLayout.setEnabled(enable);
+            }});
     }
     /**
      *
