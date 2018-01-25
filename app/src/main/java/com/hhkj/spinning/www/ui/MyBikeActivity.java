@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
@@ -17,7 +18,7 @@ import com.hhkj.spinning.www.widget.ColorArcProgressBar;
 
 public class MyBikeActivity extends BaseActivity {
     private ColorArcProgressBar bike_cicle;
-
+    private TextView bt_click;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class MyBikeActivity extends BaseActivity {
     }
     @Override
     public void init() {
+        bt_click = findViewById(R.id.bt_click);
         bike_cicle = findViewById(R.id.bike_cicle);
 //        int diameter = (int)(216.0 * getScreenWidth() / 452);
 //        bike_cicle.setDiameter(diameter);
@@ -53,6 +55,12 @@ public class MyBikeActivity extends BaseActivity {
                 }else{
                     bike_cicle.setCurrentValues(100);
                 }
+            }
+        });
+        bt_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

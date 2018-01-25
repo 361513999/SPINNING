@@ -5,13 +5,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.common.P;
@@ -29,16 +27,11 @@ public class CommonWeb extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.common_web);
-
-
 	}
-
 	@Override
 	public void process(Message msg) {
 
 	}
-
-
 	@Override
 	public void init() {
 		title =   findViewById(R.id.title);
