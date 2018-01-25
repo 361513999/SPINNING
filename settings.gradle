@@ -1,1 +1,1 @@
-include ':app', ':photolib', ':fileselectlib', ':datalib'
+include ':app', ':photolib', ':fileselectlib', ':datalib', ':bt_library', ':bt_library'

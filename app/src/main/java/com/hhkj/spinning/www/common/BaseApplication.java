@@ -14,6 +14,8 @@ import com.alivc.player.AliVcMediaPlayer;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.service.SpinningService;
 import com.hhkj.spinning.www.ui.PlayerActivity;
+import com.hhkj.spinning.www.utils.ClientManager;
+import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
@@ -68,6 +70,9 @@ public class BaseApplication extends Application {
         if (isNeedCaughtExeption) {
             cauchException();
         }
+
+
+
         initImageLoader(application);
         P.c("启动");
 //		mLocationClient = new LocationClient(application); // 声明LocationClient类

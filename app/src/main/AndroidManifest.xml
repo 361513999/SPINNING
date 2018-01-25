@@ -42,6 +42,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -81,13 +90,17 @@
 
 
         </activity>
-        <activity android:name=".ui.MyBikeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+        <activity android:name=".ui.BtListActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.MyBikeActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+
         </activity>
         <activity android:name=".ui.SportActivity" android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape">

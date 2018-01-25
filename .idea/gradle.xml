@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bt_library" />
             <option value="$PROJECT_DIR$/datalib" />
             <option value="$PROJECT_DIR$/fileselectlib" />
             <option value="$PROJECT_DIR$/photolib" />
