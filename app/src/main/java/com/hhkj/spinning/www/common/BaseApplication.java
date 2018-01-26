@@ -15,6 +15,7 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.service.SpinningService;
 import com.hhkj.spinning.www.ui.PlayerActivity;
 import com.hhkj.spinning.www.utils.ClientManager;
+import com.inuker.bluetooth.library.BluetoothContext;
 import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -65,7 +66,7 @@ public class BaseApplication extends Application {
         PlatformConfig.setQQZone("1106546585", "n8KeWMdPkW13dWdW");
         PlatformConfig.setSinaWeibo("", "", "");
         AliVcMediaPlayer.init(this);
-
+        BluetoothContext.set(this);
         packgeName = getPackageName();
         if (isNeedCaughtExeption) {
             cauchException();

@@ -2,6 +2,8 @@ package com.hhkj.spinning.www.common;
 
 import android.os.Environment;
 
+import java.util.UUID;
+
 /**
  * Created by Administrator on 2017/12/13/013.
  */
@@ -24,4 +26,10 @@ public class Common {
     public static final String CACHE_STAFF_IMAGES = SD+STAFF_IMAGE;
     public static String APK_LOG = SD+"LOG/";
     public static int MUSIC_INDEX = -1;
+
+//    service = 49535343-fe7d-4ae5-8fa9-9fafd205e455, character = 49535343-1e4d-4bd9-ba61-23c647249616
+    private static String service = "49535343-fe7d-4ae5-8fa9-9fafd205e455";
+    private static String character = "49535343-1e4d-4bd9-ba61-23c647249616";
+    public static UUID UUID_SERVICE = UUID.fromString(service);
+    public static  UUID UUID_CHARACTER = UUID.fromString(character);
 }

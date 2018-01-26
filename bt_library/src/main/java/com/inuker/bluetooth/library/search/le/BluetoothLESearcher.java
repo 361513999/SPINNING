@@ -37,8 +37,6 @@ public class BluetoothLESearcher extends BluetoothSearcher {
 	public void startScanBluetooth(BluetoothSearchResponse response) {
 		// TODO Auto-generated method stub
 		super.startScanBluetooth(response);
-		UUID uuid=  UUID.fromString("49535343-FE7D-4AE5-8FA9-9FAFD205E455");
-		P.c("运行了吗");
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
 //		mBluetoothAdapter.startLeScan(new UUID[]{uuid},mLeScanCallback);
 	}

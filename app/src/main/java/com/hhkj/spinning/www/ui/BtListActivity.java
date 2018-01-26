@@ -6,21 +6,28 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.BtListAdapter;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.utils.ClientManager;
+import com.hhkj.spinning.www.widget.NewToast;
 import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
 import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
 import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
+import com.inuker.bluetooth.library.connect.response.BleNotifyResponse;
 import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.inuker.bluetooth.library.search.SearchRequest;
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
+import com.inuker.bluetooth.library.utils.ByteUtils;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 
@@ -58,10 +65,10 @@ public class BtListActivity extends BaseActivity {
         @Override
         public void onDeviceFounded(SearchResult device) {
 
-                if(!searchResults.contains(device)){
-                    if(device.getName()!=null){
+            if(!searchResults.contains(device)){
+                 //   if(device.getName()!=null){
                         searchResults.add(device);
-                    }
+                 //   }
 
                 }
                 P.c(device.getName());
@@ -88,8 +95,10 @@ public class BtListActivity extends BaseActivity {
         ClientManager.getClient().stopSearch();
     }
     private ArrayList<SearchResult> searchResults = new ArrayList<>();
+    private TextView title;
     @Override
     public void init() {
+        title = findViewById(R.id.title);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         bt_lists = findViewById(R.id.bt_lists);
         btListAdapter = new BtListAdapter(BtListActivity.this,searchResults);
@@ -98,26 +107,33 @@ public class BtListActivity extends BaseActivity {
         bt_lists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                connnectBt(searchResults.get(i).getAddress());
+                connnectBt(searchResults.get(i));
             }
         });
     }
-    private void connnectBt(String mac){
+    private void connnectBt(final SearchResult result){
         BleConnectOptions options = new BleConnectOptions.Builder()
                 .setConnectRetry(3)
                 .setConnectTimeout(20000)
                 .setServiceDiscoverRetry(3)
                 .setServiceDiscoverTimeout(10000)
                 .build();
-        ClientManager.getClient().connect(mac, options, new BleConnectResponse() {
+        ClientManager.getClient().connect(result.getAddress(), options, new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile data) {
                 if(code==REQUEST_SUCCESS){
                     P.c("连接成功");
+                    sharedUtils.setStringValue("bt_name",result.getName());
+                    sharedUtils.setStringValue("bt_mac",result.getAddress());
+                    NewToast.makeText(BtListActivity.this,"连接成功", Common.TTIME).show();
+                    setResult(1000);
+                    AppManager.getAppManager().finishActivity(BtListActivity.this);
                 }
             }
         });
     }
+
+
 
     private ListView bt_lists;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -133,5 +149,8 @@ public class BtListActivity extends BaseActivity {
                 P.c("registerBluetoothStateListener:"+openOrClosed);
             }
         });
+        SearchRequest request = new SearchRequest.Builder()
+                .searchBluetoothLeDevice(2000, 2).build();
+        ClientManager.getClient().search(request,response);
     }
 }
