@@ -37,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	private void create (SQLiteDatabase db){
 	db.beginTransaction();
 	//目标管理
-    db.execSQL("create table tog_time(i integer primary key autoincrement,phone varchar,tog varchar,time long ,show boolean)");
+    db.execSQL("create table tog_time(i integer primary key autoincrement,phone varchar,tog varchar,time long ,show boolean,complete boolean)");
 
     db.setTransactionSuccessful();
 	db.endTransaction();

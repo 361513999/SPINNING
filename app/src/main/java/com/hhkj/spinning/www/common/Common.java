@@ -14,7 +14,7 @@ public class Common {
     public static final String Appkey = "5a38a65ab27b0a6b3a00052a";
     public final static String DB_DIR = "data/data/"+BaseApplication.application.getPackageName()+"/databases/";
     public static final String DB_NAME = "store.spinning";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
     public static final String config = "CONFIG";
     public static final int SHOW_NUM = 8;
     public static final int TTIME = 200;
@@ -32,4 +32,6 @@ public class Common {
     private static String character = "49535343-1e4d-4bd9-ba61-23c647249616";
     public static UUID UUID_SERVICE = UUID.fromString(service);
     public static  UUID UUID_CHARACTER = UUID.fromString(character);
+    public  static int RUN_TIME = 0;
+    public static final String RUN_TIME_ACTION = "spinning.time";
 }

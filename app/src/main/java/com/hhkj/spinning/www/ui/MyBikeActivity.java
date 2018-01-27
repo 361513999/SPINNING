@@ -1,9 +1,11 @@
 package com.hhkj.spinning.www.ui;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.provider.Settings;
@@ -16,6 +18,7 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.ColorArcProgressBar;
@@ -33,6 +36,7 @@ import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.inuker.bluetooth.library.utils.BluetoothLog;
 import com.inuker.bluetooth.library.utils.ByteUtils;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -68,6 +72,7 @@ public class MyBikeActivity extends BaseActivity {
         }
         dlgBluetoothOpen.show();
     }
+    private boolean RUN = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,32 @@ public class MyBikeActivity extends BaseActivity {
         if(!ClientManager.getClient().isBluetoothOpened()){
             showForceTurnOnBluetoothDialog();
         }
+
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (RUN){
+                    //蓝牙时间操作
+                    int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
+                    P.c("status"+status);
+                    if(status==2){
+                        Common.RUN_TIME++;
+                    }else{
+                        Common.RUN_TIME = 0;
+                    }
+                    getHandler().sendEmptyMessage(0);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+
+
     }
 
 
@@ -83,6 +114,11 @@ public class MyBikeActivity extends BaseActivity {
     @Override
     public void process(Message msg) {
         switch (msg.what){
+            case 0:
+                String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
+
+                bottom_2.setText(time);
+                break;
             case 2:
                 //连接
 
@@ -165,7 +201,7 @@ public class MyBikeActivity extends BaseActivity {
         return displayMetrics.widthPixels;
     }
     private TextView title,connent_status;
-
+    private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
     public void init() {
         connent_status = findViewById(R.id.connent_status);
@@ -174,6 +210,15 @@ public class MyBikeActivity extends BaseActivity {
         bike_cicle = findViewById(R.id.bike_cicle);
 //        int diameter = (int)(216.0 * getScreenWidth() / 452);
 //        bike_cicle.setDiameter(diameter);
+        bottom_0 = findViewById(R.id.bottom_0);
+        bottom_1 = findViewById(R.id.bottom_1);
+        bottom_2 = findViewById(R.id.bottom_2);
+        bottom_3 = findViewById(R.id.bottom_3);
+        bottom_4 = findViewById(R.id.bottom_4);
+        bottom_5 = findViewById(R.id.bottom_5);
+
+
+
         bike_cicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,7 +253,7 @@ public class MyBikeActivity extends BaseActivity {
 
         }
     }
-
+    private double LUNJING = 0;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
         public void onNotify(UUID service, UUID character, byte[] value) {
@@ -224,11 +269,29 @@ public class MyBikeActivity extends BaseActivity {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
-                    NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
+                    LUNJING = (s*10)+g;
+                   // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
+                    write("F0A236CA92");
                 }
                 if(result.startsWith("F0B236CA")){
                     //RPM 和心率
+                    //F0B236CA00000000A2
+                         /*
+                         RPM=转速
+                         PULSE=心率
 
+                        基本公式：
+                            里程=RPM*輪徑
+                            速度=里程/时间
+                         */
+                   int prm =  (getChar(result,8,2)*100)+getChar(result,10,2);
+                   double cir =   FileUtils.formatDouble(LUNJING*Math.PI);
+                   double sd =FileUtils.formatDouble( cir * prm*60/1000);
+                   double lc = FileUtils.formatDouble(prm*LUNJING);
+
+                    bottom_1.setText(sd+" km/h");
+
+                    bottom_4.setText(String.valueOf(lc));
 
                 }
 
@@ -270,20 +333,13 @@ public class MyBikeActivity extends BaseActivity {
                 //在这里进行操作
                 P.c("发送数据");
                 write("F0A136CA91");
-                write("F0A236CA92");
+
             }
         };
         timer.schedule(task,1000,1000);
     }
 
-    /*
-    RPM=转速
-    PULSE=心率
 
-    基本公式：
-    里程=RPM*輪徑
-    速度=里程/时间
-     */
     private void write(String param){
         ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
                 ByteUtils.stringToBytes(param), new BleWriteResponse() {
@@ -292,6 +348,12 @@ public class MyBikeActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RUN = false;
     }
 
     @Override
@@ -320,6 +382,8 @@ public class MyBikeActivity extends BaseActivity {
             }
         }
     };
+
+
     @Override
     protected void onResume() {
         super.onResume();

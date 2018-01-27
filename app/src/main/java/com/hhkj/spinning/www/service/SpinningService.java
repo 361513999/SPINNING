@@ -13,9 +13,11 @@ import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.db.DB;
 import com.hhkj.spinning.www.ui.WelcomeActivity;
+import com.hhkj.spinning.www.utils.ClientManager;
 
 import java.util.Calendar;
 
@@ -31,10 +33,12 @@ public class SpinningService extends Service {
         return null;
     }
     private Context context;
+    private SharedUtils sharedUtils;
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
+        sharedUtils = new SharedUtils(Common.config);
         Intent notificationIntent = new Intent(this, WelcomeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
@@ -78,6 +82,7 @@ public void showNoty(long time,String tog){
         if(intent!=null&&intent.hasExtra("watch")){
             if( !Common.isRunning){
                 Common.isRunning = true;
+
                 new Thread(){
                     @Override
                     public void run() {
@@ -94,6 +99,8 @@ public void showNoty(long time,String tog){
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+
+
                             //进行数据库操作
 
                             CenterItem1Edit edit =  DB.getInstance().getTask();

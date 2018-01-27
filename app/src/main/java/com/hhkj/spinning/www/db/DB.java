@@ -93,7 +93,7 @@ public class DB {
     }
 
     public void addCenterItem1Edit(String tog,long time){
-        db.execSQL("insert into tog_time(phone,tog,time,show) values(?,?,?,?)",new Object[]{sharedUtils.getStringValue("phone"),tog,time,false});
+        db.execSQL("insert into tog_time(phone,tog,time,show,complete) values(?,?,?,?,?)",new Object[]{sharedUtils.getStringValue("phone"),tog,time,false,false});
     }
     public void updateCenterItem1Edit(String tog,long time,int i){
         db.execSQL("update tog_time set tog=?,time=? where i=?",new Object[]{tog,time,i});
@@ -178,7 +178,7 @@ public class DB {
      */
     public void getCenterItemEdits(ArrayList<CenterItem1Edit> list, Handler handler, DateWeek dateWeek){
         list.clear();
-        String sql = "select i,tog,time from tog_time where phone=? ";
+        String sql = "select i,tog,time,complete from tog_time where phone=? order by time";
         Cursor cursor = null;
         String result = null;
         int count = 0;
@@ -192,6 +192,7 @@ public class DB {
                    edit.setTime(time);
                    edit.setI(getInt(cursor,"i"));
                    edit.setTog(getString(cursor,"tog"));
+                   edit.setComplete(getBoolean(cursor,"complete"));
                    list.add(edit);
                }
 

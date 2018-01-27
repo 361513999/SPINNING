@@ -4,8 +4,8 @@
 
     <gradient
         android:angle="0"
-        android:endColor="@color/music_ico_bg"
-        android:startColor="@color/music_ico_bg" />
+        android:endColor="#65000000"
+        android:startColor="#65000000" />
     <corners
         android:bottomLeftRadius="50dp"
         android:bottomRightRadius="50dp"
