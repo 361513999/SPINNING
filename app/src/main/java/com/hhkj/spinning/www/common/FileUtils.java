@@ -282,7 +282,13 @@ public class FileUtils {
 				.doubleValue();
 		return targetDouble;
 	}
-
+	public static float formatFloat(float fromDouble){
+		BigDecimal b = new BigDecimal(fromDouble);
+		// 保留2位小数
+		float targetDouble = b.setScale(2, BigDecimal.ROUND_HALF_UP)
+				.floatValue();
+		return targetDouble;
+	}
 	/**
 	 * 433
 	 *

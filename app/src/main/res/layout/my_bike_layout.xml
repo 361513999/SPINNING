@@ -87,9 +87,8 @@
                     app:is_need_content="true"
                     app:is_need_title="true"
                     app:is_need_unit="true"
-                    app:max_value="100"
-                    app:string_title="已完成"
-                    app:string_unit="目标 500CAL"
+                    app:string_title="未知"
+                    app:string_unit="目标 0CAL"
                     app:total_engle="270" />
             </LinearLayout>
 

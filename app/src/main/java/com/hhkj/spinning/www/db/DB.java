@@ -171,6 +171,50 @@ public class DB {
         return  edit;
     }
 
+    public CenterItem1Edit getNowSport(){
+        String date =  TimeUtil.getFetureDate(0);
+        String week = TimeUtil.dateToWeek(date);
+        String end = date+"  "+"23:59";
+        String start = date+"  "+"00:00";
+        DateWeek dateWeek = new DateWeek();
+        dateWeek.setDate_end(TimeUtil.parseTime(end));
+        dateWeek.setDate_start(TimeUtil.parseTime(start));
+
+        String sql = "select i,tog,time,complete from tog_time where phone=? order by time";
+        Cursor cursor = null;
+        String result = null;
+        int count = 0;
+        try {
+            cursor = db.rawQuery(sql,new String[]{sharedUtils.getStringValue("phone")});
+            while(cursor.moveToNext()){
+                long time = getLong(cursor,"time");
+                    boolean cpm = getBoolean(cursor,"complete");
+                if(dateWeek.getDate_start()<=time&&dateWeek.getDate_end()>=time&&!cpm){
+                    CenterItem1Edit edit = new CenterItem1Edit();
+                    edit.setTime(time);
+                    edit.setI(getInt(cursor,"i"));
+                    edit.setTog(getString(cursor,"tog"));
+                    edit.setComplete(cpm);
+                    if (cursor != null) {
+                        cursor.close();
+                        cursor = null;
+                    }
+                    return edit;
+
+                }
+
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+        return  null;
+    }
+
 
     /**
      * 获得目标列表

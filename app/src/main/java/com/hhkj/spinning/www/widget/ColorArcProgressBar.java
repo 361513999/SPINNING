@@ -323,7 +323,7 @@ public class ColorArcProgressBar extends View {
      * 设置标题
      * @param title
      */
-    private void setTitle(String title){
+    public void setTitle(String title){
         this.titleString = title;
     }
 

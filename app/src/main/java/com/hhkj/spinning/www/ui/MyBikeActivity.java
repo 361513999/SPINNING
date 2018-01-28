@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
+import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.db.DB;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.ColorArcProgressBar;
 import com.hhkj.spinning.www.widget.NewToast;
@@ -118,6 +120,23 @@ public class MyBikeActivity extends BaseActivity {
                 String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
 
                 bottom_2.setText(time);
+                break;
+            case 1:
+                CenterItem1Edit edit = (CenterItem1Edit) msg.obj;
+                if(edit!=null){
+                    float max = Float.valueOf(edit.getTog());
+                    bike_cicle.setMaxValues(max);
+                    bike_cicle.setUnit("目标"+edit.getTog()+"CAL");
+                    bike_cicle.setTitle("进行中");
+                    float now = FileUtils.formatFloat(200/max)*100;
+                    P.c("当前"+now);
+                    bike_cicle.setCurrentValues(now);
+
+                }else{
+                    bike_cicle.setMaxValues(0);
+                    bike_cicle.setUnit("目标"+0+"CAL");
+                    bike_cicle.setTitle("无最新目标");
+                }
                 break;
             case 2:
                 //连接
@@ -219,16 +238,7 @@ public class MyBikeActivity extends BaseActivity {
 
 
 
-        bike_cicle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(bike_cicle.getCurrentValues()==100){
-                    bike_cicle.setCurrentValues(0);
-                }else{
-                    bike_cicle.setCurrentValues(100);
-                }
-            }
-        });
+
         bt_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -403,6 +413,16 @@ public class MyBikeActivity extends BaseActivity {
         }else {
             connent_status.setText("未连接");
         }
-
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                CenterItem1Edit edit =  DB.getInstance().getNowSport();
+                Message msg = new Message();
+                msg.what =1;
+                msg.obj = edit;
+                getHandler().sendMessage(msg);
+            }
+        }.start();
     }
 }
