@@ -2,6 +2,8 @@ package com.hhkj.spinning.www.common;
 
 import android.os.Environment;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -9,6 +11,7 @@ import java.util.UUID;
  */
 
 public class Common {
+
     public  volatile  static boolean isRunning = false;
     //应用签名    ba2928e597b995ae1cb5a75b059f71d5
     public static final String Appkey = "5a38a65ab27b0a6b3a00052a";
@@ -34,4 +37,5 @@ public class Common {
     public static  UUID UUID_CHARACTER = UUID.fromString(character);
     public  static int RUN_TIME = 0;
     public static final String RUN_TIME_ACTION = "spinning.time";
+    public static   Map<String,String> musicMAP = new HashMap<>();
 }

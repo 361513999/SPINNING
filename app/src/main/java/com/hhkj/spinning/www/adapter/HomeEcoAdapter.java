@@ -92,10 +92,7 @@ public class HomeEcoAdapter extends BaseAdapter {
         viewHolder.child.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message msg = new Message();
-                msg.what = 7;
-                msg.obj = bean;
-                handler.sendMessage(msg);
+
             }
         });
 

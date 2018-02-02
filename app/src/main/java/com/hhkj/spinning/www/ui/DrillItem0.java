@@ -2,10 +2,15 @@ package com.hhkj.spinning.www.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -23,12 +28,15 @@ import com.hhkj.spinning.www.adapter.DrillItem1RightAdapter;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.bean.AudioBean;
+import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.service.IMusicService;
+import com.hhkj.spinning.www.service.MusicService;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
 import com.hhkj.spinning.www.widget.xlist.XListView;
@@ -228,9 +236,13 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.drill_item0, container, false);
         drill_handler = new Drill_Handler(DrillItem0.this);
+
         return view;
 
     }
+
+
+
 
     @Override
     public void onPause() {
@@ -289,10 +301,16 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                                    play = 0;
                                }
                                final Map<String,String> music = bean.getMaps().get(play);
+                               Common.musicMAP = bean.getMaps().get(play);
                               NewToast.makeText(activity,"即将播放:"+music.get("title"),Common.TTIME).show();
-                               mediaPlayer.prepareToPlay(music.get("url"));
-                               mediaPlayer.play();
-                               mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
+//                               mediaPlayer.prepareToPlay(music.get("url"));
+//                               mediaPlayer.play();
+                           try {
+                              BaseApplication.iMusicService.play(index,play);
+                           } catch (RemoteException e) {
+                               e.printStackTrace();
+                           }
+                           mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
                                @Override
                                public void onPrepared() {
                                    click(music.get("id"));

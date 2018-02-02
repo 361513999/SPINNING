@@ -146,7 +146,7 @@
                 <action android:name="watch.spinning.www"></action>
             </intent-filter>
         </service>
-
+        <service android:name=".service.MusicService"/>
         <receiver android:name=".receiver.BootBroadcastReceiver" >
                 <intent-filter>
                     <action android:name="android.intent.action.BOOT_COMPLETED" />

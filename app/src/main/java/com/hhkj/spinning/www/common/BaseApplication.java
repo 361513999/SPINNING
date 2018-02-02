@@ -12,6 +12,8 @@ import java.util.Date;
 
 import com.alivc.player.AliVcMediaPlayer;
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.service.IMusicService;
+import com.hhkj.spinning.www.service.MusicService;
 import com.hhkj.spinning.www.service.SpinningService;
 import com.hhkj.spinning.www.ui.PlayerActivity;
 import com.hhkj.spinning.www.utils.ClientManager;
@@ -33,17 +35,22 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.common.QueuedWork;
 
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.WindowManager;
 
 public class BaseApplication extends Application {
@@ -52,6 +59,20 @@ public class BaseApplication extends Application {
     protected boolean isNeedCaughtExeption = true;// 是否捕获未知异常
     private MyUncaughtExceptionHandler uncaughtExceptionHandler;
     private static String packgeName;
+    public static IMusicService iMusicService;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            iMusicService = IMusicService.Stub.asInterface(iBinder);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            iMusicService = null;
+        }
+    };
+
+
 
     @Override
     public void onCreate() {
@@ -72,7 +93,8 @@ public class BaseApplication extends Application {
             cauchException();
         }
 
-
+        Intent otherIntent = new Intent(this, MusicService.class);
+        bindService(otherIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
         initImageLoader(application);
         P.c("启动");
@@ -81,6 +103,43 @@ public class BaseApplication extends Application {
 //		initLocation();
 //		mLocationClient.start();
        startService();
+
+       this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+           @Override
+           public void onActivityCreated(Activity activity, Bundle bundle) {
+
+           }
+
+           @Override
+           public void onActivityStarted(Activity activity) {
+
+           }
+
+           @Override
+           public void onActivityResumed(Activity activity) {
+
+           }
+
+           @Override
+           public void onActivityPaused(Activity activity) {
+
+           }
+
+           @Override
+           public void onActivityStopped(Activity activity) {
+
+           }
+
+           @Override
+           public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+           }
+
+           @Override
+           public void onActivityDestroyed(Activity activity) {
+                unbindService(serviceConnection);
+           }
+       });
     }
     private void startService(){
         Intent startServiceIntent = new Intent(this, SpinningService.class);

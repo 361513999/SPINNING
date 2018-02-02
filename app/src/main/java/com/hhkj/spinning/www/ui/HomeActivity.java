@@ -458,6 +458,15 @@ public class HomeActivity extends BaseActivity {
                 // gallery_bottom.setLayoutParams(new LinearLayout.LayoutParams((int)((count*width)+temp),(int)height));
                 homeEcoAdapter = new HomeEcoAdapter(HomeActivity.this, (int) width, (int) height,videoBeans,getHandler());
                 gallery_bottom.setAdapter(homeEcoAdapter);
+                gallery_bottom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Message msg = new Message();
+                        msg.what = 7;
+                        msg.obj = videoBeans.get(i);
+                        getHandler().sendMessage(msg);
+                    }
+                });
 
             }
         });
