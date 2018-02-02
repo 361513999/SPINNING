@@ -250,6 +250,10 @@ public class ColorArcProgressBar extends View {
         this.maxValues = maxValues;
         k = sweepAngle/maxValues;
     }
+    public float getMaxValues(){
+        return  maxValues;
+    }
+
 
     /**
      * 设置当前值

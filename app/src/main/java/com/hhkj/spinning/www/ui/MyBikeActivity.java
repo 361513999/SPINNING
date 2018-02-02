@@ -128,9 +128,7 @@ public class MyBikeActivity extends BaseActivity {
                     bike_cicle.setMaxValues(max);
                     bike_cicle.setUnit("目标"+edit.getTog()+"CAL");
                     bike_cicle.setTitle("进行中");
-                    float now = FileUtils.formatFloat(200/max)*100;
-                    P.c("当前"+now);
-                    bike_cicle.setCurrentValues(now);
+
 
                 }else{
                     bike_cicle.setMaxValues(0);
@@ -301,14 +299,31 @@ public class MyBikeActivity extends BaseActivity {
                    double sd =FileUtils.formatDouble( cir * prm*60/1000);
                    double lc = FileUtils.formatDouble(prm*LUNJING);
                     double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
-
+                    double weight = 0;
+                    double h = Common.RUN_TIME/60/60;
+                    try {
+                        weight = Double.parseDouble(sharedUtils.getStringValue("Weight"));
+                    }catch (Exception e){
+                        weight = 0;
+                    }
+                    double cal = sd*weight*1.05*h;
+                    //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
                     bottom_0.setText(String.valueOf(xl));
                     bottom_1.setText(sd+" km/h");
-
+                    bottom_3.setText(String.valueOf(cal));
                     bottom_4.setText(String.valueOf(lc));
 
+                    if(cal!=0){
+                        String temp = String.valueOf(cal/bike_cicle.getMaxValues());
+                        float now = FileUtils.formatFloat(Float.parseFloat(temp))*100;
+                        P.c("当前"+now);
+                        if(now>=bike_cicle.getMaxValues()){
+                            bike_cicle.setTitle("已完成");
+                        }else{
+                            bike_cicle.setCurrentValues(now);
+                        }
+                    }
                 }
-
             }
         }
 
