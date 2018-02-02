@@ -3,6 +3,7 @@ package com.hhkj.spinning.www.adapter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.bean.AudioBean;
+import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
@@ -90,6 +92,11 @@ public class DrillItem0Adapter extends BaseAdapter {
 
         notifyDataSetChanged();
     }
+    public void index(int index){
+        this.index = index;
+        notifyDataSetChanged();
+
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
@@ -143,6 +150,24 @@ public class DrillItem0Adapter extends BaseAdapter {
         if(is&&index==position){
             viewHolder.content.setVisibility(View.VISIBLE);
             viewHolder.slo.setText("- 全部歌单");
+
+            try {
+                String temp = BaseApplication.iMusicService.isPlay();
+                if(temp!=null){
+                    String result[] = temp.split("_");
+                    int ind = Integer.parseInt(result[1]);
+                    int pos = Integer.parseInt(result[0]);
+                    if(pos==position){
+                        adapter.play(ind);
+                    }else{
+                        adapter.play(-1);
+                    }
+
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+
         }else{
             viewHolder.slo.setText("+ 全部歌单");
             viewHolder.content.setVisibility(View.GONE);
@@ -180,12 +205,27 @@ public class DrillItem0Adapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if(bean.getMaps().size()!=0){
-                    P.c("播放音频");
-                    Message msg = new Message();
-                    msg.what = 2;
-                    msg.arg1 = position;
-                    msg.arg2 = 0;
-                    handler.sendMessage(msg);
+                    boolean status = false;
+                    try {
+                          status = BaseApplication.iMusicService.status();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    if(status){
+                        try {
+                            BaseApplication.iMusicService.stop();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        P.c("播放音频");
+                        Message msg = new Message();
+                        msg.what = 2;
+                        msg.arg1 = position;
+                        msg.arg2 = 0;
+                        handler.sendMessage(msg);
+                    }
+
                 }else{
                     NewToast.makeText(context,"无更多资源", Common.TTIME).show();
                 }

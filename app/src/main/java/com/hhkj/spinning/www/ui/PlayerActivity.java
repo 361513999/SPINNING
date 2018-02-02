@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Message;
+import android.os.RemoteException;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,6 +23,7 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.VideoBean;
+import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
@@ -60,6 +62,11 @@ public class PlayerActivity extends BaseActivity {
     @Override
     public void process(Message msg) {
         switch (msg.what){
+            case -1:
+                String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
+
+                bottom_2.setText(time);
+                break;
             case 0:
                 int process = mediaPlayer.getCurrentPosition();
                 item1.setProgress(process);
@@ -151,7 +158,8 @@ public class PlayerActivity extends BaseActivity {
         public void onNotify(UUID service, UUID character, byte[] value) {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
-                title.setText( ByteUtils.byteToString(value));
+//                title.setText( ByteUtils.byteToString(value));
+
                 String result = ByteUtils.byteToString(value);
                 if(result.startsWith("F0B036CA")){
                     //初始化成功
@@ -161,7 +169,7 @@ public class PlayerActivity extends BaseActivity {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
-                    LUNJING = (s*10)+g;
+                    LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }
@@ -176,9 +184,27 @@ public class PlayerActivity extends BaseActivity {
                             里程=RPM*輪徑
                             速度=里程/时间
                          */
+                    int prm =  (getChar(result,8,2)*100)+getChar(result,10,2);
+                    double cir =   FileUtils.formatDouble(LUNJING*Math.PI);
+                    double sd =FileUtils.formatDouble( cir * prm*60/1000);
+                    double lc = FileUtils.formatDouble(prm*LUNJING);
+                    double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
+                    double weight = 0;
+                    double h = Common.RUN_TIME/60/60;
+                    try {
+                        weight = Double.parseDouble(sharedUtils.getStringValue("Weight"));
+                    }catch (Exception e){
+                        weight = 0;
+                    }
+                    double cal = sd*weight*1.05*h;
+                    //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
+                    bottom_0.setText(String.valueOf(xl));
+                    bottom_1.setText(sd+" km/h");
+                    bottom_3.setText(String.valueOf(cal));
+                    bottom_4.setText(String.valueOf(lc));
+                    bottom_5.setText(String.valueOf(prm));
 
                 }
-
             }
         }
 
@@ -254,6 +280,7 @@ public class PlayerActivity extends BaseActivity {
     private LinearLayout bottom_content,control_layout1,bottom_control;
     private RelativeLayout title_layout;
     private View buffering_prompt;
+    private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
     public void init() {
         buffering_prompt = findViewById(R.id.buffering_prompt);
@@ -261,6 +288,13 @@ public class PlayerActivity extends BaseActivity {
         bottom_content = findViewById(R.id.bottom_content);
         bottom_control = findViewById(R.id.bottom_control);
         control_layout1 = findViewById(R.id.control_layout1);
+        bottom_0 = findViewById(R.id.bottom_0);
+        bottom_1 = findViewById(R.id.bottom_1);
+        bottom_2 = findViewById(R.id.bottom_2);
+        bottom_3 = findViewById(R.id.bottom_3);
+        bottom_4 = findViewById(R.id.bottom_4);
+        bottom_5 = findViewById(R.id.bottom_5);
+
         suf = findViewById(R.id.suf);
         item1 = findViewById(R.id.item1);
         item1.setEnabled(false);
@@ -543,17 +577,48 @@ public class PlayerActivity extends BaseActivity {
     private SurfaceView suf;
 
     private AliVcMediaPlayer mediaPlayer;
+    private boolean RUN = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout);
+        try {
+            BaseApplication.iMusicService.stop();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
         if(!ClientManager.getClient().isBluetoothOpened()){
            Intent intent  = new Intent(PlayerActivity.this,MyBikeActivity.class);
            startActivity(intent);
             AppManager.getAppManager().finishActivity(PlayerActivity.this);
         }
+            time();
     }
-
+    private void time(){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (RUN){
+                    //蓝牙时间操作
+                    int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
+                    P.c("status"+status);
+                    if(status==2){
+                        Common.RUN_TIME++;
+                    }else{
+                        Common.RUN_TIME = 0;
+                    }
+                    getHandler().sendEmptyMessage(-1);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
     private final BleConnectStatusListener mConnectStatusListener = new BleConnectStatusListener() {
         @Override
         public void onConnectStatusChanged(String mac, int status) {
@@ -574,6 +639,10 @@ public class PlayerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(!RUN){
+            RUN = true;
+            time();
+        }
         connect_mac = sharedUtils.getStringValue("bt_mac");
         connect_name = sharedUtils.getStringValue("bt_name");
         if(connect_mac.length()!=0){
@@ -582,9 +651,9 @@ public class PlayerActivity extends BaseActivity {
             P.c("连接状态"+status);
             if(status!=2){
                 getHandler().sendEmptyMessage(2);
-
             }else{
                 ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+
             }
         }else {
 
@@ -607,7 +676,7 @@ public class PlayerActivity extends BaseActivity {
         if(connect_mac.length()!=0) {
             ClientManager.getClient().unregisterConnectStatusListener(connect_mac, mConnectStatusListener);
         }
-
+        RUN = false;
     }
 
     @Override
@@ -616,5 +685,7 @@ public class PlayerActivity extends BaseActivity {
         if(mediaPlayer!=null){
             mediaPlayer.destroy();
         }
+        RUN = false;
+
     }
 }

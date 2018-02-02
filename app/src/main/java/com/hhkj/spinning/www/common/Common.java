@@ -2,6 +2,9 @@ package com.hhkj.spinning.www.common;
 
 import android.os.Environment;
 
+import com.hhkj.spinning.www.bean.AudioBean;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -37,5 +40,5 @@ public class Common {
     public static  UUID UUID_CHARACTER = UUID.fromString(character);
     public  static int RUN_TIME = 0;
     public static final String RUN_TIME_ACTION = "spinning.time";
-    public static   Map<String,String> musicMAP = new HashMap<>();
+    public static ArrayList<AudioBean> SAudioBeans = new ArrayList<>();
 }

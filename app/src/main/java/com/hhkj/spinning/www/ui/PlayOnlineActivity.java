@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -25,14 +26,30 @@ import com.alivc.player.AliVcMediaPlayer;
 import com.alivc.player.MediaPlayer;
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.PlayOnlineAdapter;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.PlayOnlinePerson;
+import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
+import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.media.NEMediaController;
 import com.hhkj.spinning.www.media.NEVideoView;
+import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.NewToast;
+import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
+import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
+import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
+import com.inuker.bluetooth.library.connect.response.BleNotifyResponse;
+import com.inuker.bluetooth.library.connect.response.BleUnnotifyResponse;
+import com.inuker.bluetooth.library.connect.response.BleWriteResponse;
+import com.inuker.bluetooth.library.model.BleGattProfile;
+import com.inuker.bluetooth.library.search.SearchRequest;
+import com.inuker.bluetooth.library.search.SearchResult;
+import com.inuker.bluetooth.library.search.response.SearchResponse;
+import com.inuker.bluetooth.library.utils.BluetoothLog;
+import com.inuker.bluetooth.library.utils.ByteUtils;
 import com.netease.neliveplayer.sdk.NELivePlayer;
 import com.netease.neliveplayer.sdk.constant.NEType;
 
@@ -41,6 +58,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+
+import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
+import static com.inuker.bluetooth.library.Constants.STATUS_CONNECTED;
+import static com.inuker.bluetooth.library.Constants.STATUS_DISCONNECTED;
 
 /**
  * Created by cloor on 2018/1/4.
@@ -57,10 +81,78 @@ public class PlayOnlineActivity extends BaseActivity {
 
         exitOnline();
     }
-
+    private void connnectBt(final SearchResult result){
+        BleConnectOptions options = new BleConnectOptions.Builder()
+                .setConnectRetry(3)
+                .setConnectTimeout(20000)
+                .setServiceDiscoverRetry(3)
+                .setServiceDiscoverTimeout(10000)
+                .build();
+        ClientManager.getClient().connect(result.getAddress(), options, new BleConnectResponse() {
+            @Override
+            public void onResponse(int code, BleGattProfile data) {
+                if(code==REQUEST_SUCCESS){
+                    //
+                    P.c("重新连接成功");
+                    ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                }
+            }
+        });
+    }
+    private boolean NOT_FOUND = true;
     @Override
     public void process(Message msg) {
         switch (msg.what){
+            case -1:
+                String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
+
+                bottom_2.setText(time);
+                break;
+            case 2:
+                ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
+                    @Override
+                    public void onResponse(int code) {
+
+                    }
+                });
+                SearchRequest request = new SearchRequest.Builder()
+                        .searchBluetoothLeDevice(2000, 2).build();
+                ClientManager.getClient().search(request, new SearchResponse() {
+                    @Override
+                    public void onSearchStarted() {
+
+                    }
+
+                    @Override
+                    public void onDeviceFounded(SearchResult device) {
+                        if(device.getName().equals(connect_name)&&device.getAddress().equals(connect_mac)){
+                            //存在就开始重连
+                            connnectBt(device);
+                            //立即停止
+                            ClientManager.getClient().stopSearch();
+                            NOT_FOUND = false;
+                        }
+
+                    }
+
+                    @Override
+                    public void onSearchStopped() {
+
+                        if(NOT_FOUND){
+
+                        }
+                    }
+
+                    @Override
+                    public void onSearchCanceled() {
+
+                    }
+                });
+
+
+                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+
+                break;
             case  0:
 
 //                showBottom();
@@ -83,8 +175,16 @@ public class PlayOnlineActivity extends BaseActivity {
     String onlineId ;
     private View mBuffer;
     private Button control;
+    private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
     public void init() {
+        bottom_0 = findViewById(R.id.bottom_0);
+        bottom_1 = findViewById(R.id.bottom_1);
+        bottom_2 = findViewById(R.id.bottom_2);
+        bottom_3 = findViewById(R.id.bottom_3);
+        bottom_4 = findViewById(R.id.bottom_4);
+        bottom_5 = findViewById(R.id.bottom_5);
+
         over1 = findViewById(R.id.over1);
         over = findViewById(R.id.over);
         title = findViewById(R.id.title);
@@ -120,7 +220,7 @@ public class PlayOnlineActivity extends BaseActivity {
             P.c("直播地址"+url);
         }
 
-      //  url = "rtmp://v68f25ff4.live.126.net/live/11371c6d02574bd4b20f38c1a2312282";
+
 
         videoView.setMediaType("livestream");
 //        videoView.setBufferStrategy(NEType.NELPANTIJITTER); //点播抗抖动
@@ -453,7 +553,7 @@ public class PlayOnlineActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         isRun = false;
-
+        RUN = false;
         videoView.destroy();
     }
 
@@ -465,12 +565,204 @@ public class PlayOnlineActivity extends BaseActivity {
             PLAY_TAG = 0;
             videoView.pause();
         }
+        if(timer!=null){
+            timer.cancel();
+            timer = null;
+        }
+        if(connect_mac.length()!=0) {
+            ClientManager.getClient().unregisterConnectStatusListener(connect_mac, mConnectStatusListener);
+        }
+        RUN = false;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_online_layout);
+        try {
+            BaseApplication.iMusicService.stop();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if(!ClientManager.getClient().isBluetoothOpened()){
+            Intent intent  = new Intent(PlayOnlineActivity.this,MyBikeActivity.class);
+            startActivity(intent);
+            AppManager.getAppManager().finishActivity(PlayOnlineActivity.this);
+        }
+        time();
+    }
+    private void time(){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                while (RUN){
+                    //蓝牙时间操作
+                    int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
+                    P.c("status"+status);
+                    if(status==2){
+                        Common.RUN_TIME++;
+                    }else{
+                        Common.RUN_TIME = 0;
+                    }
+                    getHandler().sendEmptyMessage(-1);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+    private final BleConnectStatusListener mConnectStatusListener = new BleConnectStatusListener() {
+        @Override
+        public void onConnectStatusChanged(String mac, int status) {
+            BluetoothLog.v(String.format("CharacterActivity.onConnectStatusChanged status = %d", status));
+
+            if (status == STATUS_DISCONNECTED) {
+                //断开连接
+                P.c("连接失败");
+
+            }else if(status==STATUS_CONNECTED){
+                P.c("连接中");
+
+            }
+        }
+    };
+    private String connect_mac = "";
+    private String connect_name = "";
+    private boolean RUN = true;
+    @Override
+    protected void onResume() {
+        super.onResume();
+       if(!RUN){
+           RUN = true;
+           time();
+       }
+        connect_mac = sharedUtils.getStringValue("bt_mac");
+        connect_name = sharedUtils.getStringValue("bt_name");
+        if(connect_mac.length()!=0){
+            ClientManager.getClient().registerConnectStatusListener(connect_mac, mConnectStatusListener);
+            int status = ClientManager.getClient().getConnectStatus(connect_mac);
+            P.c("连接状态"+status);
+            if(status!=2){
+                getHandler().sendEmptyMessage(2);
+            }else{
+                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+
+            }
+        }else {
+
+        }
 
     }
+    private Timer timer;
+    private void doSend(){
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                //在这里进行操作
+                P.c("发送数据");
+                write("F0A136CA91");
+
+            }
+        };
+        timer.schedule(task,1000,1000);
+    }
+
+    private double LUNJING = 0;
+    private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
+        @Override
+        public void onNotify(UUID service, UUID character, byte[] value) {
+            if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
+                P.c("收到的数据"+ ByteUtils.byteToString(value));
+//                title.setText( ByteUtils.byteToString(value));
+
+                String result = ByteUtils.byteToString(value);
+                if(result.startsWith("F0B036CA")){
+                    //初始化成功
+                    doSend();
+                }
+                if (result.startsWith("F0B136CA")) {
+                    //轮经
+                    int s = getChar(result,8,2);
+                    int g = getChar(result,10,2);
+                    LUNJING = LUNJING = (s*10)+ FileUtils.formatDouble(g/10);
+                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
+                    write("F0A236CA92");
+                }
+                if(result.startsWith("F0B236CA")){
+                    //RPM 和心率
+                    //F0B236CA00000000A2
+                         /*
+                         RPM=转速
+                         PULSE=心率
+
+                        基本公式：
+                            里程=RPM*輪徑
+                            速度=里程/时间
+                         */
+                    int prm =  (getChar(result,8,2)*100)+getChar(result,10,2);
+                    double cir =   FileUtils.formatDouble(LUNJING*Math.PI);
+                    double sd =FileUtils.formatDouble( cir * prm*60/1000);
+                    double lc = FileUtils.formatDouble(prm*LUNJING);
+                    double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
+                    double weight = 0;
+                    double h = Common.RUN_TIME/60/60;
+                    try {
+                        weight = Double.parseDouble(sharedUtils.getStringValue("Weight"));
+                    }catch (Exception e){
+                        weight = 0;
+                    }
+                    double cal = sd*weight*1.05*h;
+                    //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
+                    bottom_0.setText(String.valueOf(xl));
+                    bottom_1.setText(sd+" km/h");
+                    bottom_3.setText(String.valueOf(cal));
+                    bottom_4.setText(String.valueOf(lc));
+                    bottom_5.setText(String.valueOf(prm));
+
+                }
+            }
+        }
+
+        @Override
+        public void onResponse(int code) {
+            if (code == REQUEST_SUCCESS) {
+                //开启成功之后就开始发送数据
+                write("F0A036CA90");
+            } else {
+
+            }
+        }
+    };
+    private void write(String param){
+        ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
+                ByteUtils.stringToBytes(param), new BleWriteResponse() {
+                    @Override
+                    public void onResponse(int code) {
+
+                    }
+                });
+    }
+
+    private int getChar(String str,int start,int length){
+        StringBuffer buffer = new StringBuffer();
+        boolean can = false;
+        for(int i=0;i<str.length();i++){
+            if(i>=start&&i<(start+length)){
+                can = true;
+            }else{
+                can = false;
+            }
+            if(can){
+                char temp  = str.charAt(i);
+                buffer.append(temp);
+            }
+        }
+        return  Integer.parseInt(buffer.toString(),16);
+    }
+
 }

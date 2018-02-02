@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.common.BaseApplication;
+import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.InScrollListView;
 
 import java.util.ArrayList;
@@ -38,7 +41,10 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
 
     }
-
+    public void play(int playIndex){
+        this.playIndex = playIndex;
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return maps.size();
@@ -59,8 +65,14 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
     }
 
     @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (convertView == null
                 || convertView.getTag(R.mipmap.ic_launcher + position) == null) {
             viewHolder = new ViewHolder();
@@ -72,6 +84,9 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
+
+
+
         if(playIndex==position){
             viewHolder.item0.setTextColor(context.getResources().getColor(R.color.white));
         }else{
@@ -82,6 +97,7 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
         viewHolder.item0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewHolder.item0.setTextColor(context.getResources().getColor(R.color.white));
                 Message msg = new Message();
                 msg.what = 2;
                 msg.arg1 = index;

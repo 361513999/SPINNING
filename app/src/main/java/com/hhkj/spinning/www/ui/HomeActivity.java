@@ -3,8 +3,10 @@ package com.hhkj.spinning.www.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -23,6 +25,7 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.HomeOnlineList;
 import com.hhkj.spinning.www.bean.VideoBean;
+import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
@@ -67,6 +70,32 @@ public class HomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+    }
+    private long exitTime = 0;
+    private void exit(){
+
+        if ((System.currentTimeMillis() - exitTime) > 2000) // System.currentTimeMillis()无论何时调用，肯定大于2000
+        { NewToast.makeText(HomeActivity.this, "再按一次退出程序", Common.TTIME).show();
+
+            exitTime = System.currentTimeMillis();
+        } else {
+            try {
+                BaseApplication.iMusicService.stop();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            AppManager.getAppManager().finishAllActivity();
+
+        }
+
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+        }
+        return true;
+
     }
 
     @Override

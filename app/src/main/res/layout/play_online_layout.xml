@@ -180,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View
@@ -215,7 +215,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View
@@ -250,7 +250,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View
@@ -285,7 +285,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View
@@ -320,7 +320,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View
@@ -355,7 +355,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="13sp"
                             android:layout_marginTop="5dp"
-                            android:text="120"
+                            android:text="- -"
                             android:textColor="@color/white"
                             android:layout_height="wrap_content" />
                         <View

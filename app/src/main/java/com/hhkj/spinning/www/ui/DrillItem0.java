@@ -2,9 +2,11 @@ package com.hhkj.spinning.www.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
@@ -102,10 +104,15 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
             getAudio();
         }
     };
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("music.start");
+        filter.addAction("music.click");
+        filter.addAction("music.complete");
+        activity.registerReceiver(musicReceiver,filter);
         xListView = view.findViewById(R.id.grids);
         drill_item0_refr = view.findViewById(R.id.drill_item0_refr);
         drill_item0_refr.setOnRefreshListener(listener);
@@ -279,6 +286,21 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                        }
 
                         drillItem0Adapter.updata(audioBeans);
+
+                       try {
+                           String result =  BaseApplication.iMusicService.isPlay();
+                           if(result!=null){
+                               String []temp = result.split("_");
+                               drillItem0Adapter.playing(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+                               drillItem0Adapter.open(true);
+                               drillItem0Adapter.index(Integer.parseInt(temp[0]));
+
+                           }
+                       } catch (RemoteException e) {
+                           e.printStackTrace();
+                       }
+
+
                        break;
 
                    case 2:
@@ -295,40 +317,26 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                        if(audioBeans.size()!=0){
                              final AudioBean bean = audioBeans.get(index);
 //                               Common.MUSIC_INDEX = index;
-                               mediaPlayer.stop();
-                               mediaPlayer.reset();
+
                                if(play==bean.getMaps().size()){
                                    play = 0;
                                }
-                               final Map<String,String> music = bean.getMaps().get(play);
-                               Common.musicMAP = bean.getMaps().get(play);
-                              NewToast.makeText(activity,"即将播放:"+music.get("title"),Common.TTIME).show();
+                              // final Map<String,String> music = bean.getMaps().get(play);
+                           Common.SAudioBeans.clear();
+                           Common.SAudioBeans.addAll(audioBeans);
+
+
 //                               mediaPlayer.prepareToPlay(music.get("url"));
 //                               mediaPlayer.play();
                            try {
-                              BaseApplication.iMusicService.play(index,play);
+
+                              BaseApplication.iMusicService.play(index,play,bean.getMaps().size());
                            } catch (RemoteException e) {
                                e.printStackTrace();
                            }
-                           mediaPlayer.setPreparedListener(new MediaPlayer.MediaPlayerPreparedListener() {
-                               @Override
-                               public void onPrepared() {
-                                   click(music.get("id"));
-                                   NewToast.makeText(activity,"开始播放",Common.TTIME).show();
-                                 }
-                              });
-                               drillItem0Adapter.playing(index,play);
-                               mediaPlayer.setCompletedListener(new MediaPlayer.MediaPlayerCompletedListener() {
-                               @Override
-                               public void onCompleted() {
 
-                                        Message msg0 = new Message();
-                                         msg0.what = 2;
-                                        msg0.arg1 = index;
-                                        msg0.arg2 = playCom+1;
-                                        drill_handler.sendMessage(msg0);
-                               }
-                           });
+                               drillItem0Adapter.playing(index,play);
+
 
                        }
                        click3 = false;
@@ -339,6 +347,50 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
             }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(musicReceiver!=null){
+            activity.unregisterReceiver(musicReceiver);
+        }
+    }
+
+    private BroadcastReceiver musicReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+               if(action.equals("music.click")){
+                   int pos = intent.getIntExtra("pos",0);
+                   int ind = intent.getIntExtra("ind",0);
+                   String id = audioBeans.get(pos).getMaps().get(ind).get("id");
+                   click(id);
+
+                    NewToast.makeText(activity,"开始播放",Common.TTIME).show();
+                   drillItem0Adapter.playing(pos,ind);
+
+               }else if(action.equals("music.complete")){
+                   //已完成
+                   int pos = intent.getIntExtra("pos",0);
+                   int ind = intent.getIntExtra("ind",0);
+                   Message msg0 = new Message();
+                   msg0.what = 2;
+                   msg0.arg1 = pos;
+                   msg0.arg2 = ind;
+                   drill_handler.sendMessage(msg0);
+               }else if(action.equals("music.start")){
+                   //开始
+                   int pos = intent.getIntExtra("pos",0);
+                   int ind = intent.getIntExtra("ind",0);
+                   String title = audioBeans.get(pos).getMaps().get(ind).get("title");
+
+                   NewToast.makeText(activity,"即将播放:"+title,Common.TTIME).show();
+               }
+        }
+    };
+
+
+
     private void click(String id){
         JSONObject jsonObject = new JSONObject();
         try {

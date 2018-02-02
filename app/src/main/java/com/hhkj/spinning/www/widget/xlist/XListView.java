@@ -195,6 +195,7 @@ public class XListView extends MultiColumnListView implements PLA_AbsListView.On
 		if (mEnablePullRefresh && !mPullRefreshing) { // 未处于刷新状态，更新箭头
 			if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 				mHeaderView.setState(XListViewHeader.STATE_READY);
+
 			} else {
 				mHeaderView.setState(XListViewHeader.STATE_NORMAL);
 			}
@@ -258,6 +259,7 @@ public class XListView extends MultiColumnListView implements PLA_AbsListView.On
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
+
 		if (mLastY == -1) {
 			mLastY = ev.getRawY();
 		}
@@ -293,9 +295,9 @@ public class XListView extends MultiColumnListView implements PLA_AbsListView.On
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1) {
 				// invoke load more.
 				if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
-					startLoadMore();
+					//startLoadMore();
 				}
-				resetFooterHeight();
+				//resetFooterHeight();
 			}
 			break;
 		}

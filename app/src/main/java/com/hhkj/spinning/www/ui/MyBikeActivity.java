@@ -83,8 +83,13 @@ public class MyBikeActivity extends BaseActivity {
         if(!ClientManager.getClient().isBluetoothOpened()){
             showForceTurnOnBluetoothDialog();
         }
+    time();
 
 
+
+
+    }
+    private void time(){
         new Thread(){
             @Override
             public void run() {
@@ -107,10 +112,7 @@ public class MyBikeActivity extends BaseActivity {
                 }
             }
         }.start();
-
-
     }
-
 
     private boolean NOT_FOUND = true;
     @Override
@@ -416,6 +418,10 @@ public class MyBikeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(!RUN){
+            RUN = true;
+            time();
+        }
         P.c("onResume");
         connect_mac = sharedUtils.getStringValue("bt_mac");
         connect_name = sharedUtils.getStringValue("bt_name");
