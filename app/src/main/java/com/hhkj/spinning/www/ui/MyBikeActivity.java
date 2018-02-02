@@ -223,6 +223,7 @@ public class MyBikeActivity extends BaseActivity {
     private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
     public void init() {
+
         connent_status = findViewById(R.id.connent_status);
         title = findViewById(R.id.title);
         bt_click = findViewById(R.id.bt_click);
@@ -269,7 +270,8 @@ public class MyBikeActivity extends BaseActivity {
         public void onNotify(UUID service, UUID character, byte[] value) {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
-                title.setText( ByteUtils.byteToString(value));
+//                title.setText( ByteUtils.byteToString(value));
+
                 String result = ByteUtils.byteToString(value);
                 if(result.startsWith("F0B036CA")){
                     //初始化成功
@@ -279,7 +281,7 @@ public class MyBikeActivity extends BaseActivity {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
-                    LUNJING = (s*10)+g;
+                    LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }
@@ -298,7 +300,9 @@ public class MyBikeActivity extends BaseActivity {
                    double cir =   FileUtils.formatDouble(LUNJING*Math.PI);
                    double sd =FileUtils.formatDouble( cir * prm*60/1000);
                    double lc = FileUtils.formatDouble(prm*LUNJING);
+                    double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
 
+                    bottom_0.setText(String.valueOf(xl));
                     bottom_1.setText(sd+" km/h");
 
                     bottom_4.setText(String.valueOf(lc));
@@ -349,8 +353,8 @@ public class MyBikeActivity extends BaseActivity {
         timer.schedule(task,1000,1000);
     }
 
-
     private void write(String param){
+
         ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
                 ByteUtils.stringToBytes(param), new BleWriteResponse() {
                     @Override

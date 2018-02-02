@@ -72,24 +72,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="250">
-                <com.hhkj.spinning.www.widget.ColorArcProgressBar
-                    android:id="@+id/bike_cicle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="216"
-                    app:back_color="@android:color/darker_gray"
-                    app:back_width="8dp"
-                    app:front_color1="@color/orange_normal"
-                    app:front_color2="@color/orange_light"
-                    app:front_color3="@color/orange_normal"
-                    app:front_width="10dp"
-                    app:is_need_content="true"
-                    app:is_need_title="true"
-                    app:is_need_unit="true"
-                    app:string_title="未知"
-                    app:string_unit="目标 0CAL"
-                    app:total_engle="270" />
+
+                    <com.hhkj.spinning.www.widget.ColorArcProgressBar
+                        android:id="@+id/bike_cicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="216"
+                        app:back_color="@android:color/darker_gray"
+                        app:back_width="8dp"
+                        app:front_color1="@color/orange_normal"
+                        app:front_color2="@color/orange_light"
+                        app:front_color3="@color/orange_normal"
+                        app:front_width="10dp"
+                        app:is_need_content="true"
+                        app:is_need_title="true"
+                        app:is_need_unit="true"
+                        app:string_title="未知"
+                        app:string_unit="目标 0CAL"
+                        app:total_engle="270" />
+
             </LinearLayout>
 
         </LinearLayout>
