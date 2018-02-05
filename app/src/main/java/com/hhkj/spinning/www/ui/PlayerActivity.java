@@ -190,7 +190,7 @@ public class PlayerActivity extends BaseActivity {
                     double lc = FileUtils.formatDouble(prm*LUNJING);
                     double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
                     double weight = 0;
-                    double h = Common.RUN_TIME/60/60;
+                    double h = Common.RUN_TIME/60.0/60.0;
                     try {
                         weight = Double.parseDouble(sharedUtils.getStringValue("Weight"));
                     }catch (Exception e){
