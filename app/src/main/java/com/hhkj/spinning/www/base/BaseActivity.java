@@ -73,6 +73,12 @@ public abstract class BaseActivity extends Activity {
             loadView.showSheet();
         }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+      return;
+    }
+
     public void debugList(final ListView listView, final SwipeRefreshLayout refreshLayout){
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
