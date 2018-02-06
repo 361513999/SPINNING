@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -32,7 +33,8 @@ import java.util.ArrayList;
  */
 
 public class SportActivity extends BaseActivity {
-    private ListView sport_menu,sport_list;
+    private ListView sport_menu;
+    private GridView sport_list;
     private LinearLayout list_content;
     private PullToRefreshView pull_to_refresh_list;
     private SportListAdapter sportListAdapter;
@@ -54,7 +56,7 @@ public class SportActivity extends BaseActivity {
             @Override
             public void run() {
                 int width = list_content.getMeasuredWidth();
-                double fix = 90.0/505.0;
+                double fix =1.0/4;
                 int height = (int) (width*fix);
                 sportListAdapter = new SportListAdapter(SportActivity.this,width,height,sportLists);
                 sport_list.setAdapter(sportListAdapter);

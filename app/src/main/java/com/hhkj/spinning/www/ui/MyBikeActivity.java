@@ -264,7 +264,7 @@ public class MyBikeActivity extends BaseActivity {
 
         }
     }
-    private double LUNJING = 0;
+    private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
         public void onNotify(UUID service, UUID character, byte[] value) {
@@ -281,7 +281,8 @@ public class MyBikeActivity extends BaseActivity {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
-                    LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
+                    //暂时启用40的数值
+                   // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }

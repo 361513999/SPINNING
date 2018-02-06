@@ -22,6 +22,7 @@ import com.hhkj.spinning.www.inter.Tips;
 import com.hhkj.spinning.www.inter.TipsText;
 import com.hhkj.spinning.www.widget.CircleImageView;
 import com.hhkj.spinning.www.widget.CommonOneDate;
+import com.hhkj.spinning.www.widget.CommonOneInfo;
 import com.hhkj.spinning.www.widget.CommonOneSex;
 import com.hhkj.spinning.www.widget.CommonPhotoPop;
 import com.jph.takephoto.app.TakePhoto;
@@ -48,7 +49,8 @@ public class ModPersonActivity extends TPActivity {
     private CircleImageView edit_person_icon;
     private final int SELECT_LIMITE = 1;
     private TextView item1,item2;
-    private EditText item0,item3,item4,item5,item6;
+    private EditText item0,item6;
+    private TextView item3,item4,item5;
     private TextView send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +192,65 @@ public class ModPersonActivity extends TPActivity {
                 oneSex.showSheet();
             }
         });
+        item3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonOneInfo oneInfo = new CommonOneInfo(ModPersonActivity.this,null,140,229);
+                oneInfo.init("取消","确定","请选择身高","cm",getArr(140,229),getNow(item3)==0?140:getNow(item3));
+                oneInfo.setI(new TipsText() {
+                    @Override
+                    public void cancel(String txt) {
+
+                    }
+
+                    @Override
+                    public void sure(String txt) {
+                        item3.setText(txt);
+                    }
+                });
+                oneInfo.showSheet();
+            }
+        });
+        item4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonOneInfo oneInfo = new CommonOneInfo(ModPersonActivity.this,null,35,134);
+
+                oneInfo.init("取消","确定","请选择体重","kg",getArr(35,134),getNow(item4)==0?35:getNow(item4));
+                oneInfo.setI(new TipsText() {
+                    @Override
+                    public void cancel(String txt) {
+
+                    }
+
+                    @Override
+                    public void sure(String txt) {
+                        item4.setText(txt);
+                    }
+                });
+                oneInfo.showSheet();
+            }
+        });
+        item5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonOneInfo oneInfo = new CommonOneInfo(ModPersonActivity.this,null,35,134);
+
+                oneInfo.init("取消","确定","请选择目标体重","kg",getArr(35,134),getNow(item5)==0?35:getNow(item5));
+                oneInfo.setI(new TipsText() {
+                    @Override
+                    public void cancel(String txt) {
+
+                    }
+
+                    @Override
+                    public void sure(String txt) {
+                        item5.setText(txt);
+                    }
+                });
+                oneInfo.showSheet();
+            }
+        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,6 +314,28 @@ public class ModPersonActivity extends TPActivity {
             }
         });
     }
+    private int getNow(TextView view){
+        String temp = view.getText().toString();
+        int result = 0;
+        try {
+            result = Integer.parseInt(temp);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
+    private String []getArr(int min,int max){
+        String[] tems = new String[max-min+1];
+        int k = 0;
+        for(int i=min;i<=max;i++){
+            tems[k] = String.valueOf(i);
+            k = k+1;
+        }
+        return  tems;
+    };
+
+
     private String Bitmap2StrByBase64(Bitmap bit){
         ByteArrayOutputStream bos=new ByteArrayOutputStream();
         bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩

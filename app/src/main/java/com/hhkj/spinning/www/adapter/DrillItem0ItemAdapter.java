@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.widget.InScrollListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -31,13 +33,14 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
     private Handler handler;
     private int index;
     private int playIndex;
-
-    public DrillItem0ItemAdapter(Context context,ArrayList<Map<String,String>> maps,Handler handler,int index,int playIndex){
+    private ImageView play_ico;
+    public DrillItem0ItemAdapter(Context context,ArrayList<Map<String,String>> maps,Handler handler,int index,int playIndex,ImageView play_ico){
         this.context = context;
         this.maps = maps;
         this.handler = handler;
         this.index = index;
         this.playIndex = playIndex;
+        this.play_ico = play_ico;
         inflater = LayoutInflater.from(context);
 
     }
@@ -98,6 +101,7 @@ public class DrillItem0ItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 viewHolder.item0.setTextColor(context.getResources().getColor(R.color.white));
+                ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_pause,play_ico);
                 Message msg = new Message();
                 msg.what = 2;
                 msg.arg1 = index;

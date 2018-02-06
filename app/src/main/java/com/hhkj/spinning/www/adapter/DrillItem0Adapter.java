@@ -70,7 +70,7 @@ public class DrillItem0Adapter extends BaseAdapter {
         LinearLayout child,content0,play_music;
         TextView item0,item1,play_time;
         InScrollListView content;
-        ImageView item2;
+        ImageView item2,play_ico;
         Button slo;
     }
     int playIndex = -1;
@@ -112,6 +112,7 @@ public class DrillItem0Adapter extends BaseAdapter {
             viewHolder.item0 = convertView.findViewById(R.id.item0);
             viewHolder.item1 = convertView.findViewById(R.id.item1);
             viewHolder.item2 = convertView.findViewById(R.id.item2);
+            viewHolder.play_ico = convertView.findViewById(R.id.play_ico);
             viewHolder.play_music = convertView.findViewById(R.id.play_music);
             viewHolder.play_time = convertView.findViewById(R.id.play_time);
             convertView.setTag(R.mipmap.ic_launcher + position);
@@ -144,7 +145,7 @@ public class DrillItem0Adapter extends BaseAdapter {
         ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_ico,viewHolder.item2);
         //FileUtils.addImage(bean.getImage())
         viewHolder.content0.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,height));
-        DrillItem0ItemAdapter adapter = new DrillItem0ItemAdapter(context,bean.getMaps(),handler,position,playIndex);
+        DrillItem0ItemAdapter adapter = new DrillItem0ItemAdapter(context,bean.getMaps(),handler,position,playIndex,viewHolder.play_ico);
         viewHolder.content.setAdapter(adapter);
         P.c("是否展开"+is);
         if(is&&index==position){
@@ -159,9 +160,19 @@ public class DrillItem0Adapter extends BaseAdapter {
                     int pos = Integer.parseInt(result[0]);
                     if(pos==position){
                         adapter.play(ind);
+                        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_pause,viewHolder.play_ico);
                     }else{
+                        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_play,viewHolder.play_ico);
                         adapter.play(-1);
                     }
+
+                }else{
+                    if(index==position){
+                        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_pause,viewHolder.play_ico);
+                    }else{
+                        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_play,viewHolder.play_ico);
+                    }
+
 
                 }
             } catch (RemoteException e) {
@@ -170,6 +181,7 @@ public class DrillItem0Adapter extends BaseAdapter {
 
         }else{
             viewHolder.slo.setText("+ 全部歌单");
+            ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_play,viewHolder.play_ico);
             viewHolder.content.setVisibility(View.GONE);
         }
       /*  if(is){
@@ -179,6 +191,8 @@ public class DrillItem0Adapter extends BaseAdapter {
 
         }*/
 
+
+
          viewHolder.slo.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -186,9 +200,10 @@ public class DrillItem0Adapter extends BaseAdapter {
                 if(viewHolder.content.getVisibility()==View.VISIBLE){
                     is = false;
 //                viewHolder.content.setVisibility(View.GONE);
-
+                  //  ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_play,viewHolder.play_ico);
                 }else{
                     is = true;
+                 //   ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_pause,viewHolder.play_ico);
 //                viewHolder.content.setVisibility(View.VISIBLE);
                 }
                 index= position;
@@ -214,10 +229,13 @@ public class DrillItem0Adapter extends BaseAdapter {
                     if(status){
                         try {
                             BaseApplication.iMusicService.stop();
+                            ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_play,viewHolder.play_ico);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
+
                     }else{
+                        ImageLoader.getInstance().displayImage("drawable://"+R.mipmap.music_pause,viewHolder.play_ico);
                         P.c("播放音频");
                         Message msg = new Message();
                         msg.what = 2;

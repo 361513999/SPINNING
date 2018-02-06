@@ -79,7 +79,7 @@ public class SportListAdapter extends BaseAdapter {
 
         SportList list = sportLists.get(position);
         ImageLoader.getInstance().displayImage(FileUtils.addImage(list.getImage()),  viewHolder.item_tag);
-        viewHolder.item_content.setLayoutParams(new AbsListView.LayoutParams(width,height));
+        viewHolder.item_content.setLayoutParams(new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,height));
         viewHolder.item0.setText(list.getName());
         viewHolder.item1.setText(list.getTip());
         return  convertView;

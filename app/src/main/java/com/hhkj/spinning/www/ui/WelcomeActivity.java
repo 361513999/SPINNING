@@ -193,7 +193,7 @@ public class WelcomeActivity extends BaseActivity {
 
                }
                 startActivity(intent);
-                AppManager.getAppManager().finishActivity();
+              //  AppManager.getAppManager().finishActivity();
                 break;
             case 1:
                 cancleLoadView();

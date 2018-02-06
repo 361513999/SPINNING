@@ -1,10 +1,13 @@
 package com.hhkj.spinning.www.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Message;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -103,7 +106,9 @@ public class PlayerActivity extends BaseActivity {
                     public void onSearchStopped() {
 
                         if(NOT_FOUND){
+                        //在这里进行提醒操作
 
+                            showForceTurnOnBluetoothDialog();
                         }
                     }
 
@@ -152,7 +157,7 @@ public class PlayerActivity extends BaseActivity {
         timer.schedule(task,1000,1000);
     }
 
-    private double LUNJING = 0;
+    private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
         public void onNotify(UUID service, UUID character, byte[] value) {
@@ -169,7 +174,7 @@ public class PlayerActivity extends BaseActivity {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
-                    LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
+                   // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }
@@ -656,9 +661,31 @@ public class PlayerActivity extends BaseActivity {
 
             }
         }else {
-
+            showForceTurnOnBluetoothDialog();
         }
 
+    }
+
+    private AlertDialog dlgBluetoothOpen;
+
+    private void showForceTurnOnBluetoothDialog() {
+        if (dlgBluetoothOpen == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("请先连接设备");
+            builder.setNegativeButton("取消", null);
+            builder.setPositiveButton("好的",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //查询蓝牙情况
+                            Intent intent  = new Intent(PlayerActivity.this,MyBikeActivity.class);
+                            startActivity(intent);
+                            AppManager.getAppManager().finishActivity(PlayerActivity.this);
+                        }
+                    });
+            dlgBluetoothOpen = builder.create();
+        }
+        dlgBluetoothOpen.show();
     }
 
     @Override

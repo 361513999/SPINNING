@@ -32,10 +32,13 @@
                     android:background="@drawable/shape_bg_music_item"
                     android:layout_height="wrap_content">
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/play_ico"
+                        android:layout_width="12dp"
                         android:layout_marginRight="4dp"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/music_play"/>
+                        android:layout_height="16dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/music_play"
+                        />
                     <TextView
                         android:id="@+id/play_time"
                         android:layout_width="wrap_content"

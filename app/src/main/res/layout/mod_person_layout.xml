@@ -239,7 +239,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="选择身高" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/item3"
                                 style="@style/person_font"
                                 android:layout_width="0dp"
@@ -275,7 +275,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="当前体重" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/item4"
                                 style="@style/person_font"
                                 android:layout_width="0dp"
@@ -311,7 +311,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="目标体重" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/item5"
                                 android:digits="0123456789."
                                 android:inputType="numberDecimal"
