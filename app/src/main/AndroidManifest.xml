@@ -165,7 +165,7 @@
         <!--5a38a65ab27b0a6b3a00052a-->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5126ff896c738f2bfa000438" >
+            android:value="5a38a65ab27b0a6b3a00052a" >
         </meta-data>
         <activity
             android:name=".wxapi.WXEntryActivity"

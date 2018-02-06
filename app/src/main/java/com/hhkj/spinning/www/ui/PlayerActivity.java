@@ -422,7 +422,8 @@ public class PlayerActivity extends BaseActivity {
                 }
                 control.setBackgroundResource(R.drawable.jz_click_pause_selector);
                 PLAY_TAG = 1;
-                mediaPlayer.play();
+               // mediaPlayer.play();
+                //将这个播放改到蓝牙连接成功处
                 showLimite(false);
                 new Thread() {
                     public void run() {
@@ -635,7 +636,9 @@ public class PlayerActivity extends BaseActivity {
 
             }else if(status==STATUS_CONNECTED){
                 P.c("连接中");
-
+                if(mediaPlayer!=null){
+                    mediaPlayer.play();
+                }
             }
         }
     };
@@ -658,7 +661,9 @@ public class PlayerActivity extends BaseActivity {
                 getHandler().sendEmptyMessage(2);
             }else{
                 ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
-
+                if(mediaPlayer!=null){
+                    mediaPlayer.play();
+                }
             }
         }else {
             showForceTurnOnBluetoothDialog();

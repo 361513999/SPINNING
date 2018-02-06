@@ -230,7 +230,7 @@ public class PlayOnlineActivity extends BaseActivity {
         videoView.setEnableBackgroundPlay(false);
         videoView.setVideoPath(url);
         videoView.requestFocus();
-        videoView.start();
+
         videoView.setOnPreparedListener(new NELivePlayer.OnPreparedListener() {
             @Override
             public void onPrepared(NELivePlayer neLivePlayer) {
@@ -626,7 +626,9 @@ public class PlayOnlineActivity extends BaseActivity {
 
             }else if(status==STATUS_CONNECTED){
                 P.c("连接中");
-
+                if(videoView!=null){
+                    videoView.start();
+                }
             }
         }
     };
@@ -650,7 +652,9 @@ public class PlayOnlineActivity extends BaseActivity {
                 getHandler().sendEmptyMessage(2);
             }else{
                 ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
-
+                if(videoView!=null){
+                    videoView.start();
+                }
             }
         }else {
 

@@ -382,9 +382,12 @@ private XListView.IXListViewListener ixListViewListener =new XListView.IXListVie
                    //开始
                    int pos = intent.getIntExtra("pos",0);
                    int ind = intent.getIntExtra("ind",0);
-                   String title = audioBeans.get(pos).getMaps().get(ind).get("title");
-
-                   NewToast.makeText(activity,"即将播放:"+title,Common.TTIME).show();
+                   try {
+                       String title = audioBeans.get(pos).getMaps().get(ind).get("title");
+                       NewToast.makeText(activity,"即将播放:"+title,Common.TTIME).show();
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
                }
         }
     };

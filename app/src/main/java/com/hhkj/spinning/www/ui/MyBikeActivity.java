@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
@@ -37,6 +40,10 @@ import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.inuker.bluetooth.library.utils.BluetoothLog;
 import com.inuker.bluetooth.library.utils.ByteUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.io.File;
 import java.util.Timer;
@@ -219,11 +226,14 @@ public class MyBikeActivity extends BaseActivity {
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
     }
+    private LinearLayout content;
     private TextView title,connent_status;
+    private ImageView share;
     private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
     public void init() {
-
+        content = findViewById(R.id.content);
+        share = findViewById(R.id.share);
         connent_status = findViewById(R.id.connent_status);
         title = findViewById(R.id.title);
         bt_click = findViewById(R.id.bt_click);
@@ -247,8 +257,52 @@ public class MyBikeActivity extends BaseActivity {
                 startActivityForResult(intent,100);
             }
         });
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                share.setVisibility(View.GONE);
+                content.setDrawingCacheEnabled(true);
+                Bitmap tBitmap = content.getDrawingCache();
+                // 拷贝图片，否则在setDrawingCacheEnabled(false)以后该图片会被释放掉
+                tBitmap = tBitmap.createBitmap(tBitmap);
+                content.setDrawingCacheEnabled(false);
+                share.setVisibility(View.VISIBLE);
+                UMImage image = new UMImage(MyBikeActivity.this,tBitmap);//本地文件
+                new ShareAction(MyBikeActivity.this)
+                        .withMedia(image)
+                        .setDisplayList(SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE)
 
+                        .setCallback(umShareListener)
+                        .open();
+            }
+        });
     }
+
+    private  UMShareListener umShareListener = new UMShareListener(){
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+
+            P.c("onResult");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+            P.c("onError");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+            P.c("onCancel");
+        }
+    };
     private String connect_mac = "";
     private String connect_name = "";
     @Override
@@ -419,6 +473,7 @@ public class MyBikeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         if(!RUN){
             RUN = true;
             time();
