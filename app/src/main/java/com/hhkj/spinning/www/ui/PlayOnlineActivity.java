@@ -31,6 +31,7 @@ import com.hhkj.spinning.www.adapter.PlayOnlineAdapter;
 import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.PlayOnlinePerson;
+import com.hhkj.spinning.www.bean.VideoBean;
 import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
@@ -164,6 +165,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 break;
         }
     }
+
     private volatile boolean isRun = true;
     private SwipeRefreshLayout.OnRefreshListener listener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -178,6 +180,7 @@ public class PlayOnlineActivity extends BaseActivity {
     private View mBuffer;
     private Button control;
     private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
+    private String play = null;
     @Override
     public void init() {
         bottom_0 = findViewById(R.id.bottom_0);
@@ -214,6 +217,9 @@ public class PlayOnlineActivity extends BaseActivity {
         if(intent.hasExtra("param")){
             String param = intent.getStringExtra("param");
             String temp[] = param.split(";");
+            if(temp.length==4){
+                play = temp[3];
+            }
             onlineId = temp[0];
             title.setText(temp[2]);
             url = temp[1];
@@ -284,7 +290,22 @@ public class PlayOnlineActivity extends BaseActivity {
                 P.c("解析异常");
             }
         });
+        videoView.setOnCompletionListener(new NELivePlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(NELivePlayer neLivePlayer) {
+                //直播结束
+                    if(play!=null){
+                        Intent inten0 = new Intent(PlayOnlineActivity.this,PlayerActivity.class);
+                        VideoBean bean = new VideoBean();
+                        bean.setUrl(play);
+                        bean.setTitle("点播");
+                        inten0.putExtra("param",bean);
+                        startActivity(inten0);
+                        AppManager.getAppManager().finishActivity(PlayOnlineActivity.this);
 
+                    }
+            }
+        });
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

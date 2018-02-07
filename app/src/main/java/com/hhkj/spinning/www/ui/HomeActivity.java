@@ -237,7 +237,12 @@ public class HomeActivity extends BaseActivity {
                             if (len != 0) {
                                 Message msg = new Message();
                                 msg.what = 3;
-                                msg.obj = online.getId() + ";" + jsonArray.getString(0) + ";" + online.getTitle();
+                                if(len==3){
+                                    msg.obj = online.getId() + ";" + jsonArray.getString(0) + ";" + online.getTitle();
+                                }else if(len==4){
+                                    msg.obj = online.getId() + ";" + jsonArray.getString(0) + ";" + online.getTitle()+";"+jsonArray.getString(3);
+                                }
+
                                 getHandler().sendMessage(msg);
                             }
 
