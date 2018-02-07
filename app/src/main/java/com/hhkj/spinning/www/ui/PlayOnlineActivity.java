@@ -1,5 +1,7 @@
 package com.hhkj.spinning.www.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -139,7 +141,7 @@ public class PlayOnlineActivity extends BaseActivity {
                     public void onSearchStopped() {
 
                         if(NOT_FOUND){
-
+                            showForceTurnOnBluetoothDialog();
                         }
                     }
 
@@ -635,6 +637,27 @@ public class PlayOnlineActivity extends BaseActivity {
     private String connect_mac = "";
     private String connect_name = "";
     private boolean RUN = true;
+    private AlertDialog dlgBluetoothOpen;
+
+    private void showForceTurnOnBluetoothDialog() {
+        if (dlgBluetoothOpen == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("请先连接设备");
+            //builder.setNegativeButton("取消", null);
+            builder.setPositiveButton("好的",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //查询蓝牙情况
+                            Intent intent  = new Intent(PlayOnlineActivity.this,MyBikeActivity.class);
+                            startActivity(intent);
+                            AppManager.getAppManager().finishActivity(PlayOnlineActivity.this);
+                        }
+                    });
+            dlgBluetoothOpen = builder.create();
+        }
+        dlgBluetoothOpen.show();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -657,7 +680,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 }
             }
         }else {
-
+            showForceTurnOnBluetoothDialog();
         }
 
     }

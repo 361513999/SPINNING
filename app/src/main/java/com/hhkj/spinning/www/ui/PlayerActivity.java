@@ -677,7 +677,7 @@ public class PlayerActivity extends BaseActivity {
         if (dlgBluetoothOpen == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("请先连接设备");
-            builder.setNegativeButton("取消", null);
+            //builder.setNegativeButton("取消", null);
             builder.setPositiveButton("好的",
                     new DialogInterface.OnClickListener() {
                         @Override
