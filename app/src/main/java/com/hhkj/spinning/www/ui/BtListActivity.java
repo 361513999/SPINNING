@@ -14,7 +14,9 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.inter.Tips;
 import com.hhkj.spinning.www.utils.ClientManager;
+import com.hhkj.spinning.www.widget.CommonTips;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
 import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
@@ -42,6 +44,25 @@ public class BtListActivity extends BaseActivity {
             switch (msg.what){
                 case 1:
                     btListAdapter.updata(searchResults);
+                    break;
+                case 0:
+                    //断开并上传数据
+                   // NewToast.makeText(BtListActivity.this,"断开并上传",Common.TTIME).show();
+                    CommonTips commonTips = new CommonTips(BtListActivity.this,null);
+                    commonTips.init("忽略","上传","断开并上传数据");
+                    commonTips.setI(new Tips() {
+                        @Override
+                        public void cancel() {
+
+                        }
+
+                        @Override
+                        public void sure() {
+
+                        }
+                    });
+                    commonTips.showSheet();
+
                     break;
 
             }
@@ -101,7 +122,7 @@ public class BtListActivity extends BaseActivity {
         title = findViewById(R.id.title);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         bt_lists = findViewById(R.id.bt_lists);
-        btListAdapter = new BtListAdapter(BtListActivity.this,searchResults);
+        btListAdapter = new BtListAdapter(BtListActivity.this,searchResults,getHandler());
         bt_lists.setAdapter(btListAdapter);
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         bt_lists.setOnItemClickListener(new AdapterView.OnItemClickListener() {

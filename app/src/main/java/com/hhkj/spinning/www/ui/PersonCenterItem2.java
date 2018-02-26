@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.widget.line.LineData;
 import com.hhkj.spinning.www.widget.line.LineUtils;
 import com.hhkj.spinning.www.widget.line.XY;
@@ -55,7 +57,11 @@ public class PersonCenterItem2 extends BaseFragment {
     private XY xy = new XY();
     private float oldX = 0;
     private float oldY = 0;
+    private TextView date,l_d,r_d;
     private void init(View view){
+        date = view.findViewById(R.id.date);
+        l_d = view.findViewById(R.id.l_d);
+        r_d = view.findViewById(R.id.r_d);
         main_content =view. findViewById(R.id.main_content);
         axisXLayout = view.findViewById(R.id.axisX);
         axisYLayout =view.findViewById(R.id.axisY);
@@ -100,6 +106,20 @@ public class PersonCenterItem2 extends BaseFragment {
                 lineView = new LineView(activity);
 
                 base_handler.sendEmptyMessage(1);
+
+                l_d.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        date.setText(TimeUtil.getNextDay(date.getText().toString(),false));
+                    }
+                });
+                r_d.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        date.setText(TimeUtil.getNextDay(date.getText().toString(),true));
+                    }
+                });
+                date.setText(TimeUtil.getDate_(System.currentTimeMillis()));
             }
         });
 
@@ -179,7 +199,6 @@ public class PersonCenterItem2 extends BaseFragment {
                          setKey();
                          setAxis();
                          setData();
-
                          //填充
                          addView();
                          break;

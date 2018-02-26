@@ -200,7 +200,6 @@ public class TimeUtil {
 		Date today = calendar.getTime();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String result = format.format(today);
-
 		return result;
 	}
 	public static long getFetureSec(int past) {
