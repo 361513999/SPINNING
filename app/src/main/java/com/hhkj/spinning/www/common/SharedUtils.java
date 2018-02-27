@@ -3,6 +3,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 public class SharedUtils {
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;
@@ -102,4 +108,16 @@ public class SharedUtils {
 		// 默认为false
 		return preferences.getBoolean(key, false);
 	}
+	public ArrayList<String> getKeys(){
+		ArrayList<String> keys = new ArrayList<>();
+		Map<String,String> vl  = (Map<String, String>) preferences.getAll();
+		Set set = vl.entrySet();
+		Iterator it = set.iterator();
+		while(it.hasNext()){
+			keys.add(String.valueOf(it.next()));
+		}
+		return  keys;
+	}
+
+
 }

@@ -82,6 +82,19 @@ public class TimeUtil {
 		}
 		return  0;
 	}
+	public static String parseTime_h(String time){
+//		1991-11-15 00:00:00
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat format0 = new SimpleDateFormat("HH");
+		try {
+			return  format0.format(format.parse(time).getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return  null;
+	}
+
+
 	public static long parseTime_(String time){
 //		1991-11-15 00:00:00
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -112,7 +112,7 @@ public class PersonCenterActivity extends BaseFragmentActivity {
 
                 break;
             case 2:
-                personCenterItem2 = new PersonCenterItem2(PersonCenterActivity.this, getHandler());
+                personCenterItem2 = new PersonCenterItem2(PersonCenterActivity.this, getHandler(),sharedUtils);
                 transaction.replace(CONTENT, personCenterItem2);
                 break;
             case 3:

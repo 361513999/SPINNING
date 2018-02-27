@@ -30,6 +30,7 @@ import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
@@ -48,6 +49,7 @@ import com.inuker.bluetooth.library.utils.ByteUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -156,7 +158,22 @@ public class PlayerActivity extends BaseActivity {
         };
         timer.schedule(task,1000,1000);
     }
-
+    private double getVlue(){
+        SharedUtils initUtils  =  new SharedUtils(Common.initMap);
+        ArrayList<String> keys =  initUtils.getKeys();
+        for(int i=0;i<keys.size();i++){
+            if(sharedUtils.getStringValue("bt_name").contains( keys.get(i))){
+                double d = 0;
+                try {
+                    d = Double.parseDouble(initUtils.getStringValue(keys.get(i)));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return d;
+            }
+        }
+        return 40;
+    }
     private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
@@ -175,6 +192,8 @@ public class PlayerActivity extends BaseActivity {
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
                    // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
+
+                    LUNJING = getVlue();
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }

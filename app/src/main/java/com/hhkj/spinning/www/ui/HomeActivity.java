@@ -29,6 +29,7 @@ import com.hhkj.spinning.www.common.BaseApplication;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.widget.CircleImageView;
@@ -70,7 +71,55 @@ public class HomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+
+        getInit();
     }
+    private void getInit(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            jsonObject.put("cls","Sys.ParamSet");
+            jsonObject.put("method","GetData");
+            jsonObject.put("param","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+                try {
+                    String result = data.getString("Result");
+
+                    JSONArray jsonArray =   new JSONArray(result);
+                    int len =  jsonArray.length();
+                    P.c("保存===="+len);
+                    for(int i=0;i<len;i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+                        sharedUtils.setStringValue(object.getString("key"),object.getString("value"));
+//                        Common.initMaps.put(object.getString("key"),object.getString("value"));
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+
+    }
+
     private long exitTime = 0;
     private void exit(){
 

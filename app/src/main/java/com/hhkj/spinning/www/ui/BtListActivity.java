@@ -1,5 +1,6 @@
 package com.hhkj.spinning.www.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,8 @@ import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
+import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.inter.Tips;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.CommonTips;
@@ -27,6 +30,9 @@ import com.inuker.bluetooth.library.search.SearchRequest;
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.inuker.bluetooth.library.utils.ByteUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -58,7 +64,15 @@ public class BtListActivity extends BaseActivity {
 
                         @Override
                         public void sure() {
+                            ClientManager.getClient().disconnect(sharedUtils.getStringValue("bt_mac"));
 
+                              Intent intent = getIntent();
+                              if(intent.hasExtra("xl")){
+                                  updata(intent);
+                              }
+                              if(btListAdapter!=null){
+                                  btListAdapter.notifyDataSetChanged();
+                              }
                         }
                     });
                     commonTips.showSheet();
@@ -77,6 +91,49 @@ public class BtListActivity extends BaseActivity {
 
         }
     };
+    private void updata(final Intent intent){
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cls","Sys.Data");
+            jsonObject.put("method","UpLoadData");
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            //{\"XL\":1,\"SD\":1,\"KAL\":1,\"KM\":1,\"TotalKM\":1,\"ZS\":1,\"Time\":\"12:25\"}
+            object.put("XL",intent.getStringExtra("xl"));
+            object.put("SD",intent.getStringExtra("sd"));
+            object.put("KAL",intent.getStringExtra("cal"));
+            object.put("KM",intent.getStringExtra("lc"));
+            object.put("TotalKM",intent.getStringExtra("zlc"));
+            object.put("ZS","0");
+            object.put("Time",intent.getStringExtra("sj"));
+
+            jsonObject.put("param",object.toString());
+            httpPost("Post", jsonObject.toString(), new Result() {
+                @Override
+                public void success(JSONObject data) {
+                    sharedUtils.setStringValue("zlc",intent.getStringExtra("zlc"));
+                }
+
+                @Override
+                public void error(String data) {
+
+                }
+
+                @Override
+                public void unLogin() {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
     private SearchResponse response = new SearchResponse() {
         @Override
         public void onSearchStarted() {
@@ -139,7 +196,7 @@ public class BtListActivity extends BaseActivity {
                 .setServiceDiscoverRetry(3)
                 .setServiceDiscoverTimeout(10000)
                 .build();
-        ClientManager.getClient().connect(result.getAddress(), options, new BleConnectResponse() {
+         ClientManager.getClient().connect(result.getAddress(), options, new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile data) {
                 if(code==REQUEST_SUCCESS){

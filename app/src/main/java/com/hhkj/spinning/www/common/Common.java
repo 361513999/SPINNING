@@ -22,6 +22,7 @@ public class Common {
     public static final String DB_NAME = "store.spinning";
     public static final int DB_VERSION = 2;
     public static final String config = "CONFIG";
+    public static final String initMap = "INIT";
     public static final int SHOW_NUM = 8;
     public static final int TTIME = 200;
     public static String BASE_DIR = Environment
@@ -41,4 +42,5 @@ public class Common {
     public  static int RUN_TIME = 0;
     public static final String RUN_TIME_ACTION = "spinning.time";
     public static ArrayList<AudioBean> SAudioBeans = new ArrayList<>();
+//    public static Map<String,String> initMaps = new HashMap<>();
 }

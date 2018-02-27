@@ -11,10 +11,10 @@
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
-                <TextView
+                <ImageView
                     android:id="@+id/l_d"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/select_left"
+                    android:src="@drawable/select_left"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/date"
@@ -24,10 +24,10 @@
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:layout_height="wrap_content" />
-                <TextView
+                <ImageView
                     android:id="@+id/r_d"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/select_right"
+                    android:src="@drawable/select_right"
                     android:layout_height="wrap_content" />
             </LinearLayout>
        </LinearLayout>

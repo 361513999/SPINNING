@@ -1,11 +1,9 @@
 package com.hhkj.spinning.www.ui;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
@@ -18,16 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
-import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.Common;
 import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.db.DB;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.ColorArcProgressBar;
-import com.hhkj.spinning.www.widget.NewToast;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
 import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
 import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
@@ -45,7 +42,9 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -129,6 +128,8 @@ public class MyBikeActivity extends BaseActivity {
                 String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
 
                 bottom_2.setText(time);
+                bottom_2.setTag(time);
+
                 break;
             case 1:
                 CenterItem1Edit edit = (CenterItem1Edit) msg.obj;
@@ -171,7 +172,6 @@ public class MyBikeActivity extends BaseActivity {
                             ClientManager.getClient().stopSearch();
                             NOT_FOUND = false;
                         }
-
                     }
 
                     @Override
@@ -253,7 +253,24 @@ public class MyBikeActivity extends BaseActivity {
         bt_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 Intent intent =new Intent(MyBikeActivity.this,BtListActivity.class);
+                if(bottom_0.getTag()!=null){
+                    intent.putExtra("xl",bottom_0.getTag().toString());
+                    intent.putExtra("sd",bottom_1.getTag().toString());
+                    intent.putExtra("sj",bottom_2.getTag().toString());
+                    intent.putExtra("cal",bottom_3.getTag().toString());
+                    intent.putExtra("lc",bottom_4.getTag().toString());
+                    intent.putExtra("zlc",bottom_5.getTag().toString());
+                }
+               /* intent.putExtra("xl","200");
+                intent.putExtra("sd","201");
+                intent.putExtra("sj","300");
+                intent.putExtra("cal","301");
+                intent.putExtra("lc","400");
+                intent.putExtra("zlc","401");*/
+
                 startActivityForResult(intent,100);
             }
         });
@@ -318,6 +335,23 @@ public class MyBikeActivity extends BaseActivity {
 
         }
     }
+    private double getVlue(){
+        SharedUtils initUtils  =  new SharedUtils(Common.initMap);
+        ArrayList<String> keys =  initUtils.getKeys();
+        for(int i=0;i<keys.size();i++){
+            if(sharedUtils.getStringValue("bt_name").contains( keys.get(i))){
+                double d = 0;
+                try {
+                    d = Double.parseDouble(initUtils.getStringValue(keys.get(i)));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return d;
+            }
+        }
+        return 40;
+    }
+
     private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
@@ -337,6 +371,8 @@ public class MyBikeActivity extends BaseActivity {
                     int g = getChar(result,10,2);
                     //暂时启用40的数值
                    // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
+                    LUNJING = getVlue();
+
                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
                     write("F0A236CA92");
                 }
@@ -366,10 +402,30 @@ public class MyBikeActivity extends BaseActivity {
                     double cal = sd*weight*1.05*h;
                     //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
                     bottom_0.setText(String.valueOf(xl));
-                    bottom_1.setText(sd+" km/h");
-                    bottom_3.setText(String.valueOf(cal));
-                    bottom_4.setText(String.valueOf(lc));
+                    bottom_0.setTag(String.valueOf(xl));
 
+                    bottom_1.setText(sd+" km/h");
+                    bottom_1.setTag(String.valueOf(sd));
+
+                    bottom_3.setText(String.valueOf(cal));
+                    bottom_3.setTag(String.valueOf(cal));
+                    double tlc = 0;
+                    try {
+                        tlc =   Double.parseDouble(bottom_4.getText().toString());
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    bottom_4.setText(String.valueOf(lc+tlc));
+                    bottom_4.setTag(String.valueOf(lc+tlc));
+                    double zlc = 0;
+                    try {
+                          zlc = Double.parseDouble(sharedUtils.getStringValue("zlc"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    bottom_5.setText( String.valueOf(lc+tlc+zlc));
+                    bottom_5.setTag( String.valueOf(lc+tlc+zlc));
                     if(cal!=0){
                         String temp = String.valueOf(cal/bike_cicle.getMaxValues());
                         float now = FileUtils.formatFloat(Float.parseFloat(temp))*100;

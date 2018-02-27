@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +22,9 @@ import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.base.BaseFragment;
 import com.hhkj.spinning.www.common.P;
+import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
+import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.widget.line.LineData;
 import com.hhkj.spinning.www.widget.line.LineUtils;
 import com.hhkj.spinning.www.widget.line.XY;
@@ -29,9 +32,15 @@ import com.hhkj.spinning.www.widget.line.view.AxisXView;
 import com.hhkj.spinning.www.widget.line.view.AxisYView_NormalType;
 import com.hhkj.spinning.www.widget.line.view.LineView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/12/19/019.
@@ -41,9 +50,11 @@ import java.util.ArrayList;
 public class PersonCenterItem2 extends BaseFragment {
     private Handler handler;
     private Activity activity;
-    public PersonCenterItem2(Activity activity, Handler handler){
+    private SharedUtils sharedUtils;
+    public PersonCenterItem2(Activity activity, Handler handler,SharedUtils sharedUtils){
         this.handler = handler;
         this.activity =activity;
+        this.sharedUtils =sharedUtils;
         base_handler = new Base_Handler(PersonCenterItem2.this);
     }
     private LinearLayout axisYLayout = null;
@@ -57,7 +68,8 @@ public class PersonCenterItem2 extends BaseFragment {
     private XY xy = new XY();
     private float oldX = 0;
     private float oldY = 0;
-    private TextView date,l_d,r_d;
+    private TextView date;
+    private ImageView l_d,r_d;
     private void init(View view){
         date = view.findViewById(R.id.date);
         l_d = view.findViewById(R.id.l_d);
@@ -111,22 +123,91 @@ public class PersonCenterItem2 extends BaseFragment {
                     @Override
                     public void onClick(View view) {
                         date.setText(TimeUtil.getNextDay(date.getText().toString(),false));
+                        getData();
+                   //    linkedList  = new float[]{1,5,6,2,3,8} ;
+
+
                     }
                 });
                 r_d.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         date.setText(TimeUtil.getNextDay(date.getText().toString(),true));
+                       // linkedList  = new float[]{0,5,6,7,2,8,3,1,8} ;
+                        getData();
+
                     }
                 });
                 date.setText(TimeUtil.getDate_(System.currentTimeMillis()));
+                getData();
             }
         });
+    }
+
+    /**
+     * 获取数据
+     */
+    private void getData(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            jsonObject.put("cls","Sys.Data");
+            jsonObject.put("method","GetUserData");
+            JSONObject object = new JSONObject();
+            object.put("userId",Integer.parseInt(sharedUtils.getStringValue("id")));
+            object.put("date",date.getText().toString());
+            jsonObject.put("param",object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPost("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+                try {
+                    String result = data.getString("Result");
+                    JSONArray jsonArray = new JSONArray(result);
+                    int len = jsonArray.length();
+                    Map<String,String> map = new HashMap<>();
+                    for(int i=0;i<len;i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        String time = object.getString("CreateTime");
+                        map.put(TimeUtil.parseTime_h(time),object.getString("KAL"));
+                    }
+                    for(int i=0;i<23;i++){
+                        if(map.containsKey(String.valueOf(i))){
+                            linkedList[i] =Float.parseFloat( map.get(String.valueOf(i)));
+                        }else{
+                            linkedList[i] = 0;
+                        }
+                    }
+                    base_handler.sendEmptyMessage(1);
 
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },activity);
 
     }
-    float linkedList[] = new float[]{2,8,9,4,6,6,3,4,7,7,8,2,5} ;
+
+
+
+
+    float linkedList[] = new float[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ;
     private float max(float[] linkedList){
         float []nums = new float[linkedList.length];
         for(int i=0;i<linkedList.length;i++){
@@ -201,7 +282,7 @@ public class PersonCenterItem2 extends BaseFragment {
                          setData();
                          //填充
                          addView();
-                         break;
+                     break ;
                  }
             }
         }
@@ -258,6 +339,9 @@ public class PersonCenterItem2 extends BaseFragment {
         P.c("最大"+max(linkedList));
         float step = max(linkedList)/2;
         P.c("步长"+step);
+        if(step==0){
+            step = 1;
+        }
         LineUtils.yScaleArray = new float[]{0,get(step),get(2*step),get(3*step),get(4*step),get(5*step)};
         LineUtils.levelName = new String[]{"优","良","轻度","中度","重度","严重"};
         LineUtils.yScaleColors = new int[]{0xff00ff00,0xffffff00,0xffffa500,0xffff4500,0xffdc143c,0xffa52a2a};
