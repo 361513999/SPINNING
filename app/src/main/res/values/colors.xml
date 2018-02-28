@@ -21,4 +21,5 @@
     <color name="font_online_bottom_div">#F9F94F</color>
     <color name="music_ico_bg">#262626</color>
     <color name="red">#FF0000</color>
+    <color name="textNormalColor">#666</color>
 </resources>

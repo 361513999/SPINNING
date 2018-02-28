@@ -48,7 +48,7 @@ public abstract class BaseActivity extends Activity {
         AppManager.getAppManager().finishActivity(this);
     }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏

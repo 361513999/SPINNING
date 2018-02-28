@@ -34,7 +34,7 @@ public class JpActivity extends BaseActivity {
     private PullToRefreshView pull_to_refresh_list;
     private SportListAdapter sportListAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jp_layout);
         list_content = findViewById(R.id.list_content);

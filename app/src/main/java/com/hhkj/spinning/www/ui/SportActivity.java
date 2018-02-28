@@ -40,7 +40,7 @@ public class SportActivity extends BaseActivity {
     private SportListAdapter sportListAdapter;
     private SportMenuAdapter sportMenuAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sport_layout);
 

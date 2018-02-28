@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Message;
 import android.os.RemoteException;
-import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -45,6 +44,8 @@ import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.inuker.bluetooth.library.utils.BluetoothLog;
 import com.inuker.bluetooth.library.utils.ByteUtils;
+import com.zane.androidupnpdemo.Config;
+import com.zane.androidupnpdemo.ui.UpnpActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -274,6 +275,7 @@ public class PlayerActivity extends BaseActivity {
     private int voice = 0;
     private SeekBar item1;
     private TextView item0,item2,title;
+    private LinearLayout upnp_send;
     /*
 * 毫秒转化
 */
@@ -318,7 +320,7 @@ public class PlayerActivity extends BaseActivity {
         bottom_3 = findViewById(R.id.bottom_3);
         bottom_4 = findViewById(R.id.bottom_4);
         bottom_5 = findViewById(R.id.bottom_5);
-
+        upnp_send = findViewById(R.id.upnp_send);
         suf = findViewById(R.id.suf);
         item1 = findViewById(R.id.item1);
         item1.setEnabled(false);
@@ -397,6 +399,17 @@ public class PlayerActivity extends BaseActivity {
                showLimite(true);
 
                 return false;
+            }
+        });
+        upnp_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                P.c("投屏操作");
+                Config.TEST_URL = url;
+                Intent intent = new Intent(PlayerActivity.this,UpnpActivity.class);
+                intent.putExtra("title",videoBean.getTitle());
+                startActivity(intent);
+
             }
         });
         control.setOnClickListener(new View.OnClickListener() {
@@ -604,7 +617,7 @@ public class PlayerActivity extends BaseActivity {
     private AliVcMediaPlayer mediaPlayer;
     private boolean RUN = true;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout);
         try {
@@ -628,7 +641,7 @@ public class PlayerActivity extends BaseActivity {
                 while (RUN){
                     //蓝牙时间操作
                     int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
-                    P.c("status"+status);
+
                     if(status==2){
                         Common.RUN_TIME++;
                     }else{

@@ -82,7 +82,7 @@ public class MyBikeActivity extends BaseActivity {
     }
     private boolean RUN = true;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_bike_layout);
 

@@ -23,7 +23,7 @@ public class CommonWeb extends BaseActivity {
 	private WebView commonView;
 	private TextView title;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.common_web);

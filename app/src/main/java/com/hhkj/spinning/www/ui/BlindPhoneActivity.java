@@ -31,7 +31,7 @@ public class BlindPhoneActivity extends BaseActivity {
     private TextView blind;
     private   Three_Data three_data;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blind_phone_layout);
         Intent intent = getIntent();

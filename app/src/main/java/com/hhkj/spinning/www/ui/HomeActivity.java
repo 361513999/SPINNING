@@ -68,7 +68,7 @@ public class HomeActivity extends BaseActivity {
     private TextView item_left2, item_left3, item_left4, item_left5, item_left6;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
 

@@ -84,7 +84,7 @@ public class MessageActivity extends BaseActivity {
     private TextView item1,item2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_layout);
     }

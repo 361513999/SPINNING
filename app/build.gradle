@@ -9,6 +9,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    dependencies {
+        compile 'com.android.support:multidex:1.0.1'
     }
     buildTypes {
         release {
@@ -16,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     repositories {
         flatDir { dirs 'libs' }
     }
@@ -59,6 +64,11 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/beans.xml'
+    }
+
 }
 allprojects {
     repositories {
@@ -96,6 +106,21 @@ dependencies {
     compile project(path: ':datalib')
     compile project(path: ':photolib')
     compile project(path: ':bt_library')
+    //compile project(path: ':clinglibrary')
     implementation files('libs/tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar')
     implementation files('libs/NELivePlayer-1.4.0.jar')
+    implementation files('libs/javax.servlet-3.0.0.v201112011016.jar')
+    implementation files('libs/jetty-io-8.1.12.v20130726.jar')
+    implementation files('libs/jetty-http-8.1.12.v20130726.jar')
+    implementation files('libs/cling-core-2.1.1.jar')
+    implementation files('libs/cling-support-2.1.1.jar')
+    implementation files('libs/jetty-client-8.1.12.v20130726.jar')
+    implementation files('libs/jetty-server-8.1.12.v20130726.jar')
+    implementation files('libs/jetty-servlet-8.1.12.v20130726.jar')
+    implementation files('libs/jetty-util-8.1.12.v20130726.jar')
+    implementation files('libs/slf4j-simple-1.7.21.jar')
+    implementation files('libs/urlimageviewhelper-1.0.4.jar')
+    implementation files('libs/jetty-security-8.1.12.v20130726.jar')
+    implementation files('libs/seamless-http-1.1.1.jar')
+    implementation files('libs/seamless-xml-1.1.1.jar')
 }

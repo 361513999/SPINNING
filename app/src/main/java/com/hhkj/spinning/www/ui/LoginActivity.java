@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
     private CircleImageView login_icon;
     //    private ProgressDialog progressDialog;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

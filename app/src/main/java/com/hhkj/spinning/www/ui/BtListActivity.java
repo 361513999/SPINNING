@@ -217,7 +217,7 @@ public class BtListActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private BtListAdapter btListAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.select_bt_layout);

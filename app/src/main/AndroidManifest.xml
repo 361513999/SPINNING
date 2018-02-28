@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
     </uses-permission>
@@ -132,6 +135,14 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <activity android:name="com.zane.androidupnpdemo.ui.UpnpActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
+
+        <service android:name="com.zane.androidupnpdemo.service.ClingUpnpService"  android:exported="false"/>
+        <service android:name="com.zane.androidupnpdemo.service.SystemService"  android:exported="false"/>
+
         <service android:name=".service.SpinningService" android:enabled="true" android:priority="1000"
             android:persistent="true"
             android:process=":com.spinning.www">

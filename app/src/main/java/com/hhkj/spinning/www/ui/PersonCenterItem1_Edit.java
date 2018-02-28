@@ -30,7 +30,7 @@ public class PersonCenterItem1_Edit extends BaseActivity {
     private ListView person_left;
     private PersonCenterItem1_EditLeftAdapter personCenterItem1_editLeftAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.person_center_item1_edit);
     }
