@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -623,7 +624,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 while (RUN){
                     //蓝牙时间操作
                     int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
-                    P.c("status"+status);
+                 //   P.c("status"+status);
                     if(status==2){
                         Common.RUN_TIME++;
                     }else{
@@ -638,6 +639,16 @@ public class PlayOnlineActivity extends BaseActivity {
                 }
             }
         }.start();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String bt_mac = sharedUtils.getStringValue("bt_mac");
+            ClientManager.getClient().disconnect(bt_mac);
+            AppManager.getAppManager().finishActivity(this);
+        }
+        return true;
+
     }
     private final BleConnectStatusListener mConnectStatusListener = new BleConnectStatusListener() {
         @Override

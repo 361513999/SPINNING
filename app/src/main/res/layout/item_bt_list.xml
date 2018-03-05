@@ -39,6 +39,7 @@
             android:paddingBottom="2dp"
             android:paddingRight="4dp"
             android:paddingLeft="4dp"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:background="@drawable/shape_common_red_btn"
             android:layout_height="wrap_content" />

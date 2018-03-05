@@ -84,13 +84,12 @@ public class BtListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag(R.mipmap.ic_launcher
                     + position);
         }
-
-
         SearchResult it = sportMenus.get(position);
         if(sharedUtils.getStringValue("bt_mac").equals(it.getAddress())){
-            viewHolder.status.setVisibility(View.VISIBLE);
+
             if( ClientManager.getClient().getConnectStatus(it.getAddress())==2){
                 //已连接
+                viewHolder.status.setVisibility(View.VISIBLE);
                 viewHolder.status.setText("断开");
             }else{
                 //已断开

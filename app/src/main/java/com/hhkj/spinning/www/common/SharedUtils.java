@@ -114,7 +114,7 @@ public class SharedUtils {
 		Set set = vl.entrySet();
 		Iterator it = set.iterator();
 		while(it.hasNext()){
-			keys.add(String.valueOf(it.next()));
+			keys.add(String.valueOf(it.next()).split("=")[0]);
 		}
 		return  keys;
 	}

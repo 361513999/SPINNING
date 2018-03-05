@@ -21,6 +21,7 @@ import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.U;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.ui.LoginActivity;
+import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.LoadView;
 import com.zc.http.okhttp.OkHttpUtils;
 import com.zc.http.okhttp.callback.StringCallback;
@@ -45,6 +46,14 @@ public abstract class BaseActivity extends Activity {
 
 
     public void backActivity(View v){
+        String bt_mac = sharedUtils.getStringValue("bt_mac");
+        String name = this.getClass().getName();
+       if(name.contains("MyBikeActivity")||name.contains("PlayerActivity")||name.contains("PlayOnlineActivity")){
+           if(bt_mac.length()!=0){
+                P.c("断开。。。。。。。。。"+name);
+               ClientManager.getClient().disconnect(bt_mac);
+           }
+       }
         AppManager.getAppManager().finishActivity(this);
     }
     @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hhkj.spinning.www.R;
+import com.hhkj.spinning.www.base.AppManager;
 import com.hhkj.spinning.www.base.BaseActivity;
 import com.hhkj.spinning.www.bean.CenterItem1Edit;
 import com.hhkj.spinning.www.common.Common;
@@ -23,6 +25,7 @@ import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.db.DB;
+import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.utils.ClientManager;
 import com.hhkj.spinning.www.widget.ColorArcProgressBar;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
@@ -41,6 +44,10 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,10 +98,18 @@ public class MyBikeActivity extends BaseActivity {
         }
     time();
 
-
-
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String bt_mac = sharedUtils.getStringValue("bt_mac");
+            ClientManager.getClient().disconnect(bt_mac);
+            AppManager.getAppManager().finishActivity(this);
+        }
+        return true;
 
     }
+
     private void time(){
         new Thread(){
             @Override
@@ -103,7 +118,7 @@ public class MyBikeActivity extends BaseActivity {
                 while (RUN){
                     //蓝牙时间操作
                     int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
-                    P.c("status"+status);
+//                    P.c("status"+status);
                     if(status==2){
                         Common.RUN_TIME++;
                     }else{
@@ -192,6 +207,19 @@ public class MyBikeActivity extends BaseActivity {
                 ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
 
                 break;
+            case 3:
+                Intent intent =new Intent(MyBikeActivity.this,BtListActivity.class);
+                P.c("实际"+bottom_0.getTag());
+                if(bottom_0.getTag()!=null){
+                    intent.putExtra("xl",bottom_0.getTag().toString());
+                    intent.putExtra("sd",bottom_1.getTag().toString());
+                    intent.putExtra("sj",bottom_2.getTag().toString());
+                    intent.putExtra("cal",bottom_3.getTag().toString());
+                    intent.putExtra("lc",bottom_4.getTag().toString());
+                    intent.putExtra("zlc",bottom_5.getTag().toString());
+                }
+                startActivityForResult(intent,100);
+                break;
         }
     }
 
@@ -226,8 +254,55 @@ public class MyBikeActivity extends BaseActivity {
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
     }
+    private void getInit(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            jsonObject.put("cls","Sys.ParamSet");
+            jsonObject.put("method","GetData");
+            jsonObject.put("param","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        httpPostSON("Post", jsonObject.toString(), new Result() {
+            @Override
+            public void success(JSONObject data) {
+                try {
+                    String result = data.getString("Result");
+
+                    JSONArray jsonArray =   new JSONArray(result);
+                    int len =  jsonArray.length();
+
+                    for(int i=0;i<len;i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+                        sharedUtils.setStringValue(object.getString("key"),object.getString("value"));
+//                        Common.initMaps.put(object.getString("key"),object.getString("value"));
+                    }
+                    getHandler().sendEmptyMessage(3);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String data) {
+
+            }
+
+            @Override
+            public void unLogin() {
+
+            }
+        },false);
+
+    }
+
+
     private LinearLayout content;
-    private TextView title,connent_status;
+    private TextView title,connent_status,title0;
     private ImageView share;
     private TextView bottom_0,bottom_1,bottom_2,bottom_3,bottom_4,bottom_5;
     @Override
@@ -246,24 +321,20 @@ public class MyBikeActivity extends BaseActivity {
         bottom_3 = findViewById(R.id.bottom_3);
         bottom_4 = findViewById(R.id.bottom_4);
         bottom_5 = findViewById(R.id.bottom_5);
-
+        title0 = findViewById(R.id.title0);
 
 
 
         bt_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                Intent intent =new Intent(MyBikeActivity.this,BtListActivity.class);
-                if(bottom_0.getTag()!=null){
-                    intent.putExtra("xl",bottom_0.getTag().toString());
-                    intent.putExtra("sd",bottom_1.getTag().toString());
-                    intent.putExtra("sj",bottom_2.getTag().toString());
-                    intent.putExtra("cal",bottom_3.getTag().toString());
-                    intent.putExtra("lc",bottom_4.getTag().toString());
-                    intent.putExtra("zlc",bottom_5.getTag().toString());
+                SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+                if(sharedUtils.getKeys().size()==0){
+                    getInit();
+                }else{
+                    getHandler().sendEmptyMessage(3);
                 }
+
                /* intent.putExtra("xl","200");
                 intent.putExtra("sd","201");
                 intent.putExtra("sj","300");
@@ -271,7 +342,7 @@ public class MyBikeActivity extends BaseActivity {
                 intent.putExtra("lc","400");
                 intent.putExtra("zlc","401");*/
 
-                startActivityForResult(intent,100);
+
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
@@ -358,7 +429,7 @@ public class MyBikeActivity extends BaseActivity {
         public void onNotify(UUID service, UUID character, byte[] value) {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
-//                title.setText( ByteUtils.byteToString(value));
+                title.setText( ByteUtils.byteToString(value));
 
                 String result = ByteUtils.byteToString(value);
                 if(result.startsWith("F0B036CA")){
@@ -482,7 +553,7 @@ public class MyBikeActivity extends BaseActivity {
     }
 
     private void write(String param){
-
+        title0.setText("发送"+param);
         ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
                 ByteUtils.stringToBytes(param), new BleWriteResponse() {
                     @Override
@@ -529,7 +600,7 @@ public class MyBikeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+      //  title0.setText("");
         if(!RUN){
             RUN = true;
             time();
@@ -549,6 +620,12 @@ public class MyBikeActivity extends BaseActivity {
             }
         }else {
             connent_status.setText("未连接");
+            bottom_0.setText("- -");
+            bottom_1.setText("- -");
+            bottom_2.setText("- -");
+            bottom_3.setText("- -");
+            bottom_4.setText("- -");
+            bottom_5.setText("- -");
         }
         new Thread(){
             @Override

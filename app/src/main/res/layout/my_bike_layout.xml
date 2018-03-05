@@ -14,6 +14,23 @@
         <include layout="@layout/common_back_layout"/>
 
         <TextView
+            android:id="@+id/title0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/title1"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_font_size" />
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="****"
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@+id/title"
+            android:textSize="@dimen/title_font_size" />
+        <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,7 +163,8 @@
                                             android:text="心率"/>
                                         <TextView
                                             android:id="@+id/bottom_0"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
+                                            android:gravity="center"
                                             android:textSize="13sp"
                                             android:layout_marginTop="5dp"
                                             android:text="- -"
@@ -181,7 +199,8 @@
                                             android:text="速度"/>
                                         <TextView
                                             android:id="@+id/bottom_1"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
+                                            android:gravity="center"
                                             android:textSize="13sp"
                                             android:layout_marginTop="5dp"
                                             android:text="- -"
@@ -216,10 +235,12 @@
                                             android:text="时间"/>
                                         <TextView
                                             android:id="@+id/bottom_2"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="match_parent"
+                                            android:gravity="center"
                                             android:textSize="13sp"
                                             android:layout_marginTop="5dp"
                                             android:text="- -"
+
                                             android:textColor="@color/white"
                                             android:layout_height="wrap_content" />
                                         <View
@@ -258,7 +279,8 @@
                                         android:text="卡路里"/>
                                     <TextView
                                         android:id="@+id/bottom_3"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:gravity="center"
                                         android:textSize="13sp"
                                         android:layout_marginTop="5dp"
                                         android:text="- -"
@@ -293,7 +315,8 @@
                                         android:text="里程"/>
                                     <TextView
                                         android:id="@+id/bottom_4"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:gravity="center"
                                         android:textSize="13sp"
                                         android:layout_marginTop="5dp"
                                         android:text="- -"
@@ -328,7 +351,8 @@
                                         android:text="总里程"/>
                                     <TextView
                                         android:id="@+id/bottom_5"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:gravity="center"
                                         android:textSize="13sp"
                                         android:layout_marginTop="5dp"
                                         android:text="- -"

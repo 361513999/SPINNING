@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 
@@ -65,10 +67,12 @@ public class BtListActivity extends BaseActivity {
                         @Override
                         public void sure() {
                             ClientManager.getClient().disconnect(sharedUtils.getStringValue("bt_mac"));
-
+                            sharedUtils.clear("bt_mac");
                               Intent intent = getIntent();
                               if(intent.hasExtra("xl")){
                                   updata(intent);
+                              }else{
+                                  AppManager.getAppManager().finishActivity(BtListActivity.this);
                               }
                               if(btListAdapter!=null){
                                   btListAdapter.notifyDataSetChanged();
@@ -77,6 +81,11 @@ public class BtListActivity extends BaseActivity {
                     });
                     commonTips.showSheet();
 
+                    break;
+                case 2:
+                    cancleLoadView();
+                    NewToast.makeText(BtListActivity.this,"数据已上传",Common.TTIME).show();
+                    AppManager.getAppManager().finishActivity(BtListActivity.this);
                     break;
 
             }
@@ -91,8 +100,9 @@ public class BtListActivity extends BaseActivity {
 
         }
     };
-    private void updata(final Intent intent){
 
+    private void updata(final Intent intent){
+        showLoadView();
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -114,6 +124,7 @@ public class BtListActivity extends BaseActivity {
                 @Override
                 public void success(JSONObject data) {
                     sharedUtils.setStringValue("zlc",intent.getStringExtra("zlc"));
+                    getHandler().sendEmptyMessage(2);
                 }
 
                 @Override
@@ -172,8 +183,28 @@ public class BtListActivity extends BaseActivity {
         super.onPause();
         ClientManager.getClient().stopSearch();
     }
+    private   boolean contain2(String input, String regex) {
+        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(input);
+        boolean result = m.find();
+        return result;
+    }
     private ArrayList<SearchResult> searchResults = new ArrayList<>();
     private TextView title;
+    private void checkConnect(int i){
+        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+        ArrayList<String> keys =  sharedUtils.getKeys();
+        for(int k=0;k<keys.size();k++){
+            P.c(searchResults.get(i).getName()+"||"+keys.get(k));
+            if(contain2(searchResults.get(i).getName(),keys.get(k))){
+                connnectBt(searchResults.get(i));
+                return;
+            }else{
+                NewToast.makeText(BtListActivity.this,"禁止连接",Common.TTIME).show();
+                return;
+            }
+        }
+    }
     @Override
     public void init() {
         title = findViewById(R.id.title);
@@ -185,7 +216,17 @@ public class BtListActivity extends BaseActivity {
         bt_lists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                connnectBt(searchResults.get(i));
+                String bt_mac = sharedUtils.getStringValue("bt_mac");
+                if(searchResults.get(i).getAddress().equals(bt_mac)&&ClientManager.getClient().getConnectStatus(bt_mac)==2){
+                    getHandler().sendEmptyMessage(0);
+                }else{
+                    checkConnect(i);
+
+
+
+                }
+
+
             }
         });
     }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Message;
 import android.os.RemoteException;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -688,7 +689,7 @@ public class PlayerActivity extends BaseActivity {
         if(connect_mac.length()!=0){
             ClientManager.getClient().registerConnectStatusListener(connect_mac, mConnectStatusListener);
             int status = ClientManager.getClient().getConnectStatus(connect_mac);
-            P.c("连接状态"+status);
+          //  P.c("连接状态"+status);
             if(status!=2){
                 getHandler().sendEmptyMessage(2);
             }else{
@@ -702,7 +703,16 @@ public class PlayerActivity extends BaseActivity {
         }
 
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String bt_mac = sharedUtils.getStringValue("bt_mac");
+            ClientManager.getClient().disconnect(bt_mac);
+            AppManager.getAppManager().finishActivity(this);
+        }
+        return true;
 
+    }
     private AlertDialog dlgBluetoothOpen;
 
     private void showForceTurnOnBluetoothDialog() {
