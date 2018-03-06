@@ -430,7 +430,7 @@ public class MyBikeActivity extends BaseActivity {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
                 title.setText( ByteUtils.byteToString(value));
-
+                LUNJING = getVlue();
                 String result = ByteUtils.byteToString(value);
                 if(result.startsWith("F0B036CA")){
                     //初始化成功
@@ -442,10 +442,12 @@ public class MyBikeActivity extends BaseActivity {
                     int g = getChar(result,10,2);
                     //暂时启用40的数值
                    // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
-                    LUNJING = getVlue();
+
+                  /*  LUNJING = getVlue();
+                    write("F0A236CA92");*/
 
                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
-                    write("F0A236CA92");
+
                 }
                 if(result.startsWith("F0B236CA")){
                     //RPM 和心率
@@ -495,8 +497,10 @@ public class MyBikeActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    bottom_5.setText( String.valueOf(lc+tlc+zlc));
-                    bottom_5.setTag( String.valueOf(lc+tlc+zlc));
+                    int z = sharedUtils.getIntValue("TKM");
+
+                    bottom_5.setText( String.valueOf(lc+tlc+zlc+z));
+                    bottom_5.setTag( String.valueOf(lc+tlc+zlc+z));
                     if(cal!=0){
                         String temp = String.valueOf(cal/bike_cicle.getMaxValues());
                         float now = FileUtils.formatFloat(Float.parseFloat(temp))*100;
@@ -546,7 +550,7 @@ public class MyBikeActivity extends BaseActivity {
                 //在这里进行操作
                 P.c("发送数据");
                 write("F0A136CA91");
-
+                write("F0A236CA92");
             }
         };
         timer.schedule(task,1000,1000);

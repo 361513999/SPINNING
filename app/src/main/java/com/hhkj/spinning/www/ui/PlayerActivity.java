@@ -155,7 +155,7 @@ public class PlayerActivity extends BaseActivity {
                 //在这里进行操作
                 P.c("发送数据");
                 write("F0A136CA91");
-
+                write("F0A236CA92");
             }
         };
         timer.schedule(task,1000,1000);
@@ -183,7 +183,7 @@ public class PlayerActivity extends BaseActivity {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
 //                title.setText( ByteUtils.byteToString(value));
-
+                LUNJING = getVlue();
                 String result = ByteUtils.byteToString(value);
                 if(result.startsWith("F0B036CA")){
                     //初始化成功
@@ -195,9 +195,10 @@ public class PlayerActivity extends BaseActivity {
                     int g = getChar(result,10,2);
                    // LUNJING = LUNJING = (s*10)+FileUtils.formatDouble(g/10);
 
-                    LUNJING = getVlue();
+                  /*  LUNJING = getVlue();
+                    write("F0A236CA92");*/
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
-                    write("F0A236CA92");
+
                 }
                 if(result.startsWith("F0B236CA")){
                     //RPM 和心率

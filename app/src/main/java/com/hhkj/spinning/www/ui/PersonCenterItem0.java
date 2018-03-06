@@ -181,6 +181,7 @@ public class PersonCenterItem0 extends BaseFragment {
                     sharedUtils.setStringValue("Height",obj.getString("Height"));
                     sharedUtils.setStringValue("Weight",obj.getString("Weight"));
                     sharedUtils.setStringValue("Birthday",obj.getString("Birthday"));
+                    sharedUtils.setIntValue("TKM",obj.getInt("TotalKM"));
                     //
                     center0.setBirthday(TimeUtil.getTimeCh(TimeUtil.parseTime_(obj.getString("Birthday"))));
                     center0.setHeight(obj.getString("Height"));

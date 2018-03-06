@@ -182,6 +182,8 @@ public class LoginActivity extends BaseActivity {
         sharedUtils.setStringValue("Height",obj.getString("Height"));
         sharedUtils.setStringValue("Weight",obj.getString("Weight"));
         sharedUtils.setStringValue("Birthday",obj.getString("Birthday"));
+        sharedUtils.setIntValue("TKM",obj.getInt("TotalKM"));
+
         getHandler().sendEmptyMessage(2);
     }
     private EditText phone,code_ma;
