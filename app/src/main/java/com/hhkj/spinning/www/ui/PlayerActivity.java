@@ -450,7 +450,9 @@ public class PlayerActivity extends BaseActivity {
                 int max = mediaPlayer.getDuration();
                 item1.setEnabled(true);
                 item1.setMax(mediaPlayer.getDuration());
-                item2.setText(formatTime(max));
+//                item2.setText(formatTime(max));
+                P.c("播放时长"+videoBean.getTime());
+                item2.setText(videoBean.getTime());
                 if(PLAY_TAG==-1){
                     return;
                 }
