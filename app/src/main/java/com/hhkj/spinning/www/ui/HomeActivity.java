@@ -277,6 +277,19 @@ public class HomeActivity extends BaseActivity {
                             JSONObject object = new JSONObject(value);
                             if( object.getInt("PlayStatus")!=1){
 
+                                JSONArray ja = new JSONArray(result);
+                                if(ja.length()==1){
+                                    //说明是存在播放地址的
+                                    Message msg = new Message();
+                                    msg.what = 3;
+                                    msg.arg1 = -1;
+                                    msg.obj = ja.getString(0);
+                                    getHandler().sendMessage(msg);
+
+
+                                    return;
+                                }
+
                                 getHandler().sendEmptyMessage(5);
                                 return;
                             }
@@ -313,10 +326,20 @@ public class HomeActivity extends BaseActivity {
                 });
                 break;
             case 3:
-                String param = (String) msg.obj;
-                Intent intent = new Intent(HomeActivity.this, PlayOnlineActivity.class);
-                intent.putExtra("param", param);
-                startActivity(intent);
+                if(msg.arg1 == -1){
+                    Intent inten0 = new Intent(HomeActivity.this,PlayerActivity.class);
+                    VideoBean bean = new VideoBean();
+                    bean.setUrl((String) msg.obj);
+                    bean.setTitle("点播");
+                    inten0.putExtra("param",bean);
+                    startActivity(inten0);
+                }else{
+                    String param = (String) msg.obj;
+                    Intent intent = new Intent(HomeActivity.this, PlayOnlineActivity.class);
+                    intent.putExtra("param", param);
+                    startActivity(intent);
+                }
+
 
                 break;
             case 4:
