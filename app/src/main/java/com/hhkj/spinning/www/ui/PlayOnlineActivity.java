@@ -66,6 +66,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 import static com.inuker.bluetooth.library.Constants.STATUS_CONNECTED;
@@ -748,6 +750,12 @@ public class PlayOnlineActivity extends BaseActivity {
         }
         return 40;
     }
+    private    boolean contain2(String input, String regex) {
+        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(input);
+        boolean result = m.find();
+        return result;
+    }
     private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
@@ -757,7 +765,7 @@ public class PlayOnlineActivity extends BaseActivity {
 //                title.setText( ByteUtils.byteToString(value));
                 LUNJING = getVlue();
                 String result = ByteUtils.byteToString(value);
-                if(result.startsWith("F0B036CA")){
+                if(contain2(result,"F0B036CA")){
                     //初始化成功
                     doSend();
                 }
@@ -773,7 +781,7 @@ public class PlayOnlineActivity extends BaseActivity {
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
 
                 }
-                if(result.startsWith("F0B236CA")){
+                if(contain2(result,"F0B236CA")){
                     //RPM 和心率
                     //F0B236CA00000000A2
                          /*
