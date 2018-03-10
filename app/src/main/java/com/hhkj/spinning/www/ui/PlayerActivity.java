@@ -82,12 +82,7 @@ public class PlayerActivity extends BaseActivity {
                 item0.setText(formatTime(process));
                 break;
             case 2:
-                ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
-                    @Override
-                    public void onResponse(int code) {
-
-                    }
-                });
+                unnotify();
                 SearchRequest request = new SearchRequest.Builder()
                         .searchBluetoothLeDevice(2000, 2).build();
                 ClientManager.getClient().search(request, new SearchResponse() {
@@ -104,6 +99,7 @@ public class PlayerActivity extends BaseActivity {
                             //立即停止
                             ClientManager.getClient().stopSearch();
                             NOT_FOUND = false;
+                            return;
                         }
 
                     }
@@ -129,6 +125,14 @@ public class PlayerActivity extends BaseActivity {
 
                 break;
         }
+    }
+    private void unnotify(){
+        ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
+            @Override
+            public void onResponse(int code) {
+                P.c("断开unnotify");
+            }
+        });
     }
     private void connnectBt(final SearchResult result){
         BleConnectOptions options = new BleConnectOptions.Builder()
@@ -771,6 +775,6 @@ public class PlayerActivity extends BaseActivity {
             mediaPlayer.destroy();
         }
         RUN = false;
-
+        unnotify();
     }
 }

@@ -166,12 +166,8 @@ public class MyBikeActivity extends BaseActivity {
             case 2:
                 //连接
 
-                ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
-                    @Override
-                    public void onResponse(int code) {
 
-                    }
-                });
+                unnotify();
                 SearchRequest request = new SearchRequest.Builder()
                         .searchBluetoothLeDevice(2000, 2).build();
                 ClientManager.getClient().search(request, new SearchResponse() {
@@ -188,6 +184,7 @@ public class MyBikeActivity extends BaseActivity {
                             //立即停止
                             ClientManager.getClient().stopSearch();
                             NOT_FOUND = false;
+                            return;
                         }
                     }
 
@@ -524,8 +521,10 @@ public class MyBikeActivity extends BaseActivity {
 
         @Override
         public void onResponse(int code) {
+            P.c("notify开启结果"+code);
             if (code == REQUEST_SUCCESS) {
                 //开启成功之后就开始发送数据
+
                 write("F0A036CA90");
             } else {
 
@@ -555,16 +554,17 @@ public class MyBikeActivity extends BaseActivity {
             @Override
             public void run() {
                 //在这里进行操作
-                P.c("发送数据");
+
                 write("F0A136CA91");
                 write("F0A236CA92");
             }
         };
-        timer.schedule(task,1000,1000);
+        timer.schedule(task,5000,1000);
     }
 
     private void write(String param){
-        title0.setText("发送"+param);
+      //  title0.setText("发送"+param);
+        P.c("发送数据"+param);
         ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
                 ByteUtils.stringToBytes(param), new BleWriteResponse() {
                     @Override
@@ -574,10 +574,22 @@ public class MyBikeActivity extends BaseActivity {
                 });
     }
 
+    private void unnotify(){
+        ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
+            @Override
+            public void onResponse(int code) {
+                P.c("断开unnotify");
+            }
+        });
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         RUN = false;
+        unnotify();
+
     }
 
     @Override

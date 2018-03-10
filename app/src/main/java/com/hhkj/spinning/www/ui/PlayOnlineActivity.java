@@ -116,12 +116,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 bottom_2.setText(time);
                 break;
             case 2:
-                ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
-                    @Override
-                    public void onResponse(int code) {
-
-                    }
-                });
+                unnotify();
                 SearchRequest request = new SearchRequest.Builder()
                         .searchBluetoothLeDevice(2000, 2).build();
                 ClientManager.getClient().search(request, new SearchResponse() {
@@ -138,6 +133,7 @@ public class PlayOnlineActivity extends BaseActivity {
                             //立即停止
                             ClientManager.getClient().stopSearch();
                             NOT_FOUND = false;
+                            return;
                         }
 
                     }
@@ -570,7 +566,14 @@ public class PlayOnlineActivity extends BaseActivity {
 
     }
 
-
+    private void unnotify(){
+        ClientManager.getClient().unnotify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, new BleUnnotifyResponse() {
+            @Override
+            public void onResponse(int code) {
+                P.c("断开unnotify");
+            }
+        });
+    }
 
     private int PLAY_TAG = 1;
     String url;
@@ -582,6 +585,7 @@ public class PlayOnlineActivity extends BaseActivity {
         isRun = false;
         RUN = false;
         videoView.destroy();
+        unnotify();
     }
 
     @Override
