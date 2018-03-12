@@ -95,9 +95,11 @@ public class HomeActivity extends BaseActivity {
                     JSONArray jsonArray =   new JSONArray(result);
                     int len =  jsonArray.length();
                     P.c("保存===="+len);
+                    SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+                    sharedUtils.clear();
                     for(int i=0;i<len;i++){
+
                         JSONObject object = jsonArray.getJSONObject(i);
-                        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
                         sharedUtils.setStringValue(object.getString("key"),object.getString("value"));
 //                        Common.initMaps.put(object.getString("key"),object.getString("value"));
 

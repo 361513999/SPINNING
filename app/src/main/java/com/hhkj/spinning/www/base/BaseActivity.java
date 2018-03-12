@@ -48,7 +48,7 @@ public abstract class BaseActivity extends Activity {
     public void backActivity(View v){
         String bt_mac = sharedUtils.getStringValue("bt_mac");
         String name = this.getClass().getName();
-       if(name.contains("MyBikeActivity")||name.contains("PlayerActivity")||name.contains("PlayOnlineActivity")){
+       if(name.contains("MyBikeActivity")||name.contains("PlayerActivity")||name.contains("PlayOnlineActivity")||name.contains("BtListActivity")){
            if(bt_mac.length()!=0){
                 P.c("断开。。。。。。。。。"+name);
                ClientManager.getClient().disconnect(bt_mac);

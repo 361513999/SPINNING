@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -194,17 +195,32 @@ public class BtListActivity extends BaseActivity {
     private void checkConnect(int i){
         SharedUtils sharedUtils = new SharedUtils(Common.initMap);
         ArrayList<String> keys =  sharedUtils.getKeys();
+       if(!isCom(keys,i)){
+           NewToast.makeText(BtListActivity.this,"禁止连接",Common.TTIME).show();
+       }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            String bt_mac = sharedUtils.getStringValue("bt_mac");
+            ClientManager.getClient().disconnect(bt_mac);
+            AppManager.getAppManager().finishActivity(this);
+        }
+        return true;
+
+    }
+
+    private boolean isCom(ArrayList<String> keys,int i){
         for(int k=0;k<keys.size();k++){
-            P.c(searchResults.get(i).getName()+"||"+keys.get(k));
+
             if(contain2(searchResults.get(i).getName(),keys.get(k))){
                 connnectBt(searchResults.get(i));
-                return;
-            }else{
-                NewToast.makeText(BtListActivity.this,"禁止连接",Common.TTIME).show();
-                return;
+                return  true;
             }
         }
+        return  false;
     }
+
     @Override
     public void init() {
         title = findViewById(R.id.title);
@@ -231,7 +247,13 @@ public class BtListActivity extends BaseActivity {
         });
     }
     private void connnectBt(final SearchResult result){
-        BleConnectOptions options = new BleConnectOptions.Builder()
+
+        sharedUtils.setStringValue("bt_name",result.getName());
+        sharedUtils.setStringValue("bt_mac",result.getAddress());
+        setResult(1000);
+        AppManager.getAppManager().finishActivity(BtListActivity.this);
+
+    /*    BleConnectOptions options = new BleConnectOptions.Builder()
                 .setConnectRetry(3)
                 .setConnectTimeout(20000)
                 .setServiceDiscoverRetry(3)
@@ -249,7 +271,7 @@ public class BtListActivity extends BaseActivity {
                     AppManager.getAppManager().finishActivity(BtListActivity.this);
                 }
             }
-        });
+        });*/
     }
 
 

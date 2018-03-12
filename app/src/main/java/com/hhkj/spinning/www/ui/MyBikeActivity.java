@@ -203,7 +203,7 @@ public class MyBikeActivity extends BaseActivity {
                 });
 
 
-                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                //ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
 
                 break;
             case 3:
@@ -235,7 +235,7 @@ public class MyBikeActivity extends BaseActivity {
                 if(code==REQUEST_SUCCESS){
                     //
                     P.c("重新连接成功");
-                    ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                   // ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
                 }
             }
         });
@@ -273,10 +273,10 @@ public class MyBikeActivity extends BaseActivity {
 
                     JSONArray jsonArray =   new JSONArray(result);
                     int len =  jsonArray.length();
-
+                    SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+                    sharedUtils.clear();
                     for(int i=0;i<len;i++){
                         JSONObject object = jsonArray.getJSONObject(i);
-                        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
                         sharedUtils.setStringValue(object.getString("key"),object.getString("value"));
 //                        Common.initMaps.put(object.getString("key"),object.getString("value"));
                     }
@@ -401,7 +401,7 @@ public class MyBikeActivity extends BaseActivity {
             P.c("onActivityResult");
             connect_mac = sharedUtils.getStringValue("bt_mac");
             connect_name = sharedUtils.getStringValue("bt_name");
-            ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+           // ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
 
         }
     }
@@ -421,12 +421,15 @@ public class MyBikeActivity extends BaseActivity {
         }
         return 40;
     }
-    private    boolean contain2(String input, String regex) {
+    private     boolean contain2(String input, String regex) {
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(input);
         boolean result = m.find();
         return result;
     }
+
+
+
     private double LUNJING = 40;
     private final BleNotifyResponse mNotifyRsp = new BleNotifyResponse() {
         @Override
@@ -581,6 +584,7 @@ public class MyBikeActivity extends BaseActivity {
                 P.c("断开unnotify");
             }
         });
+
     }
 
     @Override
@@ -615,6 +619,7 @@ public class MyBikeActivity extends BaseActivity {
             }else if(status==STATUS_CONNECTED){
                 P.c("连接中");
                 connent_status.setText("已连接");
+                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
             }
         }
     };

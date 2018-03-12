@@ -121,7 +121,7 @@ public class PlayerActivity extends BaseActivity {
                 });
 
 
-                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+              //  ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
 
                 break;
         }
@@ -147,7 +147,7 @@ public class PlayerActivity extends BaseActivity {
                 if(code==REQUEST_SUCCESS){
                     //
                     P.c("重新连接成功");
-                    ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                 //   ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
                 }
             }
         });
@@ -249,6 +249,7 @@ public class PlayerActivity extends BaseActivity {
 
         @Override
         public void onResponse(int code) {
+            P.c("notify开启结果"+code);
             if (code == REQUEST_SUCCESS) {
                 //开启成功之后就开始发送数据
                 write("F0A036CA90");
@@ -687,6 +688,7 @@ public class PlayerActivity extends BaseActivity {
                 if(mediaPlayer!=null){
                     mediaPlayer.play();
                 }
+                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
             }
         }
     };
@@ -708,7 +710,7 @@ public class PlayerActivity extends BaseActivity {
             if(status!=2){
                 getHandler().sendEmptyMessage(2);
             }else{
-                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+              //  ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
                 if(mediaPlayer!=null){
                     mediaPlayer.play();
                 }

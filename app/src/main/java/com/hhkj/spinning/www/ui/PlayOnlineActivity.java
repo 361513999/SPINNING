@@ -101,7 +101,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 if(code==REQUEST_SUCCESS){
                     //
                     P.c("重新连接成功");
-                    ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                  //  ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
                 }
             }
         });
@@ -153,7 +153,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 });
 
 
-                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+                //ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
 
                 break;
             case  0:
@@ -670,6 +670,7 @@ public class PlayOnlineActivity extends BaseActivity {
                 if(videoView!=null){
                     videoView.start();
                 }
+                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
             }
         }
     };
@@ -713,7 +714,7 @@ public class PlayOnlineActivity extends BaseActivity {
             if(status!=2){
                 getHandler().sendEmptyMessage(2);
             }else{
-                ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
+              //  ClientManager.getClient().notify(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER, mNotifyRsp);
                 if(videoView!=null){
                     videoView.start();
                 }
@@ -822,6 +823,7 @@ public class PlayOnlineActivity extends BaseActivity {
 
         @Override
         public void onResponse(int code) {
+            P.c("notify开启结果"+code);
             if (code == REQUEST_SUCCESS) {
                 //开启成功之后就开始发送数据
                 write("F0A036CA90");
