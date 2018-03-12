@@ -229,7 +229,7 @@ public class BaseApplication extends Application {
                 .build();//开始构建
 
         ImageLoader.getInstance().init(config);
-        ImageLoader.getInstance().clearDiskCache();
+
     }
 
 

@@ -68,6 +68,8 @@ public class ModPersonActivity extends TPActivity {
                 ImageLoader.getInstance().displayImage("file://"+ImagePath,edit_person_icon);
                 break;
             case 1:
+                ImageLoader.getInstance().clearDiskCache();
+                ImageLoader.getInstance().clearMemoryCache();
                 setResult(1000);
                 AppManager.getAppManager().finishActivity(ModPersonActivity.this);
                 break;
