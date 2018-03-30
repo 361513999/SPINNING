@@ -225,7 +225,7 @@ public class PlayerActivity extends BaseActivity {
                          */
                     int prm =  (getChar(result,8,2)*100)+getChar(result,10,2);
                     double cir =   FileUtils.formatDouble(LUNJING*Math.PI);
-                    double sd =FileUtils.formatDouble( cir * prm*60/1000);
+                    double sd =FileUtils.formatDouble( cir * prm*60/10000);
                     double lc = FileUtils.formatDouble(prm*LUNJING);
                     double xl = (getChar(result,12,2)*100)+getChar(result,14,2);
                     double weight = 0;
