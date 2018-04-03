@@ -320,7 +320,7 @@ public class MyBikeActivity extends BaseActivity {
         bottom_3 = findViewById(R.id.bottom_3);
         bottom_4 = findViewById(R.id.bottom_4);
         bottom_5 = findViewById(R.id.bottom_5);
-        title0 = findViewById(R.id.title0);
+       // title0 = findViewById(R.id.title0);
 
 
 

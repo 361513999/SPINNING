@@ -114,7 +114,9 @@ public class SharedUtils {
 		Set set = vl.entrySet();
 		Iterator it = set.iterator();
 		while(it.hasNext()){
-			keys.add(String.valueOf(it.next()).split("=")[0]);
+			String temp  =String.valueOf(it.next());
+			P.c("键值"+temp);
+			keys.add(temp.split("=")[0].trim());
 		}
 		return  keys;
 	}

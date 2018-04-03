@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hhkj.spinning.www.R;
 import com.hhkj.spinning.www.adapter.BtListAdapter;
@@ -188,6 +189,8 @@ public class BtListActivity extends BaseActivity {
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(input);
         boolean result = m.find();
+
+
         return result;
     }
     private ArrayList<SearchResult> searchResults = new ArrayList<>();
@@ -195,6 +198,7 @@ public class BtListActivity extends BaseActivity {
     private void checkConnect(int i){
         SharedUtils sharedUtils = new SharedUtils(Common.initMap);
         ArrayList<String> keys =  sharedUtils.getKeys();
+
        if(!isCom(keys,i)){
            NewToast.makeText(BtListActivity.this,"禁止连接",Common.TTIME).show();
        }
@@ -211,6 +215,7 @@ public class BtListActivity extends BaseActivity {
     }
 
     private boolean isCom(ArrayList<String> keys,int i){
+        NewToast.makeText(BtListActivity.this, "选择:"+searchResults.get(i).getName(), Common.TTIME).show();
         for(int k=0;k<keys.size();k++){
 
             if(contain2(searchResults.get(i).getName(),keys.get(k))){
@@ -219,6 +224,14 @@ public class BtListActivity extends BaseActivity {
             }
         }
         return  false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedUtils sharedUtils = new SharedUtils(Common.initMap);
+        ArrayList<String> keys =  sharedUtils.getKeys();
+        NewToast.makeText(BtListActivity.this,keys.toString(),Toast.LENGTH_LONG).show();
     }
 
     @Override
