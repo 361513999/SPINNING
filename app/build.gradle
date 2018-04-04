@@ -103,6 +103,7 @@ dependencies {
     implementation files('libs/jsoup-1.7.2.jar')
     compile(name: 'AlivcReporter', ext: 'aar')
     compile(name: 'AlivcPlayer', ext: 'aar')
+    compile(name: 'hpplay-link', ext: 'aar')
     compile project(path: ':datalib')
     compile project(path: ':photolib')
     compile project(path: ':bt_library')

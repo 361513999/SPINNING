@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 
 public class Common {
-
+    public static final String LEBO_KEY = "549ca31a50478a618d46985a8763f655";
     public  volatile  static boolean isRunning = false;
     //应用签名    ba2928e597b995ae1cb5a75b059f71d5
     public static final String Appkey = "5a38a65ab27b0a6b3a00052a";

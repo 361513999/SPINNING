@@ -33,6 +33,9 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.inter.Result;
 import com.hhkj.spinning.www.utils.ClientManager;
+import com.hpplay.callback.HpplayWindowPlayCallBack;
+import com.hpplay.callback.TransportCallBack;
+import com.hpplay.link.HpplayLinkControl;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
 import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
 import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
@@ -419,11 +422,30 @@ public class PlayerActivity extends BaseActivity {
         upnp_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                P.c("投屏操作");
+               /* P.c("投屏操作");
                 Config.TEST_URL = url;
                 Intent intent = new Intent(PlayerActivity.this,UpnpActivity.class);
                 intent.putExtra("title",videoBean.getTitle());
-                startActivity(intent);
+                startActivity(intent);*/
+
+               //upnp投屏操作
+                mHpplayLinkControl.showHpplayWindow(PlayerActivity.this, new HpplayWindowPlayCallBack() {
+                    @Override
+                    public void onHpplayWindowDismiss() {
+                        P.c("隐藏");
+                    }
+
+                    @Override
+                    public void onIsConnect(boolean b) {
+                        P.c("连接成功");
+                    }
+
+                    @Override
+                    public void onIsPlaySuccess(boolean b) {
+                        P.c("投屏成功");
+                        mHpplayLinkControl.dismissHpplayWindow();
+                    }
+                });
 
             }
         });
@@ -633,6 +655,7 @@ public class PlayerActivity extends BaseActivity {
 
     private AliVcMediaPlayer mediaPlayer;
     private boolean RUN = true;
+    private HpplayLinkControl mHpplayLinkControl;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -642,6 +665,10 @@ public class PlayerActivity extends BaseActivity {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        mHpplayLinkControl = HpplayLinkControl.getInstance();
+        mHpplayLinkControl.setDebug(true);
+        mHpplayLinkControl.initHpplayLink(this, Common.LEBO_KEY);
+        mHpplayLinkControl.setTransportCallBack(transportCallBack);
 
         if(!ClientManager.getClient().isBluetoothOpened()){
            Intent intent  = new Intent(PlayerActivity.this,MyBikeActivity.class);
@@ -650,6 +677,18 @@ public class PlayerActivity extends BaseActivity {
         }
             time();
     }
+
+    /**
+     * 投屏反馈
+     */
+    private TransportCallBack transportCallBack = new TransportCallBack() {
+        @Override
+        public void onTransportData(Object o) {
+
+        }
+    };
+
+
     private void time(){
         new Thread(){
             @Override
@@ -775,6 +814,9 @@ public class PlayerActivity extends BaseActivity {
         super.onDestroy();
         if(mediaPlayer!=null){
             mediaPlayer.destroy();
+        }
+        if(mHpplayLinkControl!=null){
+            mHpplayLinkControl.castDisconnectDevice();
         }
         RUN = false;
         unnotify();
