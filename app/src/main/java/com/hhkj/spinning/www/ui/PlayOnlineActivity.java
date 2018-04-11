@@ -812,10 +812,35 @@ public class PlayOnlineActivity extends BaseActivity {
                     double cal = sd*weight*1.05*h;
                     //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
                     bottom_0.setText(String.valueOf(xl));
+                    bottom_0.setTag(String.valueOf(xl));
+
                     bottom_1.setText(sd+" km/h");
+                    bottom_1.setTag(String.valueOf(sd));
+
                     bottom_3.setText(String.valueOf(cal));
-                    bottom_4.setText(String.valueOf(lc));
-                    bottom_5.setText(String.valueOf(prm));
+                    bottom_3.setTag(String.valueOf(cal));
+
+                    double tlc = 0;
+                    try {
+                        tlc =   Double.parseDouble(bottom_4.getText().toString());
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    bottom_4.setText(String.valueOf(lc+tlc));
+                    bottom_4.setTag(String.valueOf(lc+tlc));
+
+
+                    double zlc = 0;
+                    try {
+                        zlc = Double.parseDouble(sharedUtils.getStringValue("zlc"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    int z = sharedUtils.getIntValue("TKM");
+
+                    bottom_5.setText( String.valueOf(lc+tlc+zlc+z));
+                    bottom_5.setTag( String.valueOf(lc+tlc+zlc+z));
 
                 }
             }

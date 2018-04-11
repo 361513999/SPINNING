@@ -32,7 +32,9 @@ import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.common.TimeUtil;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.inter.Tips;
 import com.hhkj.spinning.www.widget.CircleImageView;
+import com.hhkj.spinning.www.widget.CommonTips;
 import com.hhkj.spinning.www.widget.HorizontalListView;
 import com.hhkj.spinning.www.widget.NewToast;
 import com.hhkj.spinning.www.widget.PullToRefreshView;
@@ -411,6 +413,37 @@ public class HomeActivity extends BaseActivity {
 
         home_icon_txt.setText(sharedUtils.getStringValue("userName"));
         ImageLoader.getInstance().displayImage(FileUtils.addImage(sharedUtils.getStringValue("icon")), home_icon_tag);
+
+        String temp  =sharedUtils.getStringValue("Weight");
+
+       try {
+          int i =  Integer.parseInt(temp);
+          if(i<=0){
+              goEdit();
+          }
+       }catch (Exception e){
+           goEdit();
+       }
+
+
+    }
+
+    private void goEdit(){
+        CommonTips tips = new CommonTips(HomeActivity.this,null);
+       tips.init("取消","前往","为了确保数据的准确性,请前往编辑您的体重信息");
+       tips.setI(new Tips() {
+           @Override
+           public void cancel() {
+
+           }
+
+           @Override
+           public void sure() {
+                    Intent intent = new Intent(HomeActivity.this,ModPersonActivity.class);
+                    startActivity(intent);
+           }
+       });
+       tips.showSheet();
     }
 
     private boolean CURRENT_LIST_MORE = true;

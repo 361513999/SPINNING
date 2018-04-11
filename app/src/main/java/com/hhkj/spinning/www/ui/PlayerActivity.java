@@ -32,7 +32,9 @@ import com.hhkj.spinning.www.common.FileUtils;
 import com.hhkj.spinning.www.common.P;
 import com.hhkj.spinning.www.common.SharedUtils;
 import com.hhkj.spinning.www.inter.Result;
+import com.hhkj.spinning.www.inter.Tips;
 import com.hhkj.spinning.www.utils.ClientManager;
+import com.hhkj.spinning.www.widget.CommonTips;
 import com.hpplay.callback.HpplayWindowPlayCallBack;
 import com.hpplay.callback.TransportCallBack;
 import com.hpplay.link.HpplayLinkControl;
@@ -76,7 +78,7 @@ public class PlayerActivity extends BaseActivity {
         switch (msg.what){
             case -1:
                 String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
-
+                bottom_2.setTag(time);
                 bottom_2.setText(time);
                 break;
             case 0:
@@ -241,10 +243,35 @@ public class PlayerActivity extends BaseActivity {
                     double cal = sd*weight*1.05*h;
                     //Weight      消耗的卡路里（kcal）=时速(km/h)×体重(kg)×1.05×运动时间(h)
                     bottom_0.setText(String.valueOf(xl));
+                    bottom_0.setTag(String.valueOf(xl));
+
                     bottom_1.setText(sd+" km/h");
+                    bottom_1.setTag(String.valueOf(sd));
+
                     bottom_3.setText(String.valueOf(cal));
-                    bottom_4.setText(String.valueOf(lc));
-                    bottom_5.setText(String.valueOf(prm));
+                    bottom_3.setTag(String.valueOf(cal));
+
+                    double tlc = 0;
+                    try {
+                        tlc =   Double.parseDouble(bottom_4.getText().toString());
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    bottom_4.setText(String.valueOf(lc+tlc));
+                    bottom_4.setTag(String.valueOf(lc+tlc));
+
+
+                    double zlc = 0;
+                    try {
+                        zlc = Double.parseDouble(sharedUtils.getStringValue("zlc"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    int z = sharedUtils.getIntValue("TKM");
+
+                    bottom_5.setText( String.valueOf(lc+tlc+zlc+z));
+                    bottom_5.setTag( String.valueOf(lc+tlc+zlc+z));
 
                 }
             }
@@ -562,6 +589,30 @@ public class PlayerActivity extends BaseActivity {
                 mediaPlayer.stop();
                 mediaPlayer.reset();
                 mediaPlayer.prepareToPlay(url);
+
+                CommonTips commonTips = new CommonTips(PlayerActivity.this,null);
+                commonTips.init("取消","上传","是否断开蓝牙上传单车数据");
+                commonTips.setI(new Tips() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void sure() {
+                            //断开上传
+                        ClientManager.getClient().disconnect(sharedUtils.getStringValue("bt_mac"));
+                        if(bottom_0.getTag()!=null){
+                            updata();
+                            P.c("点播数据提交");
+                        }else {
+                            P.c("点播数据结束");
+                        }
+
+                    }
+                });
+                commonTips.showSheet();
+
             }
         });
         mediaPlayer.setVideoSizeChangeListener(new MediaPlayer.MediaPlayerVideoSizeChangeListener() {
@@ -584,6 +635,51 @@ public class PlayerActivity extends BaseActivity {
 
 
     }
+
+    private void updata(){
+        showLoadView();
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cls","Sys.Data");
+            jsonObject.put("method","UpLoadData");
+            jsonObject.put("toKen",sharedUtils.getStringValue("token"));
+            JSONObject object = new JSONObject();
+            //{\"XL\":1,\"SD\":1,\"KAL\":1,\"KM\":1,\"TotalKM\":1,\"ZS\":1,\"Time\":\"12:25\"}
+            object.put("XL",bottom_0.getTag().toString());
+            object.put("SD",bottom_1.getTag().toString());
+            object.put("KAL",bottom_3.getTag().toString());
+            object.put("KM",bottom_4.getTag().toString());
+            object.put("TotalKM",bottom_5.getTag().toString());
+            object.put("ZS","0");
+            object.put("Time",bottom_2.getTag().toString());
+
+            jsonObject.put("param",object.toString());
+            httpPost("Post", jsonObject.toString(), new Result() {
+                @Override
+                public void success(JSONObject data) {
+                    sharedUtils.setStringValue("zlc",bottom_5.getTag().toString());
+                    getHandler().sendEmptyMessage(2);
+                }
+
+                @Override
+                public void error(String data) {
+
+                }
+
+                @Override
+                public void unLogin() {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
     private void click(){
         JSONObject jsonObject = new JSONObject();
         try {
