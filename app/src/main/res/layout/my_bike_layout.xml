@@ -23,7 +23,13 @@
             android:text="我的单车"
             android:textColor="@color/white"
             android:textSize="@dimen/title_font_size" />
-
+        <TextView
+            android:id="@+id/title0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_font_size" />
         <ImageView
             android:id="@+id/share"
             android:layout_width="wrap_content"

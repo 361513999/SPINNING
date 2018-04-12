@@ -113,7 +113,10 @@ public class PlayOnlineActivity extends BaseActivity {
             case -1:
                 String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
 
-                bottom_2.setText(time);
+               if(canTime){
+                   bottom_2.setText(time);
+                   bottom_2.setTag(time);
+                }
                 break;
             case 2:
                 unnotify();
@@ -582,6 +585,7 @@ public class PlayOnlineActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+         canTime = false;
         isRun = false;
         RUN = false;
         videoView.destroy();
@@ -724,6 +728,7 @@ public class PlayOnlineActivity extends BaseActivity {
         }
 
     }
+     private boolean canTime = false;
     private Timer timer;
     private void doSend(){
         timer = new Timer();
@@ -732,7 +737,8 @@ public class PlayOnlineActivity extends BaseActivity {
             public void run() {
                 //在这里进行操作
                 P.c("发送数据");
-                write("F0A136CA91");
+                canTime = true;
+                Common.RUN_TIME = 0;
                 write("F0A236CA92");
             }
         };
@@ -772,9 +778,10 @@ public class PlayOnlineActivity extends BaseActivity {
                 String result = ByteUtils.byteToString(value);
                 if(contain2(result,"F0B036CA")){
                     //初始化成功
-                    doSend();
+//                    doSend();
+                      write("F0A136CA91");
                 }
-                if (result.startsWith("F0B136CA")) {
+                if (contain2(result,"F0B136CA")) {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
@@ -784,7 +791,7 @@ public class PlayOnlineActivity extends BaseActivity {
                     write("F0A236CA92");
                     */
                     // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
-
+                        doSend();
                 }
                 if(contain2(result,"F0B236CA")){
                     //RPM 和心率

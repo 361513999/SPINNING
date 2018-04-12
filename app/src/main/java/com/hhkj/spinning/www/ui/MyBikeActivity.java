@@ -49,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,6 +118,7 @@ public class MyBikeActivity extends BaseActivity {
             @Override
             public void run() {
                 super.run();
+
                 while (RUN){
                     //蓝牙时间操作
                     int status = ClientManager.getClient().getConnectStatus(sharedUtils.getStringValue("bt_mac"));
@@ -143,9 +145,11 @@ public class MyBikeActivity extends BaseActivity {
         switch (msg.what){
             case 0:
                 String time = Common.RUN_TIME!=0?Common.RUN_TIME/60+":"+Common.RUN_TIME%60:"00:00";
+                if(canTime){
+                   bottom_2.setText(time);
+                   bottom_2.setTag(time);
+                }
 
-                bottom_2.setText(time);
-                bottom_2.setTag(time);
 
                 break;
             case 1:
@@ -320,7 +324,7 @@ public class MyBikeActivity extends BaseActivity {
         bottom_3 = findViewById(R.id.bottom_3);
         bottom_4 = findViewById(R.id.bottom_4);
         bottom_5 = findViewById(R.id.bottom_5);
-       // title0 = findViewById(R.id.title0);
+        title0 = findViewById(R.id.title0);
 
 
 
@@ -436,14 +440,16 @@ public class MyBikeActivity extends BaseActivity {
         public void onNotify(UUID service, UUID character, byte[] value) {
             if (service.equals(Common.UUID_SERVICE) && character.equals(Common.UUID_CHARACTER)) {
                 P.c("收到的数据"+ ByteUtils.byteToString(value));
+                FileUtils.writeLog(ByteUtils.byteToString(value),"接收");
                 title.setText( ByteUtils.byteToString(value));
                 LUNJING = getVlue();
                 String result = ByteUtils.byteToString(value);
                 if(contain2(result,"F0B036CA")){
                     //初始化成功
-                    doSend();
+
+                    write("F0A136CA91");
                 }
-                if (result.startsWith("F0B136CA")) {
+                if (contain2(result,"F0B136CA")) {
                     //轮经
                     int s = getChar(result,8,2);
                     int g = getChar(result,10,2);
@@ -454,7 +460,7 @@ public class MyBikeActivity extends BaseActivity {
                     write("F0A236CA92");*/
 
                    // NewToast.makeText(MyBikeActivity.this,(s*10)+g,Common.TTIME).show();
-
+                    doSend();
                 }
                 if(contain2(result,"F0B236CA")){
                     //RPM 和心率
@@ -551,14 +557,15 @@ public class MyBikeActivity extends BaseActivity {
         return  Integer.parseInt(buffer.toString(),16);
     }
     private Timer timer;
+    private boolean canTime = false;
     private void doSend(){
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 //在这里进行操作
-
-                write("F0A136CA91");
+                canTime = true;
+              Common.RUN_TIME = 0;
                 write("F0A236CA92");
             }
         };
@@ -566,7 +573,8 @@ public class MyBikeActivity extends BaseActivity {
     }
 
     private void write(String param){
-      //  title0.setText("发送"+param);
+        FileUtils.writeLog(param,"发送");
+        title0.setText("发送"+param);
         P.c("发送数据"+param);
         ClientManager.getClient().write(connect_mac, Common.UUID_SERVICE, Common.UUID_CHARACTER,
                 ByteUtils.stringToBytes(param), new BleWriteResponse() {
@@ -590,7 +598,7 @@ public class MyBikeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        canTime = false;
         RUN = false;
         unnotify();
 

@@ -304,7 +304,7 @@ public class BtListActivity extends BaseActivity {
             }
         });
         SearchRequest request = new SearchRequest.Builder()
-                .searchBluetoothLeDevice(2000, 2).build();
+                .searchBluetoothLeDevice(1000, 1).build();
         ClientManager.getClient().search(request,response);
     }
 }
